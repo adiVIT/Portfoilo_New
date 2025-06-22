@@ -20,9 +20,30 @@ export const metadata: Metadata = {
     description: 'Builder of things that don\'t break. Maker of ideas that actually ship.',
   },
   icons: {
-    icon: '/favicon.png',
-    shortcut: '/favicon.png',
-    apple: '/favicon.png',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon_new.png', type: 'image/png', sizes: '32x32' },
+    ],
+    shortcut: '/favicon_new.png',
+    apple: '/favicon_new.png',
+    other: [
+      {
+        rel: 'icon',
+        type: 'image/svg+xml',
+        url: '/favicon.svg',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        url: '/favicon_new.png',
+      },
+      {
+        rel: 'apple-touch-icon',
+        sizes: '180x180',
+        url: '/favicon_new.png',
+      },
+    ],
   },
 }
 
