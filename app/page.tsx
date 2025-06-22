@@ -420,25 +420,56 @@ export default function Portfolio() {
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.8 }}
-        className="fixed top-20 left-0 right-0 z-40 mx-4 mt-4"
+        className="fixed top-16 sm:top-20 left-0 right-0 z-40 mx-2 sm:mx-4 mt-2 sm:mt-4"
       >
         <div className="max-w-4xl mx-auto">
           <motion.div
-            className="bg-gradient-to-r from-purple-900/90 via-blue-900/90 to-cyan-900/90 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-4 shadow-2xl shadow-purple-500/20"
+            className="bg-gradient-to-r from-purple-900/95 via-blue-900/95 to-cyan-900/95 backdrop-blur-xl border border-purple-500/30 rounded-xl sm:rounded-2xl p-3 sm:p-4 shadow-2xl shadow-purple-500/20"
             whileHover={{ scale: 1.02, y: -2 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="flex items-center justify-between gap-4">
+            {/* Mobile Layout - Stacked */}
+            <div className="flex flex-col sm:hidden gap-3">
+              <div className="flex items-center gap-2">
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                  className="text-lg"
+                >
+                  🔗
+                </motion.div>
+                <div className="flex-1">
+                  <p className="text-white font-bold text-sm leading-tight">
+                    Previous Portfolio Available
+                  </p>
+                  <p className="text-gray-300 text-xs leading-tight">
+                    Different projects & design
+                  </p>
+                </div>
+              </div>
+              
+              <motion.button
+                onClick={() => window.open('https://portfolio-eight-zeta-24.vercel.app/', '_blank')}
+                className="w-full bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-400 hover:to-cyan-400 text-white px-4 py-2.5 rounded-lg font-bold text-sm transition-all duration-300 shadow-lg hover:shadow-purple-500/30"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Visit Old Site →
+              </motion.button>
+            </div>
+
+            {/* Desktop/Tablet Layout - Side by Side */}
+            <div className="hidden sm:flex items-center justify-between gap-4">
               <div className="flex items-center gap-3">
                 <motion.div
                   animate={{ rotate: [0, 10, -10, 0] }}
                   transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
-                  className="text-2xl"
+                  className="text-xl lg:text-2xl"
                 >
                   🔗
                 </motion.div>
                 <div>
-                  <p className="text-white font-bold text-sm md:text-base">
+                  <p className="text-white font-bold text-sm md:text-base lg:text-lg">
                     Want to see my previous portfolio?
                   </p>
                   <p className="text-gray-300 text-xs md:text-sm">
@@ -449,7 +480,7 @@ export default function Portfolio() {
               
               <motion.button
                 onClick={() => window.open('https://portfolio-eight-zeta-24.vercel.app/', '_blank')}
-                className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-400 hover:to-cyan-400 text-white px-4 py-2 md:px-6 md:py-3 rounded-xl font-bold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-purple-500/30 whitespace-nowrap"
+                className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-400 hover:to-cyan-400 text-white px-4 py-2 md:px-6 md:py-3 lg:px-8 lg:py-3 rounded-xl font-bold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-purple-500/30 whitespace-nowrap"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
