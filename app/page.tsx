@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { motion, useScroll, useTransform } from "framer-motion"
+import { motion, useScroll, useTransform, useReducedMotion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -34,17 +34,24 @@ import {
   Sparkles,
   Eye,
   Flame,
+  Menu,
+  X,
 } from "lucide-react"
 
-// Floating geometric shapes
+// Floating geometric shapes - optimized for mobile
 const FloatingShape = ({ delay = 0, duration = 4, shape = "circle" }: { delay?: number; duration?: number; shape?: "circle" | "square" | "triangle" }) => {
   const [dimensions, setDimensions] = useState({ width: 1200, height: 800 })
+  const [isMobile, setIsMobile] = useState(false)
+  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
+      const checkMobile = () => window.innerWidth < 768
+      setIsMobile(checkMobile())
       setDimensions({ width: window.innerWidth, height: window.innerHeight })
       
       const handleResize = () => {
+        setIsMobile(checkMobile())
         setDimensions({ width: window.innerWidth, height: window.innerHeight })
       }
       
@@ -52,6 +59,31 @@ const FloatingShape = ({ delay = 0, duration = 4, shape = "circle" }: { delay?: 
       return () => window.removeEventListener('resize', handleResize)
     }
   }, [])
+
+  // Reduce animation complexity on mobile or if user prefers reduced motion
+  if (shouldReduceMotion || isMobile) {
+    return (
+      <motion.div
+        className={`absolute w-4 h-4 md:w-8 md:h-8 bg-gradient-to-br from-pink-500/20 to-cyan-500/20 ${
+          shape === "circle" ? "rounded-full" : shape === "square" ? "rounded-lg rotate-45" : "rounded-sm rotate-12"
+        } blur-sm`}
+        initial={{
+          x: Math.random() * dimensions.width,
+          y: Math.random() * dimensions.height,
+          opacity: 0.3,
+        }}
+        animate={{
+          opacity: [0.3, 0.6, 0.3],
+        }}
+        transition={{
+          duration: duration * 2,
+          delay: delay,
+          repeat: Number.POSITIVE_INFINITY,
+          ease: "easeInOut",
+        }}
+      />
+    )
+  }
 
   const shapes = {
     circle: "rounded-full",
@@ -83,8 +115,14 @@ const FloatingShape = ({ delay = 0, duration = 4, shape = "circle" }: { delay?: 
   )
 }
 
-// Glitch text effect
+// Glitch text effect - optimized
 const GlitchText = ({ children, className = "" }: { children: React.ReactNode; className?: string }) => {
+  const shouldReduceMotion = useReducedMotion()
+  
+  if (shouldReduceMotion) {
+    return <div className={className}>{children}</div>
+  }
+
   return (
     <motion.div
       className={`relative ${className}`}
@@ -102,15 +140,23 @@ const GlitchText = ({ children, className = "" }: { children: React.ReactNode; c
   )
 }
 
-// Morphing blob background
+// Morphing blob background - mobile optimized
 const MorphingBlob = ({ delay = 0 }) => {
+  const shouldReduceMotion = useReducedMotion()
+  
+  if (shouldReduceMotion) {
+    return (
+      <div className="absolute w-48 h-48 md:w-96 md:h-96 bg-gradient-to-br from-purple-600/10 via-pink-500/10 to-cyan-500/10 rounded-full blur-3xl" />
+    )
+  }
+
   return (
     <motion.div
-      className="absolute w-96 h-96 bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-cyan-500/20 rounded-full blur-3xl"
+      className="absolute w-48 h-48 md:w-96 md:h-96 bg-gradient-to-br from-purple-600/20 via-pink-500/20 to-cyan-500/20 rounded-full blur-3xl"
       animate={{
         scale: [1, 1.5, 0.8, 1.2, 1],
-        x: [0, 100, -50, 80, 0],
-        y: [0, -80, 120, -40, 0],
+        x: [0, 50, -25, 40, 0],
+        y: [0, -40, 60, -20, 0],
         rotate: [0, 180, 270, 90, 360],
       }}
       transition={{
@@ -127,14 +173,21 @@ export default function Portfolio() {
   const [darkMode, setDarkMode] = useState(true)
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [currentSection, setCurrentSection] = useState(0)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { scrollYProgress } = useScroll()
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
+  const shouldReduceMotion = useReducedMotion()
 
   useEffect(() => {
     const updateMousePosition = (e: MouseEvent) => {
       setMousePosition({ x: e.clientX, y: e.clientY })
     }
-    window.addEventListener("mousemove", updateMousePosition)
+    
+    // Only track mouse on desktop
+    if (window.innerWidth >= 768) {
+      window.addEventListener("mousemove", updateMousePosition)
+    }
+    
     return () => window.removeEventListener("mousemove", updateMousePosition)
   }, [])
 
@@ -145,6 +198,18 @@ export default function Portfolio() {
       document.documentElement.classList.remove("dark")
     }
   }, [darkMode])
+
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (mobileMenuOpen) {
+        setMobileMenuOpen(false)
+      }
+    }
+    
+    document.addEventListener('click', handleClickOutside)
+    return () => document.removeEventListener('click', handleClickOutside)
+  }, [mobileMenuOpen])
 
   const projects = [
     {
@@ -339,43 +404,46 @@ export default function Portfolio() {
         <MorphingBlob delay={5} />
         <MorphingBlob delay={10} />
 
-        {/* Floating shapes */}
-        {Array.from({ length: 20 }).map((_, i) => (
+        {/* Floating shapes - reduced count on mobile */}
+        {Array.from({ length: shouldReduceMotion ? 0 : (typeof window !== 'undefined' && window.innerWidth < 768 ? 6 : 15) }).map((_, i) => (
           <FloatingShape
             key={i}
             delay={i * 0.5}
-            duration={Math.random() * 10 + 5}
+            duration={Math.random() * 10 + 8}
             shape={["circle", "square", "triangle"][Math.floor(Math.random() * 3)] as "circle" | "square" | "triangle"}
           />
         ))}
 
-        {/* Grid overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:50px_50px]" />
+        {/* Grid overlay - responsive size */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:30px_30px] md:bg-[size:50px_50px]" />
 
-        {/* Cursor trail */}
-        <motion.div
-          className="absolute w-6 h-6 bg-gradient-to-r from-pink-500 to-cyan-500 rounded-full blur-sm pointer-events-none mix-blend-screen"
-          animate={{
-            x: mousePosition.x - 12,
-            y: mousePosition.y - 12,
-          }}
-          transition={{ type: "spring", stiffness: 500, damping: 28 }}
-        />
+        {/* Cursor trail - desktop only */}
+        {typeof window !== 'undefined' && window.innerWidth >= 768 && (
+          <motion.div
+            className="absolute w-6 h-6 bg-gradient-to-r from-pink-500 to-cyan-500 rounded-full blur-sm pointer-events-none mix-blend-screen"
+            animate={{
+              x: mousePosition.x - 12,
+              y: mousePosition.y - 12,
+            }}
+            transition={{ type: "spring", stiffness: 500, damping: 28 }}
+          />
+        )}
       </div>
 
       {/* Futuristic Navigation */}
       <nav className="fixed top-0 w-full z-50 backdrop-blur-2xl bg-black/10 border-b border-purple-500/20">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-4 sm:px-6 py-3 sm:py-4">
           <div className="flex justify-between items-center">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-2xl font-black bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent"
+              className="text-lg sm:text-xl lg:text-2xl font-black bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent"
             >
               ⚡ Aditya Bajaj
             </motion.div>
 
-            <div className="hidden md:flex items-center gap-8">
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center gap-8">
               {["ABOUT", "WORK", "PROJECTS", "SKILLS", "CONTACT"].map((item, index) => (
                 <motion.a
                   key={item}
@@ -383,6 +451,7 @@ export default function Portfolio() {
                   className="relative text-gray-300 hover:text-white font-bold text-sm tracking-wider group"
                   whileHover={{ scale: 1.1 }}
                   onHoverStart={() => setCurrentSection(index)}
+                  onClick={() => setMobileMenuOpen(false)}
                 >
                   {item}
                   <motion.div
@@ -395,23 +464,81 @@ export default function Portfolio() {
               ))}
             </div>
 
-            <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setDarkMode(!darkMode)}
-                className="rounded-full border-2 border-purple-500/30 hover:border-purple-400 hover:bg-purple-500/10 backdrop-blur-sm"
-              >
-                <motion.div animate={{ rotate: darkMode ? 0 : 180 }} transition={{ duration: 0.5 }}>
-                  {darkMode ? (
-                    <Sun className="h-5 w-5 text-yellow-400" />
-                  ) : (
-                    <Moon className="h-5 w-5 text-purple-400" />
-                  )}
-                </motion.div>
-              </Button>
-            </motion.div>
+            {/* Mobile and Desktop Controls */}
+            <div className="flex items-center gap-2 sm:gap-4">
+              {/* Theme Toggle */}
+              <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setDarkMode(!darkMode)}
+                  className="rounded-full border-2 border-purple-500/30 hover:border-purple-400 hover:bg-purple-500/10 backdrop-blur-sm w-10 h-10 sm:w-12 sm:h-12"
+                >
+                  <motion.div animate={{ rotate: darkMode ? 0 : 180 }} transition={{ duration: 0.5 }}>
+                    {darkMode ? (
+                      <Sun className="h-4 w-4 sm:h-5 sm:w-5 text-yellow-400" />
+                    ) : (
+                      <Moon className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
+                    )}
+                  </motion.div>
+                </Button>
+              </motion.div>
+
+              {/* Mobile Menu Button */}
+              <motion.div className="lg:hidden" whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    setMobileMenuOpen(!mobileMenuOpen)
+                  }}
+                  className="rounded-full border-2 border-purple-500/30 hover:border-purple-400 hover:bg-purple-500/10 backdrop-blur-sm w-10 h-10 sm:w-12 sm:h-12"
+                >
+                  <motion.div
+                    animate={{ rotate: mobileMenuOpen ? 90 : 0 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    {mobileMenuOpen ? (
+                      <X className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
+                    ) : (
+                      <Menu className="h-4 w-4 sm:h-5 sm:w-5 text-purple-400" />
+                    )}
+                  </motion.div>
+                </Button>
+              </motion.div>
+            </div>
           </div>
+
+          {/* Mobile Menu */}
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ 
+              opacity: mobileMenuOpen ? 1 : 0, 
+              height: mobileMenuOpen ? "auto" : 0 
+            }}
+            transition={{ duration: 0.3 }}
+            className="lg:hidden overflow-hidden"
+          >
+            <div className="pt-4 pb-2 space-y-2">
+              {["ABOUT", "WORK", "PROJECTS", "SKILLS", "CONTACT"].map((item, index) => (
+                <motion.a
+                  key={item}
+                  href={`#${item.toLowerCase()}`}
+                  className="block px-4 py-3 text-gray-300 hover:text-white font-bold text-sm tracking-wider hover:bg-purple-500/10 rounded-lg transition-colors"
+                  onClick={() => setMobileMenuOpen(false)}
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ 
+                    opacity: mobileMenuOpen ? 1 : 0, 
+                    x: mobileMenuOpen ? 0 : -20 
+                  }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  {item}
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </nav>
 
@@ -492,67 +619,59 @@ export default function Portfolio() {
       </motion.div>
 
       {/* INSANE Hero Section */}
-      <section id="about" className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-32">
-        <div className="container mx-auto px-6 text-center">
-          {/* Profile with crazy effects */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 1, ease: "easeOut" }}
-            className="mb-12 relative"
-          >
-
-          </motion.div>
-
+      <section id="about" className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-20 sm:pt-24 lg:pt-32">
+        <div className="container mx-auto px-4 sm:px-6 text-center">
           {/* Main content with avatar and text */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 1 }}
-            className="mb-20"
+            className="mb-12 sm:mb-20"
           >
             <div className="max-w-7xl mx-auto">
-              <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20">
+              <div className="flex flex-col lg:flex-row items-center justify-center gap-8 sm:gap-12 lg:gap-20">
                 {/* Avatar on the left */}
                 <motion.div
                   initial={{ opacity: 0, x: -50 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.8, duration: 1 }}
-                  className="flex-shrink-0"
+                  className="flex-shrink-0 order-1 lg:order-none"
                 >
                   <motion.div
                     className="relative"
-                    whileHover={{ scale: 1.05, rotate: 2 }}
-                    animate={{
+                    whileHover={shouldReduceMotion ? {} : { scale: 1.05, rotate: 2 }}
+                    animate={shouldReduceMotion ? {} : {
                       y: [0, -10, 0],
                     }}
                     transition={{
                       duration: 3,
-                      repeat: Number.POSITIVE_INFINITY,
+                      repeat: shouldReduceMotion ? 0 : Number.POSITIVE_INFINITY,
                       ease: "easeInOut"
                     }}
                   >
                     <img
                       src="/aditya_transparent.png"
                       alt="Hi, I'm Aditya Bajaj"
-                      className="w-80 h-80 lg:w-96 lg:h-96 object-contain"
+                      className="w-48 h-48 sm:w-64 sm:h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 object-contain mx-auto"
                       style={{
-                        filter: 'drop-shadow(0 0 30px rgba(168, 85, 247, 0.4))'
+                        filter: 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.3)) drop-shadow(0 0 40px rgba(168, 85, 247, 0.1))'
                       }}
                     />
                     {/* Enhanced glowing effect around avatar */}
-                    <motion.div
-                      className="absolute inset-0 bg-gradient-to-r from-purple-500/30 via-cyan-500/30 to-pink-500/30 rounded-full blur-3xl -z-10"
-                      animate={{
-                        opacity: [0.4, 0.8, 0.4],
-                        scale: [0.8, 1.2, 0.8],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Number.POSITIVE_INFINITY,
-                        ease: "easeInOut"
-                      }}
-                    />
+                    {!shouldReduceMotion && (
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-purple-500/20 via-cyan-500/20 to-pink-500/20 rounded-full blur-3xl -z-10"
+                        animate={{
+                          opacity: [0.3, 0.6, 0.3],
+                          scale: [0.8, 1.1, 0.8],
+                        }}
+                        transition={{
+                          duration: 4,
+                          repeat: Number.POSITIVE_INFINITY,
+                          ease: "easeInOut"
+                        }}
+                      />
+                    )}
                   </motion.div>
                   
                   {/* Hi text under avatar */}
@@ -560,29 +679,32 @@ export default function Portfolio() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.2, duration: 0.8 }}
-                    className="text-center mt-6"
+                    className="text-center mt-4 sm:mt-6"
                   >
-                    <p className="text-lg md:text-xl text-gray-300 font-medium">
+                    <p className="text-base sm:text-lg md:text-xl text-gray-300 font-medium">
                       Hi, I'm <span className="text-cyan-400 font-bold">Aditya Bajaj</span>
                     </p>
                   </motion.div>
                 </motion.div>
 
                 {/* Text content on the right */}
-                <div className="flex-1 text-center lg:text-left max-w-3xl space-y-8">
+                <div className="flex-1 text-center lg:text-left max-w-3xl space-y-6 sm:space-y-8 order-2 lg:order-none">
                   {/* Animated name */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 1.5, duration: 1 }}
                   >
-                    <motion.h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6">
+                    <motion.h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-black mb-4 sm:mb-6 leading-tight">
                       {["A", "D", "I", "T", "Y", "A", " ", "B", "A", "J", "A", "J"].map((letter, index) => (
                         <motion.span
                           key={index}
-                          initial={{ opacity: 0, y: 50 }}
+                          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 50 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ delay: 1.5 + index * 0.1, duration: 0.5 }}
+                          transition={{ 
+                            delay: shouldReduceMotion ? 0 : 1.5 + index * 0.1, 
+                            duration: shouldReduceMotion ? 0 : 0.5 
+                          }}
                           className="inline-block bg-gradient-to-r from-pink-400 via-purple-400 to-cyan-400 bg-clip-text text-transparent"
                         >
                           {letter === " " ? "\u00A0" : letter}
@@ -592,11 +714,11 @@ export default function Portfolio() {
                   </motion.div>
 
                   {/* Animated taglines */}
-                  <motion.div className="space-y-4">
+                  <motion.div className="space-y-3 sm:space-y-4">
                     <motion.div
-                      initial={{ opacity: 0, x: 50 }}
+                      initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 50 }}
                       animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: 2.7, duration: 0.8 }}
+                      transition={{ delay: shouldReduceMotion ? 0 : 2.7, duration: 0.8 }}
                     >
                       <motion.h2 className="text-xl md:text-2xl lg:text-3xl font-bold">
                         {["B", "U", "I", "L", "D", "E", "R", " ", "O", "F", " ", "T", "H", "I", "N", "G", "S", " ", "T", "H", "A", "T", " ", "D", "O", "N", "'", "T", " ", "B", "R", "E", "A", "K"].map((letter, index) => (
@@ -661,13 +783,16 @@ export default function Portfolio() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2, duration: 1 }}
-            className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
+            transition={{ delay: shouldReduceMotion ? 0 : 2, duration: 1 }}
+            className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center mb-12 sm:mb-16 px-4"
           >
-            <motion.div whileHover={{ scale: 1.05, rotate: 2 }} whileTap={{ scale: 0.95 }}>
+            <motion.div 
+              whileHover={shouldReduceMotion ? {} : { scale: 1.05, rotate: 2 }} 
+              whileTap={{ scale: 0.95 }}
+            >
               <Button
                 size="lg"
-                className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-400 hover:via-purple-400 hover:to-cyan-400 text-white shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 group px-10 py-6 text-xl font-black rounded-2xl border-2 border-white/20"
+                className="bg-gradient-to-r from-pink-500 via-purple-500 to-cyan-500 hover:from-pink-400 hover:via-purple-400 hover:to-cyan-400 text-white shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 group px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 text-base sm:text-lg lg:text-xl font-black rounded-xl sm:rounded-2xl border-2 border-white/20 w-full sm:w-auto"
                 onClick={() => {
                   const link = document.createElement('a')
                   link.href = '/AdityaBajaj.pdf'
@@ -677,26 +802,31 @@ export default function Portfolio() {
                   document.body.removeChild(link)
                 }}
               >
-                <Download className="mr-3 h-6 w-6 group-hover:animate-bounce" />
-                DOWNLOAD RESUME
-                <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
+                <Download className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 group-hover:animate-bounce" />
+                <span className="hidden sm:inline">DOWNLOAD RESUME</span>
+                <span className="sm:hidden">RESUME</span>
+                <ArrowRight className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 group-hover:translate-x-2 transition-transform" />
               </Button>
             </motion.div>
 
-            <motion.div whileHover={{ scale: 1.05, rotate: -2 }} whileTap={{ scale: 0.95 }}>
+            <motion.div 
+              whileHover={shouldReduceMotion ? {} : { scale: 1.05, rotate: -2 }} 
+              whileTap={{ scale: 0.95 }}
+            >
               <Button
                 size="lg"
                 variant="outline"
-                className="border-4 border-cyan-500/50 hover:border-cyan-400 hover:bg-cyan-500/20 text-cyan-300 hover:text-white backdrop-blur-sm bg-black/20 group px-10 py-6 text-xl font-black rounded-2xl"
+                className="border-2 sm:border-4 border-cyan-500/50 hover:border-cyan-400 hover:bg-cyan-500/20 text-cyan-300 hover:text-white backdrop-blur-sm bg-black/20 group px-6 py-4 sm:px-8 sm:py-5 lg:px-10 lg:py-6 text-base sm:text-lg lg:text-xl font-black rounded-xl sm:rounded-2xl w-full sm:w-auto"
                 onClick={() => {
                   document.getElementById('contact')?.scrollIntoView({ 
                     behavior: 'smooth' 
                   })
                 }}
               >
-                <Rocket className="mr-3 h-6 w-6 group-hover:animate-pulse" />
-                LET'S BUILD THE FUTURE
-                <Sparkles className="ml-3 h-6 w-6 group-hover:animate-spin" />
+                <Rocket className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 group-hover:animate-pulse" />
+                <span className="hidden sm:inline">LET'S BUILD THE FUTURE</span>
+                <span className="sm:hidden">LET'S BUILD</span>
+                <Sparkles className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 group-hover:animate-spin" />
               </Button>
             </motion.div>
           </motion.div>
@@ -705,35 +835,39 @@ export default function Portfolio() {
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 2.5, duration: 1 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto"
+            transition={{ delay: shouldReduceMotion ? 0 : 2.5, duration: 1 }}
+            className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 max-w-4xl mx-auto px-4"
           >
             {[
               { number: "3+", label: "Years Experience", icon: Code, color: "text-blue-400" },
               { number: "20+", label: "Projects Built", icon: Zap, color: "text-purple-400" },
-              { number: "4", label: "Startup Projects Contributed", icon: Globe, color: "text-violet-500" },
+              { number: "4", label: "Startup Projects", icon: Globe, color: "text-violet-500" },
               { number: "∞", label: "Possibilities", icon: Sparkles, color: "text-pink-400" },
             ].map((stat, index) => (
               <motion.div
                 key={stat.label}
-                className="text-center group cursor-pointer"
-                whileHover={{ scale: 1.1, y: -10 }}
-                animate={{
-                  y: [0, -5, 0],
+                className="text-center group cursor-pointer p-3 sm:p-4 rounded-xl hover:bg-white/5 transition-colors"
+                whileHover={shouldReduceMotion ? {} : { scale: 1.05, y: -5 }}
+                animate={shouldReduceMotion ? {} : {
+                  y: [0, -3, 0],
                 }}
                 transition={{
-                  duration: 2,
-                  delay: index * 0.2,
-                  repeat: Number.POSITIVE_INFINITY,
+                  duration: shouldReduceMotion ? 0 : 2,
+                  delay: shouldReduceMotion ? 0 : index * 0.2,
+                  repeat: shouldReduceMotion ? 0 : Number.POSITIVE_INFINITY,
                 }}
               >
-                <motion.div className="mb-3" whileHover={{ rotate: 360 }} transition={{ duration: 0.5 }}>
-                  <stat.icon className={`h-10 w-10 mx-auto ${stat.color} group-hover:drop-shadow-lg`} />
+                <motion.div 
+                  className="mb-2 sm:mb-3" 
+                  whileHover={shouldReduceMotion ? {} : { rotate: 360 }} 
+                  transition={{ duration: 0.5 }}
+                >
+                  <stat.icon className={`h-6 w-6 sm:h-8 sm:w-8 lg:h-10 lg:w-10 mx-auto ${stat.color} group-hover:drop-shadow-lg`} />
                 </motion.div>
-                <div className="text-4xl font-black text-white mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-pink-400 group-hover:to-cyan-400 group-hover:bg-clip-text transition-all duration-300">
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-black text-white mb-1 sm:mb-2 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-pink-400 group-hover:to-cyan-400 group-hover:bg-clip-text transition-all duration-300">
                   {stat.number}
                 </div>
-                <div className="text-gray-400 text-sm font-medium">{stat.label}</div>
+                <div className="text-gray-400 text-xs sm:text-sm font-medium leading-tight">{stat.label}</div>
               </motion.div>
             ))}
           </motion.div>
@@ -741,63 +875,63 @@ export default function Portfolio() {
       </section>
 
       {/* MY WORK Section */}
-      <section id="work" className="relative py-32 z-10">
-        <div className="container mx-auto px-6">
+      <section id="work" className="relative py-16 sm:py-24 lg:py-32 z-10">
+        <div className="container mx-auto px-4 sm:px-6">
           {/* Section Header */}
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-20"
+            className="text-center mb-12 sm:mb-16 lg:mb-20"
           >
             <motion.h2
-              className="text-6xl md:text-8xl font-black mb-8 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
-              animate={{
+              className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-black mb-4 sm:mb-6 lg:mb-8 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent"
+              animate={shouldReduceMotion ? {} : {
                 backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
               }}
-              transition={{ duration: 5, repeat: Number.POSITIVE_INFINITY }}
+              transition={{ duration: shouldReduceMotion ? 0 : 5, repeat: shouldReduceMotion ? 0 : Number.POSITIVE_INFINITY }}
             >
               MY WORK
             </motion.h2>
-            <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed px-4">
               Real projects. Real impact. Real results.
             </p>
           </motion.div>
 
           {/* Work Experience Cards */}
-          <div className="grid gap-8 max-w-4xl mx-auto">
+          <div className="grid gap-6 sm:gap-8 max-w-4xl mx-auto">
             {/* Fi Money */}
             <motion.div
-              initial={{ opacity: 0, x: -50 }}
+              initial={{ opacity: 0, x: shouldReduceMotion ? 0 : -50 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
               viewport={{ once: true }}
-              className="group relative overflow-hidden rounded-3xl bg-gradient-to-br from-black/80 to-purple-900/20 border border-purple-500/30 backdrop-blur-xl p-8 hover:border-purple-400/50 transition-all duration-500"
+              className="group relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-br from-black/80 to-purple-900/20 border border-purple-500/30 backdrop-blur-xl p-4 sm:p-6 lg:p-8 hover:border-purple-400/50 transition-all duration-500"
             >
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 via-transparent to-cyan-500/10 group-hover:from-purple-500/20 group-hover:to-cyan-500/20 transition-all duration-500" />
               <div className="relative z-10">
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <h3 className="text-3xl font-bold text-white mb-2">Fi Money</h3>
-                    <p className="text-lg text-cyan-400 font-semibold">Android Developer</p>
-                    <p className="text-sm text-gray-400">Production Features • Fintech</p>
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-4 sm:mb-6 gap-3 sm:gap-0">
+                  <div className="flex-1">
+                    <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white mb-1 sm:mb-2">Fi Money</h3>
+                    <p className="text-base sm:text-lg text-cyan-400 font-semibold">Android Developer</p>
+                    <p className="text-xs sm:text-sm text-gray-400">Production Features • Fintech</p>
                   </div>
-                  <div className="text-right">
-                    <div className="px-4 py-2 bg-green-500/20 border border-green-500/30 rounded-full">
-                      <span className="text-green-400 font-bold text-sm">PRODUCTION</span>
+                  <div className="text-left sm:text-right">
+                    <div className="inline-block px-3 sm:px-4 py-1.5 sm:py-2 bg-green-500/20 border border-green-500/30 rounded-full">
+                      <span className="text-green-400 font-bold text-xs sm:text-sm">PRODUCTION</span>
                     </div>
                   </div>
                 </div>
-                <p className="text-gray-300 leading-relaxed mb-6">
+                <p className="text-sm sm:text-base text-gray-300 leading-relaxed mb-4 sm:mb-6">
                   Built and shipped production-level Android features for Fi Money's fintech platform. 
                   Worked on critical user-facing functionality that impacts thousands of users daily.
                 </p>
-                <div className="flex flex-wrap gap-2">
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {["Android", "Kotlin", "Fintech", "Production"].map((tech) => (
                     <span
                       key={tech}
-                      className="px-3 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full text-purple-300 text-sm font-medium"
+                      className="px-2 sm:px-3 py-1 bg-purple-500/20 border border-purple-500/30 rounded-full text-purple-300 text-xs sm:text-sm font-medium"
                     >
                       {tech}
                     </span>

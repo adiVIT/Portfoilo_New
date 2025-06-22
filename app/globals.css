@@ -64,6 +64,49 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  * {
+    /* Reduce animation complexity on mobile */
+    animation-duration: 0.3s !important;
+    transition-duration: 0.3s !important;
+  }
+  
+  /* Optimize scrolling on mobile */
+  body {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+    /* Improve touch responsiveness */
+    touch-action: manipulation;
+  }
+  
+  /* Reduce blur effects on mobile for better performance */
+  .blur-3xl {
+    backdrop-filter: blur(8px) !important;
+  }
+  
+  .blur-2xl {
+    backdrop-filter: blur(4px) !important;
+  }
+  
+  /* Better touch targets */
+  button, a {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Reduce complex gradients on mobile */
+  .bg-gradient-to-br {
+    background: linear-gradient(135deg, var(--tw-gradient-stops)) !important;
+  }
+  
+  /* Optimize transforms for mobile */
+  .transform {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+  }
+}
+
 /* Custom scrollbar with neon effect */
 ::-webkit-scrollbar {
   width: 12px;
@@ -141,7 +184,7 @@ html {
   }
 }
 
-/* Floating animation */
+/* Floating animation - optimized */
 @keyframes float {
   0%,
   100% {
@@ -154,6 +197,20 @@ html {
 
 .float {
   animation: float 6s ease-in-out infinite;
+  will-change: transform;
+}
+
+/* Performance optimizations */
+.performance-optimized {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth animations with better performance */
+.smooth-transform {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
 /* Pulse glow */
