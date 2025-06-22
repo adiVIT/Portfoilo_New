@@ -619,7 +619,7 @@ export default function Portfolio() {
       </motion.div>
 
       {/* INSANE Hero Section */}
-      <section id="about" className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-32 sm:pt-40 lg:pt-48">
+      <section id="about" className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-44 sm:pt-48 lg:pt-52">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           {/* Main content with avatar and text */}
           <motion.div
