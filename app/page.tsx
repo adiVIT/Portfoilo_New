@@ -619,7 +619,7 @@ export default function Portfolio() {
       </motion.div>
 
       {/* INSANE Hero Section */}
-      <section id="about" className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-20 sm:pt-24 lg:pt-32">
+      <section id="about" className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-32 sm:pt-40 lg:pt-48">
         <div className="container mx-auto px-4 sm:px-6 text-center">
           {/* Main content with avatar and text */}
           <motion.div
@@ -1022,8 +1022,8 @@ export default function Portfolio() {
       </section>
 
       {/* INSANE Projects Section */}
-      <section id="projects" className="py-32 relative z-10">
-        <div className="container mx-auto px-6">
+      <section id="projects" className="py-16 sm:py-24 lg:py-32 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1031,16 +1031,16 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <GlitchText className="text-6xl md:text-8xl font-black mb-8 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+            <GlitchText className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-black mb-6 sm:mb-8 bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
               EPIC BUILDS
             </GlitchText>
-            <p className="text-2xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto px-4">
               Projects that don't just work - they{" "}
               <span className="text-pink-400 font-bold animate-pulse">DOMINATE</span> their domains 🔥
             </p>
           </motion.div>
 
-          <div className="grid lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12">
             {projects.map((project, index) => (
               <motion.div
                 key={project.title}
@@ -1109,9 +1109,9 @@ export default function Portfolio() {
                     </div>
                   </div>
 
-                  <CardContent className="p-8">
-                    <div className="flex items-center gap-3 mb-4">
-                      <GlitchText className="text-3xl font-black text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-pink-400 group-hover:to-cyan-400 group-hover:bg-clip-text transition-all duration-300">
+                  <CardContent className="p-4 sm:p-6 lg:p-8">
+                    <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                      <GlitchText className="text-xl sm:text-2xl lg:text-3xl font-black text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-pink-400 group-hover:to-cyan-400 group-hover:bg-clip-text transition-all duration-300">
                         {project.title}
                       </GlitchText>
                       <motion.div
@@ -1122,14 +1122,14 @@ export default function Portfolio() {
                       </motion.div>
                     </div>
 
-                    <p className="text-cyan-300 font-bold text-lg mb-4">{project.subtitle}</p>
-                    <p className="text-gray-300 mb-6 leading-relaxed text-lg">{project.description}</p>
+                    <p className="text-cyan-300 font-bold text-base sm:text-lg mb-3 sm:mb-4">{project.subtitle}</p>
+                    <p className="text-gray-300 mb-4 sm:mb-6 leading-relaxed text-sm sm:text-base lg:text-lg">{project.description}</p>
 
-                    <div className="flex flex-wrap gap-3 mb-6">
+                    <div className="flex flex-wrap gap-2 sm:gap-3 mb-4 sm:mb-6">
                       {project.tech.map((tech, techIndex) => (
                         <motion.span
                           key={tech}
-                          className="px-4 py-2 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 rounded-full text-purple-300 font-bold text-sm"
+                          className="px-2 sm:px-3 lg:px-4 py-1 sm:py-2 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 border border-purple-500/30 rounded-full text-purple-300 font-bold text-xs sm:text-sm"
                           whileHover={{ scale: 1.1, y: -2 }}
                           transition={{ delay: techIndex * 0.1 }}
                         >
@@ -1138,20 +1138,21 @@ export default function Portfolio() {
                       ))}
                     </div>
 
-                    <div className="flex gap-4">
+                    <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
                       <motion.div className="flex-1" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                         <Button 
-                          className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 hover:from-purple-400 hover:via-pink-400 hover:to-cyan-400 group/btn font-black text-lg py-3 rounded-2xl"
+                          className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 hover:from-purple-400 hover:via-pink-400 hover:to-cyan-400 group/btn font-black text-sm sm:text-base lg:text-lg py-2 sm:py-3 rounded-xl sm:rounded-2xl"
                           onClick={() => window.open(project.live || '#', '_blank')}
                         >
-                          <ExternalLink className="mr-2 h-5 w-5 group-hover/btn:animate-pulse" />
-                          LAUNCH PROJECT
+                          <ExternalLink className="mr-1 sm:mr-2 h-4 w-4 sm:h-5 sm:w-5 group-hover/btn:animate-pulse" />
+                          <span className="hidden sm:inline">LAUNCH PROJECT</span>
+                          <span className="sm:hidden">LAUNCH</span>
                         </Button>
                       </motion.div>
                       <motion.div whileHover={{ scale: 1.1, rotate: 5 }} whileTap={{ scale: 0.9 }}>
                         <Button
                           variant="outline"
-                          className="border-2 border-cyan-500/50 hover:bg-cyan-500/20 text-cyan-300 rounded-2xl px-6"
+                          className="border-2 border-cyan-500/50 hover:bg-cyan-500/20 text-cyan-300 rounded-xl sm:rounded-2xl px-4 sm:px-6 w-full sm:w-auto"
                           onClick={() => window.open(project.github || 'https://github.com/adiVIT', '_blank')}
                         >
                           <Github className="h-5 w-5" />
@@ -1176,10 +1177,10 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <GlitchText className="text-6xl md:text-8xl font-black mb-8 bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
+            <GlitchText className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-black mb-6 sm:mb-8 bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
               SUPERPOWERS
             </GlitchText>
-            <p className="text-2xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto px-4">
               Technologies I've mastered to create{" "}
               <span className="text-purple-400 font-bold animate-pulse">DIGITAL MAGIC</span> ✨
             </p>
@@ -1263,8 +1264,8 @@ export default function Portfolio() {
       </section>
 
       {/* INSANE Contact Section */}
-      <section id="contact" className="py-32 relative z-10">
-        <div className="container mx-auto px-6">
+      <section id="contact" className="py-16 sm:py-24 lg:py-32 relative z-10">
+        <div className="container mx-auto px-4 sm:px-6">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -1272,37 +1273,37 @@ export default function Portfolio() {
             viewport={{ once: true }}
             className="text-center mb-20"
           >
-            <GlitchText className="text-6xl md:text-8xl font-black mb-8 bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
+            <GlitchText className="text-3xl sm:text-4xl md:text-6xl lg:text-8xl font-black mb-6 sm:mb-8 bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 bg-clip-text text-transparent">
               LET'S CREATE MAGIC
             </GlitchText>
-            <p className="text-2xl text-gray-300 max-w-3xl mx-auto">
+            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto px-4">
               Ready to build something <span className="text-green-400 font-bold animate-pulse">LEGENDARY</span>? Let's
               make it happen! 🚀
             </p>
           </motion.div>
 
           <div className="max-w-6xl mx-auto">
-            <Card className="bg-gradient-to-br from-gray-900/80 to-black/80 border-2 border-cyan-500/30 backdrop-blur-xl p-12 rounded-3xl shadow-2xl shadow-cyan-500/20">
-              <div className="grid lg:grid-cols-2 gap-16">
+            <Card className="bg-gradient-to-br from-gray-900/80 to-black/80 border-2 border-cyan-500/30 backdrop-blur-xl p-4 sm:p-6 lg:p-8 xl:p-12 rounded-2xl sm:rounded-3xl shadow-2xl shadow-cyan-500/20">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16">
                 <motion.div
                   initial={{ opacity: 0, x: -50 }}
                   whileInView={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.8 }}
                   viewport={{ once: true }}
                 >
-                  <h3 className="text-4xl font-black mb-8 text-white">DROP ME A LINE!</h3>
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-6 sm:mb-8 text-white">DROP ME A LINE!</h3>
                   <form 
                     action="https://formspree.io/f/xovwkawd" 
                     method="POST"
                     className="space-y-6"
                   >
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                       <motion.div whileHover={{ scale: 1.02 }}>
                         <Input
                           name="name"
                           placeholder="Your Name"
                           required
-                          className="bg-black/60 border-2 border-purple-500/30 focus:border-purple-400 text-white placeholder-gray-400 rounded-2xl py-4 text-lg font-medium"
+                          className="bg-black/60 border-2 border-purple-500/30 focus:border-purple-400 text-white placeholder-gray-400 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-medium"
                         />
                       </motion.div>
                       <motion.div whileHover={{ scale: 1.02 }}>
@@ -1311,7 +1312,7 @@ export default function Portfolio() {
                           type="email"
                           placeholder="your@email.com"
                           required
-                          className="bg-black/60 border-2 border-cyan-500/30 focus:border-cyan-400 text-white placeholder-gray-400 rounded-2xl py-4 text-lg font-medium"
+                          className="bg-black/60 border-2 border-cyan-500/30 focus:border-cyan-400 text-white placeholder-gray-400 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-medium"
                         />
                       </motion.div>
                     </div>
@@ -1320,7 +1321,7 @@ export default function Portfolio() {
                         name="subject"
                         placeholder="Project Subject"
                         required
-                        className="bg-black/60 border-2 border-pink-500/30 focus:border-pink-400 text-white placeholder-gray-400 rounded-2xl py-4 text-lg font-medium"
+                        className="bg-black/60 border-2 border-pink-500/30 focus:border-pink-400 text-white placeholder-gray-400 rounded-xl sm:rounded-2xl py-3 sm:py-4 text-base sm:text-lg font-medium"
                       />
                     </motion.div>
                     <motion.div whileHover={{ scale: 1.02 }}>
@@ -1329,17 +1330,18 @@ export default function Portfolio() {
                         placeholder="Tell me about your EPIC project idea..."
                         rows={6}
                         required
-                        className="bg-black/60 border-2 border-green-500/30 focus:border-green-400 text-white placeholder-gray-400 rounded-2xl p-4 text-lg font-medium resize-none"
+                        className="bg-black/60 border-2 border-green-500/30 focus:border-green-400 text-white placeholder-gray-400 rounded-xl sm:rounded-2xl p-3 sm:p-4 text-base sm:text-lg font-medium resize-none"
                       />
                     </motion.div>
                     <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                       <Button 
                         type="submit"
-                        className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 hover:from-purple-400 hover:via-pink-400 hover:to-cyan-400 text-white shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 group py-6 text-xl font-black rounded-2xl"
+                        className="w-full bg-gradient-to-r from-purple-500 via-pink-500 to-cyan-500 hover:from-purple-400 hover:via-pink-400 hover:to-cyan-400 text-white shadow-2xl hover:shadow-purple-500/50 transition-all duration-300 group py-4 sm:py-5 lg:py-6 text-base sm:text-lg lg:text-xl font-black rounded-xl sm:rounded-2xl"
                       >
-                        <Send className="mr-3 h-6 w-6 group-hover:translate-x-2 transition-transform" />
-                        LAUNCH MESSAGE 🚀
-                        <Sparkles className="ml-3 h-6 w-6 group-hover:animate-spin" />
+                        <Send className="mr-2 sm:mr-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 group-hover:translate-x-2 transition-transform" />
+                        <span className="hidden sm:inline">LAUNCH MESSAGE 🚀</span>
+                        <span className="sm:hidden">SEND 🚀</span>
+                        <Sparkles className="ml-2 sm:ml-3 h-4 w-4 sm:h-5 sm:w-5 lg:h-6 lg:w-6 group-hover:animate-spin" />
                       </Button>
                     </motion.div>
                   </form>
@@ -1353,15 +1355,15 @@ export default function Portfolio() {
                   className="space-y-8"
                 >
                   <div>
-                    <h3 className="text-3xl font-black mb-6 text-white">LET'S CONNECT!</h3>
-                    <p className="text-gray-300 mb-8 leading-relaxed text-lg">
+                    <h3 className="text-2xl sm:text-3xl font-black mb-4 sm:mb-6 text-white">LET'S CONNECT!</h3>
+                    <p className="text-gray-300 mb-6 sm:mb-8 leading-relaxed text-sm sm:text-base lg:text-lg">
                       I'm always excited to collaborate on mind-blowing projects. Whether you need a scalable backend
                       that handles millions of users or an AI system that predicts the future, let's build something
                       LEGENDARY together!
                     </p>
                   </div>
 
-                  <div className="space-y-6">
+                  <div className="space-y-4 sm:space-y-6">
                     {[
                       {
                         icon: Mail,
@@ -1387,7 +1389,7 @@ export default function Portfolio() {
                     ].map((contact, index) => (
                       <motion.div
                         key={contact.label}
-                        className={`flex items-center gap-6 p-6 rounded-2xl bg-gradient-to-r ${contact.bg} border border-white/10 hover:border-white/30 transition-all duration-300`}
+                        className={`flex items-center gap-3 sm:gap-4 lg:gap-6 p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl bg-gradient-to-r ${contact.bg} border border-white/10 hover:border-white/30 transition-all duration-300`}
                         whileHover={{ scale: 1.02, x: 10 }}
                         initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
@@ -1395,19 +1397,19 @@ export default function Portfolio() {
                         viewport={{ once: true }}
                       >
                         <motion.div whileHover={{ rotate: 360, scale: 1.2 }} transition={{ duration: 0.5 }}>
-                          <contact.icon className={`h-8 w-8 ${contact.color}`} />
+                          <contact.icon className={`h-6 w-6 sm:h-7 sm:w-7 lg:h-8 lg:w-8 ${contact.color}`} />
                         </motion.div>
                         <div>
-                          <p className="font-black text-white text-lg">{contact.label}</p>
-                          <p className="text-gray-300 font-medium">{contact.value}</p>
+                          <p className="font-black text-white text-sm sm:text-base lg:text-lg">{contact.label}</p>
+                          <p className="text-gray-300 font-medium text-xs sm:text-sm lg:text-base">{contact.value}</p>
                         </div>
                       </motion.div>
                     ))}
                   </div>
 
                   <div>
-                    <h4 className="text-xl font-black mb-6 text-white">FIND ME ONLINE</h4>
-                    <div className="flex gap-6">
+                    <h4 className="text-lg sm:text-xl font-black mb-4 sm:mb-6 text-white">FIND ME ONLINE</h4>
+                    <div className="flex gap-3 sm:gap-4 lg:gap-6">
                       {[
                         {
                           icon: Github,
@@ -1442,10 +1444,10 @@ export default function Portfolio() {
                         >
                           <Button
                             size="icon"
-                            className={`rounded-2xl bg-gradient-to-r ${social.bg} border-2 border-white/20 ${social.color} transition-all duration-300 p-4 h-16 w-16`}
+                            className={`rounded-xl sm:rounded-2xl bg-gradient-to-r ${social.bg} border-2 border-white/20 ${social.color} transition-all duration-300 p-3 sm:p-4 h-12 w-12 sm:h-14 sm:w-14 lg:h-16 lg:w-16`}
                             onClick={() => window.open(social.link, '_blank')}
                           >
-                            <social.icon className="h-8 w-8" />
+                            <social.icon className="h-5 w-5 sm:h-6 sm:w-6 lg:h-8 lg:w-8" />
                           </Button>
                         </motion.div>
                       ))}
