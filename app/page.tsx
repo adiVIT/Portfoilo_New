@@ -415,6 +415,51 @@ export default function Portfolio() {
         </div>
       </nav>
 
+      {/* Old Portfolio Banner */}
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+        className="fixed top-20 left-0 right-0 z-40 mx-4 mt-4"
+      >
+        <div className="max-w-4xl mx-auto">
+          <motion.div
+            className="bg-gradient-to-r from-purple-900/90 via-blue-900/90 to-cyan-900/90 backdrop-blur-xl border border-purple-500/30 rounded-2xl p-4 shadow-2xl shadow-purple-500/20"
+            whileHover={{ scale: 1.02, y: -2 }}
+            transition={{ duration: 0.3 }}
+          >
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex items-center gap-3">
+                <motion.div
+                  animate={{ rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+                  className="text-2xl"
+                >
+                  🔗
+                </motion.div>
+                <div>
+                  <p className="text-white font-bold text-sm md:text-base">
+                    Want to see my previous portfolio?
+                  </p>
+                  <p className="text-gray-300 text-xs md:text-sm">
+                    Check out the old version with different projects and design
+                  </p>
+                </div>
+              </div>
+              
+              <motion.button
+                onClick={() => window.open('https://portfolio-eight-zeta-24.vercel.app/', '_blank')}
+                className="bg-gradient-to-r from-purple-500 to-cyan-500 hover:from-purple-400 hover:to-cyan-400 text-white px-4 py-2 md:px-6 md:py-3 rounded-xl font-bold text-sm md:text-base transition-all duration-300 shadow-lg hover:shadow-purple-500/30 whitespace-nowrap"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Visit Old Site →
+              </motion.button>
+            </div>
+          </motion.div>
+        </div>
+      </motion.div>
+
       {/* INSANE Hero Section */}
       <section id="about" className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-32">
         <div className="container mx-auto px-6 text-center">
