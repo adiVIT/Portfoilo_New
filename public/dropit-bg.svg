@@ -1,0 +1,217 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="appGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#3b82f6;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#1e40af;stop-opacity:0.8"/>
+    </linearGradient>
+    
+    <linearGradient id="deliveryGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:0.8"/>
+    </linearGradient>
+    
+    <linearGradient id="requestGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#d97706;stop-opacity:0.9"/>
+    </linearGradient>
+    
+    <linearGradient id="flutterGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#02569b;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#0175c2;stop-opacity:0.8"/>
+    </linearGradient>
+    
+    <!-- Filters -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="600" height="400" fill="transparent"/>
+  
+  <!-- Phone Mockup -->
+  <rect x="50" y="30" width="200" height="340" rx="25" fill="url(#appGradient)" filter="url(#shadow)" opacity="0.9"/>
+  <rect x="60" y="50" width="180" height="300" rx="15" fill="rgba(0, 0, 0, 0.8)" stroke="#374151" stroke-width="1"/>
+  
+  <!-- App Header -->
+  <rect x="70" y="60" width="160" height="30" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" stroke-width="1"/>
+  <text x="150" y="80" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#60a5fa" text-anchor="middle">DropIt</text>
+  
+  <!-- Flutter Logo -->
+  <g transform="translate(200, 65)">
+    <rect x="0" y="0" width="20" height="20" rx="10" fill="url(#flutterGradient)" filter="url(#glow)"/>
+    <text x="10" y="13" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white" text-anchor="middle">F</text>
+  </g>
+  
+  <!-- Delivery Requests List -->
+  <g transform="translate(70, 100)">
+    <text x="0" y="15" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#d1d5db">Active Requests</text>
+    
+    <!-- Request 1 -->
+    <rect x="0" y="25" width="160" height="40" rx="8" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1"/>
+    <circle cx="15" cy="40" r="6" fill="#10b981"/>
+    <text x="15" y="44" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white" text-anchor="middle">A</text>
+    <text x="30" y="38" font-family="Arial, sans-serif" font-size="10" fill="#e5e7eb">Amazon Package</text>
+    <text x="30" y="50" font-family="Arial, sans-serif" font-size="8" fill="#9ca3af">From Main Gate • ₹20</text>
+    <text x="130" y="44" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#10b981">3 km</text>
+    
+    <!-- Request 2 -->
+    <rect x="0" y="75" width="160" height="40" rx="8" fill="rgba(245, 158, 11, 0.1)" stroke="#f59e0b" stroke-width="1"/>
+    <circle cx="15" cy="90" r="6" fill="#f59e0b"/>
+    <text x="15" y="94" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white" text-anchor="middle">F</text>
+    <text x="30" y="88" font-family="Arial, sans-serif" font-size="10" fill="#e5e7eb">Food Delivery</text>
+    <text x="30" y="100" font-family="Arial, sans-serif" font-size="8" fill="#9ca3af">From Gate • ₹15</text>
+    <text x="130" y="94" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#f59e0b">2.5 km</text>
+    
+    <!-- Request 3 -->
+    <rect x="0" y="125" width="160" height="40" rx="8" fill="rgba(168, 85, 247, 0.1)" stroke="#a855f7" stroke-width="1"/>
+    <circle cx="15" cy="140" r="6" fill="#a855f7"/>
+    <text x="15" y="144" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white" text-anchor="middle">B</text>
+    <text x="30" y="138" font-family="Arial, sans-serif" font-size="10" fill="#e5e7eb">Books Pickup</text>
+    <text x="30" y="150" font-family="Arial, sans-serif" font-size="8" fill="#9ca3af">From Library • ₹10</text>
+    <text x="130" y="144" font-family="Arial, sans-serif" font-size="9" font-weight="bold" fill="#a855f7">1.8 km</text>
+  </g>
+  
+  <!-- Action Buttons -->
+  <g transform="translate(70, 280)">
+    <rect x="0" y="0" width="75" height="30" rx="15" fill="url(#deliveryGradient)" filter="url(#shadow)"/>
+    <text x="37.5" y="18" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">Offer Help</text>
+    
+    <rect x="85" y="0" width="75" height="30" rx="15" fill="url(#requestGradient)" filter="url(#shadow)"/>
+    <text x="122.5" y="18" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">Request</text>
+  </g>
+  
+  <!-- Campus Map -->
+  <g transform="translate(300, 50)">
+    <rect x="0" y="0" width="250" height="200" rx="15" fill="rgba(0, 0, 0, 0.7)" stroke="#4f46e5" stroke-width="1" opacity="0.9"/>
+    <text x="125" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#8b5cf6" text-anchor="middle">VIT Campus Map</text>
+    
+    <!-- Campus Buildings -->
+    <g opacity="0.8">
+      <!-- Main Gate -->
+      <rect x="20" y="40" width="30" height="20" rx="3" fill="#ef4444" stroke="#dc2626" stroke-width="1"/>
+      <text x="35" y="52" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="white" text-anchor="middle">Gate</text>
+      
+      <!-- Hostels -->
+      <rect x="180" y="60" width="25" height="15" rx="2" fill="#3b82f6" stroke="#2563eb" stroke-width="1"/>
+      <text x="192.5" y="70" font-family="Arial, sans-serif" font-size="6" fill="white" text-anchor="middle">H1</text>
+      
+      <rect x="180" y="85" width="25" height="15" rx="2" fill="#3b82f6" stroke="#2563eb" stroke-width="1"/>
+      <text x="192.5" y="95" font-family="Arial, sans-serif" font-size="6" fill="white" text-anchor="middle">H2</text>
+      
+      <rect x="180" y="110" width="25" height="15" rx="2" fill="#3b82f6" stroke="#2563eb" stroke-width="1"/>
+      <text x="192.5" y="120" font-family="Arial, sans-serif" font-size="6" fill="white" text-anchor="middle">H3</text>
+      
+      <!-- Academic Block -->
+      <rect x="100" y="80" width="40" height="30" rx="3" fill="#10b981" stroke="#059669" stroke-width="1"/>
+      <text x="120" y="98" font-family="Arial, sans-serif" font-size="8" fill="white" text-anchor="middle">Academic</text>
+    </g>
+    
+    <!-- Delivery Routes -->
+    <g opacity="0.6">
+      <!-- Route 1 -->
+      <path d="M50 50 Q120 60 180 70" stroke="#10b981" stroke-width="3" fill="none" stroke-dasharray="5,5">
+        <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
+      </path>
+      
+      <!-- Route 2 -->
+      <path d="M50 50 Q120 80 180 95" stroke="#f59e0b" stroke-width="3" fill="none" stroke-dasharray="3,3">
+        <animate attributeName="stroke-dashoffset" values="0;6" dur="1.5s" repeatCount="indefinite"/>
+      </path>
+      
+      <!-- Route 3 -->
+      <path d="M50 50 Q120 100 180 120" stroke="#a855f7" stroke-width="3" fill="none" stroke-dasharray="4,4">
+        <animate attributeName="stroke-dashoffset" values="0;8" dur="2.5s" repeatCount="indefinite"/>
+      </path>
+    </g>
+    
+    <!-- Distance Indicators -->
+    <g transform="translate(60, 140)">
+      <text x="0" y="15" font-family="Arial, sans-serif" font-size="10" fill="#d1d5db">Distances:</text>
+      <text x="0" y="30" font-family="Arial, sans-serif" font-size="9" fill="#10b981">• Gate to H1: 3.2 km</text>
+      <text x="0" y="45" font-family="Arial, sans-serif" font-size="9" fill="#f59e0b">• Gate to H2: 2.8 km</text>
+    </g>
+  </g>
+  
+  <!-- User Connection Panel -->
+  <g transform="translate(300, 270)">
+    <rect x="0" y="0" width="250" height="100" rx="15" fill="rgba(0, 0, 0, 0.7)" stroke="#06b6d4" stroke-width="1" opacity="0.9"/>
+    <text x="125" y="25" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#06b6d4" text-anchor="middle">Active Connections</text>
+    
+    <!-- User Avatars -->
+    <g transform="translate(30, 40)">
+      <circle cx="0" cy="0" r="12" fill="#10b981" stroke="#059669" stroke-width="2"/>
+      <text x="0" y="4" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">R</text>
+      <text x="0" y="25" font-family="Arial, sans-serif" font-size="8" fill="#d1d5db" text-anchor="middle">Requester</text>
+    </g>
+    
+    <!-- Connection Arrow -->
+    <g transform="translate(125, 52)">
+      <path d="M-40 0 L40 0" stroke="#06b6d4" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+      <text x="0" y="-8" font-family="Arial, sans-serif" font-size="8" fill="#06b6d4" text-anchor="middle">Connecting...</text>
+    </g>
+    
+    <g transform="translate(220, 40)">
+      <circle cx="0" cy="0" r="12" fill="#f59e0b" stroke="#d97706" stroke-width="2"/>
+      <text x="0" y="4" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">D</text>
+      <text x="0" y="25" font-family="Arial, sans-serif" font-size="8" fill="#d1d5db" text-anchor="middle">Deliverer</text>
+    </g>
+  </g>
+  
+  <!-- Firebase Auth Indicator -->
+  <g transform="translate(50, 380)">
+    <rect x="0" y="-20" width="150" height="30" rx="15" fill="rgba(0, 0, 0, 0.8)" stroke="#ff6b35" stroke-width="1" opacity="0.9"/>
+    
+    <!-- Firebase Logo -->
+    <g transform="translate(10, -10)">
+      <polygon points="0,0 8,0 12,8 4,8" fill="#ff6b35"/>
+      <text x="20" y="5" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="#ff6b35">Firebase Auth</text>
+    </g>
+  </g>
+  
+  <!-- Problem Statement -->
+  <g transform="translate(350, 380)">
+    <rect x="0" y="-20" width="200" height="30" rx="15" fill="rgba(0, 0, 0, 0.8)" stroke="#10b981" stroke-width="1" opacity="0.9"/>
+    <text x="100" y="-2" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#10b981" text-anchor="middle">Solving Real Campus Problems</text>
+  </g>
+  
+  <!-- Arrow Marker -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#06b6d4"/>
+    </marker>
+  </defs>
+  
+  <!-- Floating Delivery Icons -->
+  <g opacity="0.4">
+    <g transform="translate(280, 100)">
+      <rect x="0" y="0" width="15" height="12" rx="2" fill="#10b981">
+        <animateTransform attributeName="transform" type="translate" values="280,100; 290,95; 280,100" dur="3s" repeatCount="indefinite"/>
+      </rect>
+    </g>
+    
+    <g transform="translate(320, 180)">
+      <circle cx="8" cy="8" r="8" fill="#f59e0b">
+        <animateTransform attributeName="transform" type="translate" values="320,180; 330,175; 320,180" dur="4s" repeatCount="indefinite"/>
+      </circle>
+    </g>
+  </g>
+  
+  <!-- Success Indicator -->
+  <g transform="translate(520, 30)">
+    <circle cx="15" cy="15" r="12" fill="rgba(16, 185, 129, 0.8)" filter="url(#glow)">
+      <animate attributeName="opacity" values="0.6;1;0.6" dur="2s" repeatCount="indefinite"/>
+    </circle>
+    <text x="15" y="19" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="white" text-anchor="middle">✓</text>
+    <text x="15" y="40" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#10b981" text-anchor="middle">Live App</text>
+  </g>
+</svg> 

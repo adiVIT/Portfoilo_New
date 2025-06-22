@@ -1,0 +1,152 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <!-- Gradients -->
+    <linearGradient id="cardGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#312e81;stop-opacity:0.6"/>
+    </linearGradient>
+    
+    <linearGradient id="voiceGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#06b6d4;stop-opacity:0.9"/>
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:0.7"/>
+    </linearGradient>
+    
+    <linearGradient id="buttonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.8"/>
+      <stop offset="100%" style="stop-color:#059669;stop-opacity:0.9"/>
+    </linearGradient>
+    
+    <!-- Filters -->
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge> 
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="2" dy="4" stdDeviation="3" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="600" height="400" fill="transparent"/>
+  
+  <!-- Main Banking Interface Card -->
+  <rect x="50" y="50" width="300" height="300" rx="20" fill="url(#cardGradient)" filter="url(#shadow)" opacity="0.9"/>
+  
+  <!-- Header -->
+  <rect x="70" y="70" width="260" height="40" rx="8" fill="rgba(59, 130, 246, 0.2)" stroke="#3b82f6" stroke-width="1"/>
+  <text x="85" y="95" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#60a5fa">Voice Banking Assistant</text>
+  
+  <!-- Voice Indicator Circle -->
+  <circle cx="320" cy="90" r="12" fill="url(#voiceGradient)" filter="url(#glow)">
+    <animate attributeName="r" values="12;16;12" dur="2s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values="0.8;1;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Sound Waves -->
+  <g opacity="0.7">
+    <path d="M340 85 Q350 80 340 75" stroke="#06b6d4" stroke-width="2" fill="none">
+      <animate attributeName="opacity" values="0.3;0.8;0.3" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M340 95 Q350 100 340 105" stroke="#06b6d4" stroke-width="2" fill="none">
+      <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+    <path d="M345 82 Q358 75 345 68" stroke="#3b82f6" stroke-width="1.5" fill="none">
+      <animate attributeName="opacity" values="0.2;0.6;0.2" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M345 98 Q358 105 345 112" stroke="#3b82f6" stroke-width="1.5" fill="none">
+      <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite"/>
+    </path>
+  </g>
+  
+  <!-- Balance Display -->
+  <rect x="70" y="130" width="260" height="60" rx="12" fill="rgba(16, 185, 129, 0.1)" stroke="#10b981" stroke-width="1"/>
+  <text x="85" y="150" font-family="Arial, sans-serif" font-size="12" fill="#6b7280">Account Balance</text>
+  <text x="85" y="175" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#10b981">$12,450.75</text>
+  
+  <!-- Transaction List -->
+  <rect x="70" y="210" width="260" height="80" rx="8" fill="rgba(0, 0, 0, 0.3)" stroke="#374151" stroke-width="1"/>
+  <text x="85" y="230" font-family="Arial, sans-serif" font-size="12" font-weight="bold" fill="#9ca3af">Recent Transactions</text>
+  
+  <!-- Transaction Items -->
+  <g opacity="0.8">
+    <circle cx="90" cy="250" r="4" fill="#ef4444"/>
+    <text x="105" y="255" font-family="Arial, sans-serif" font-size="10" fill="#d1d5db">Withdrawal - $150.00</text>
+    
+    <circle cx="90" cy="270" r="4" fill="#10b981"/>
+    <text x="105" y="275" font-family="Arial, sans-serif" font-size="10" fill="#d1d5db">Deposit - $500.00</text>
+  </g>
+  
+  <!-- Action Buttons -->
+  <rect x="70" y="310" width="60" height="25" rx="12" fill="url(#buttonGradient)" filter="url(#shadow)"/>
+  <text x="100" y="325" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">Deposit</text>
+  
+  <rect x="140" y="310" width="60" height="25" rx="12" fill="rgba(239, 68, 68, 0.8)" filter="url(#shadow)"/>
+  <text x="170" y="325" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">Withdraw</text>
+  
+  <rect x="210" y="310" width="60" height="25" rx="12" fill="rgba(168, 85, 247, 0.8)" filter="url(#shadow)"/>
+  <text x="240" y="325" font-family="Arial, sans-serif" font-size="10" font-weight="bold" fill="white" text-anchor="middle">Transfer</text>
+  
+  <!-- Voice Command Examples -->
+  <g transform="translate(380, 80)">
+    <rect x="0" y="0" width="180" height="200" rx="15" fill="rgba(0, 0, 0, 0.6)" stroke="#4f46e5" stroke-width="1" opacity="0.9"/>
+    <text x="90" y="25" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#8b5cf6" text-anchor="middle">Voice Commands</text>
+    
+    <!-- Command Examples -->
+    <g opacity="0.8">
+      <circle cx="20" cy="50" r="3" fill="#06b6d4"/>
+      <text x="30" y="55" font-family="Arial, sans-serif" font-size="10" fill="#e5e7eb">"Check my balance"</text>
+      
+      <circle cx="20" cy="75" r="3" fill="#10b981"/>
+      <text x="30" y="80" font-family="Arial, sans-serif" font-size="10" fill="#e5e7eb">"Deposit $100"</text>
+      
+      <circle cx="20" cy="100" r="3" fill="#f59e0b"/>
+      <text x="30" y="105" font-family="Arial, sans-serif" font-size="10" fill="#e5e7eb">"Transfer $50 to John"</text>
+      
+      <circle cx="20" cy="125" r="3" fill="#ef4444"/>
+      <text x="30" y="130" font-family="Arial, sans-serif" font-size="10" fill="#e5e7eb">"Show transactions"</text>
+      
+      <circle cx="20" cy="150" r="3" fill="#8b5cf6"/>
+      <text x="30" y="155" font-family="Arial, sans-serif" font-size="10" fill="#e5e7eb">"Create user Alice"</text>
+    </g>
+    
+    <!-- Database Icon -->
+    <g transform="translate(130, 170)">
+      <rect x="0" y="0" width="30" height="20" rx="3" fill="rgba(59, 130, 246, 0.3)" stroke="#3b82f6" stroke-width="1"/>
+      <text x="15" y="13" font-family="Arial, sans-serif" font-size="8" fill="#60a5fa" text-anchor="middle">SQLite</text>
+    </g>
+  </g>
+  
+  <!-- Microphone Icon -->
+  <g transform="translate(450, 300)">
+    <rect x="0" y="0" width="12" height="20" rx="6" fill="url(#voiceGradient)" filter="url(#glow)"/>
+    <rect x="3" y="25" width="6" height="8" fill="#374151"/>
+    <line x1="0" y1="33" x2="12" y2="33" stroke="#374151" stroke-width="2"/>
+    
+    <!-- Pulsing effect -->
+    <circle cx="6" cy="10" r="15" fill="none" stroke="#06b6d4" stroke-width="1" opacity="0.3">
+      <animate attributeName="r" values="15;25;15" dur="3s" repeatCount="indefinite"/>
+      <animate attributeName="opacity" values="0.3;0;0.3" dur="3s" repeatCount="indefinite"/>
+    </circle>
+  </g>
+  
+  <!-- Security Lock -->
+  <g transform="translate(500, 50)">
+    <rect x="0" y="8" width="16" height="12" rx="2" fill="rgba(16, 185, 129, 0.8)" stroke="#10b981" stroke-width="1"/>
+    <path d="M4 8 V4 Q4 0 8 0 Q12 0 12 4 V8" fill="none" stroke="#10b981" stroke-width="2"/>
+    <circle cx="8" cy="14" r="2" fill="#065f46"/>
+  </g>
+  
+  <!-- Data Flow Lines -->
+  <g opacity="0.4">
+    <path d="M350 200 Q400 180 450 200" stroke="#06b6d4" stroke-width="1" fill="none" stroke-dasharray="5,5">
+      <animate attributeName="stroke-dashoffset" values="0;10" dur="2s" repeatCount="indefinite"/>
+    </path>
+    <path d="M350 220 Q420 240 480 220" stroke="#8b5cf6" stroke-width="1" fill="none" stroke-dasharray="3,3">
+      <animate attributeName="stroke-dashoffset" values="0;6" dur="1.5s" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg> 
