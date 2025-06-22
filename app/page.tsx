@@ -376,7 +376,7 @@ export default function Portfolio() {
             </motion.div>
 
             <div className="hidden md:flex items-center gap-8">
-              {["ABOUT", "PROJECTS", "SKILLS", "CONTACT"].map((item, index) => (
+              {["ABOUT", "WORK", "PROJECTS", "SKILLS", "CONTACT"].map((item, index) => (
                 <motion.a
                   key={item}
                   href={`#${item.toLowerCase()}`}
@@ -416,7 +416,7 @@ export default function Portfolio() {
       </nav>
 
       {/* INSANE Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-32">
+      <section id="about" className="relative min-h-screen flex items-center justify-center z-10 overflow-hidden pt-32">
         <div className="container mx-auto px-6 text-center">
           {/* Profile with crazy effects */}
           <motion.div
