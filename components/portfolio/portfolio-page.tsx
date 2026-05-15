@@ -658,6 +658,7 @@ function RestroMobileSnapshot({ shouldReduceMotion }: { shouldReduceMotion: bool
           <div>
             <p className="text-xs text-slate-400">Restaurant intelligence</p>
             <h3 className="mt-1 text-xl font-semibold tracking-[-0.035em] text-white">Tomorrow&apos;s rush preview</h3>
+            <p className="mt-2 text-xs leading-5 text-slate-500">Currently in early access with 20+ restaurants on the waitlist.</p>
           </div>
           <motion.span
             className="mt-1 h-2.5 w-2.5 flex-none rounded-full bg-emerald-300"
@@ -743,6 +744,7 @@ function RestroAiSection() {
                   <div>
                     <p className="text-xs text-slate-400 sm:text-sm">Restaurant intelligence</p>
                     <h3 className="mt-1 text-xl font-semibold tracking-[-0.035em] text-white sm:text-2xl">Tomorrow's rush, a little less mysterious.</h3>
+                    <p className="mt-2 text-xs leading-5 text-slate-500 sm:text-sm">Currently in early access with 20+ restaurants on the waitlist.</p>
                   </div>
                   <motion.span
                     className="h-2.5 w-2.5 rounded-full bg-emerald-300"

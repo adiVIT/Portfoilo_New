@@ -170,7 +170,7 @@ export const experienceChapters: ExperienceChapter[] = [
       "Ownly was raw startup energy. I joined as a founding mobile engineer, took responsibility across surfaces, and learned how to ship when the product, team, and assumptions are all moving at once.",
     signals: [
       "Helped build Android, iOS, and web foundations using Kotlin Multiplatform and Compose Multiplatform",
-      "Designed and shipped a full restaurant POS in 20 days because real teams do not wait for perfect timing",
+      "Designed and shipped a full restaurant POS in 20 days, which went live and processed real orders in its first month",
       "Took ownership beyond my lane and learned how fast reality exposes weak product assumptions",
     ],
     metric: "20-day POS",
@@ -186,7 +186,7 @@ export const experienceChapters: ExperienceChapter[] = [
     story:
       "PhonePe taught me how serious product work feels when money is involved. I work in a fast-moving, high-ownership pod around DigiMetal, where reliability and speed both matter.",
     signals: [
-      "Shipped features quickly inside one of the biggest and fastest-moving product environments I have worked in",
+      "Shipped DigiGold and DigiSilver features for 700M+ registered PhonePe users across India",
       "Built across DigiGold and DigiSilver journeys where trust, clarity, and edge cases matter",
       "Took ownership of flows that needed product judgment, debugging depth, and calm execution",
     ],
