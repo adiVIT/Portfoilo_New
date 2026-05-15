@@ -21,23 +21,22 @@ export const metadata: Metadata = {
     title: 'Aditya Bajaj | Product Engineer & Founder-Minded Builder',
     description: 'Android Developer at PhonePe. Building useful products with care, speed, and taste.',
   },
+  manifest: '/manifest.webmanifest',
   icons: {
     icon: [
-      { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon_new.png', type: 'image/png', sizes: '32x32' },
+      { url: '/favicon_new.png', type: 'image/png', sizes: '192x192' },
+      { url: '/favicon_new.png', type: 'image/png', sizes: '512x512' },
     ],
     shortcut: '/favicon_new.png',
-    apple: '/favicon_new.png',
+    apple: [
+      { url: '/favicon_new.png', sizes: '180x180', type: 'image/png' },
+    ],
     other: [
       {
         rel: 'icon',
-        type: 'image/svg+xml',
-        url: '/favicon.svg',
-      },
-      {
-        rel: 'icon',
         type: 'image/png',
-        sizes: '32x32',
+        sizes: '192x192',
         url: '/favicon_new.png',
       },
       {
