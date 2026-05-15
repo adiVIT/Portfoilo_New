@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 232 67% 2%;
+    --foreground: 210 40% 98%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
@@ -62,12 +62,15 @@
 
 html {
   scroll-behavior: smooth;
+  background: #02030a;
   max-width: 100%;
   overflow-x: clip;
 }
 
 body {
+  background: #02030a;
   max-width: 100%;
+  min-height: 100vh;
   overflow-x: hidden;
 }
 

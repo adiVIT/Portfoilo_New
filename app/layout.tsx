@@ -3,23 +3,97 @@ import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
 import './globals.css'
 
+const siteUrl = 'https://adityabajaj.me'
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Aditya Bajaj',
+  url: siteUrl,
+  image: `${siteUrl}/favicon_new.png`,
+  jobTitle: 'Android Developer and Product Engineer',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'PhonePe',
+  },
+  description:
+    'Aditya Bajaj is an Android developer at PhonePe and a product-minded software builder working across fintech, AI products, mobile apps, and restaurant technology.',
+  sameAs: [
+    'https://www.linkedin.com/in/aditya-bajaj-6128811b6/',
+    'https://github.com/adiVIT',
+    'https://restro-ai.com',
+  ],
+  knowsAbout: [
+    'Android development',
+    'Kotlin',
+    'Product engineering',
+    'Fintech products',
+    'AI products',
+    'Next.js',
+    'TypeScript',
+    'Restaurant software',
+    'Mobile user experience',
+  ],
+  owns: {
+    '@type': 'WebSite',
+    name: 'Aditya Bajaj',
+    url: siteUrl,
+    description:
+      'The personal portfolio of Aditya Bajaj, an Android developer, product engineer, and independent builder.',
+  },
+}
+
 export const metadata: Metadata = {
-  title: 'Aditya Bajaj | Product Engineer & Founder-Minded Builder',
-  description: 'Android Developer at PhonePe. I build products that are useful, thoughtful, and strong enough to survive outside demo videos.',
-  keywords: ['Aditya Bajaj', 'Product Engineer', 'Founder', 'Android Developer', 'PhonePe', 'Restro AI', 'AI Products', 'Next.js', 'Kotlin'],
+  metadataBase: new URL(siteUrl),
+  applicationName: 'Aditya Bajaj',
+  title: 'Aditya Bajaj - Building thoughtful software',
+  description:
+    'Aditya Bajaj is an Android developer at PhonePe and a product-minded software builder working on fintech, AI tools, mobile apps, and Restro AI.',
+  keywords: [
+    'Aditya Bajaj',
+    'Aditya Bajaj portfolio',
+    'Android developer PhonePe',
+    'Product engineer India',
+    'Kotlin Android developer',
+    'fintech product engineer',
+    'AI product builder',
+    'Restro AI founder',
+    'Next.js developer',
+    'TypeScript developer',
+    'mobile app developer',
+  ],
   authors: [{ name: 'Aditya Bajaj' }],
   creator: 'Aditya Bajaj',
+  publisher: 'Aditya Bajaj',
+  category: 'personal portfolio',
+  alternates: {
+    canonical: '/',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
   openGraph: {
-    title: 'Aditya Bajaj | Product Engineer & Founder-Minded Builder',
-    description: 'A product engineer with founder instincts, Android depth, and a taste for building things people actually use.',
-    url: 'https://adityabajaj.me',
+    title: 'Aditya Bajaj - Building thoughtful software',
+    description:
+      'Android developer at PhonePe, product engineer, and independent builder working across fintech, AI tools, mobile apps, and Restro AI.',
+    url: siteUrl,
     siteName: 'Aditya Bajaj',
     type: 'website',
+    locale: 'en_US',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aditya Bajaj | Product Engineer & Founder-Minded Builder',
-    description: 'Android Developer at PhonePe. Building useful products with care, speed, and taste.',
+    title: 'Aditya Bajaj - Building thoughtful software',
+    description:
+      'Android developer at PhonePe and product-minded builder working on fintech, AI tools, mobile apps, and Restro AI.',
   },
   manifest: '/manifest.webmanifest',
   icons: {
@@ -56,6 +130,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <Script
+          id="person-structured-data"
+          type="application/ld+json"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+
         {/* Google Analytics */}
         <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-50YY4S6JDH"
