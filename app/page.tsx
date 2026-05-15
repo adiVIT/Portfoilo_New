@@ -254,7 +254,7 @@ function SectionEyebrow({ children, className }: SectionEyebrowProps) {
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium uppercase tracking-[0.24em] text-slate-300 shadow-xl shadow-black/20 backdrop-blur-xl",
+        "inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-slate-300 sm:rounded-full sm:border sm:border-white/10 sm:bg-white/[0.04] sm:px-3 sm:py-1 sm:shadow-xl sm:shadow-black/20 sm:backdrop-blur-xl",
         className,
       )}
     >
@@ -268,7 +268,7 @@ function GlassCard({ children, className }: GlassCardProps) {
   return (
     <div
       className={cn(
-        "relative rounded-[2rem] border border-white/10 bg-white/[0.045] shadow-2xl shadow-black/30 backdrop-blur-2xl",
+        "relative rounded-none border-0 bg-transparent shadow-none backdrop-blur-none sm:rounded-[2rem] sm:border sm:border-white/10 sm:bg-white/[0.045] sm:shadow-2xl sm:shadow-black/30 sm:backdrop-blur-2xl",
         className,
       )}
     >
@@ -734,9 +734,7 @@ function HeroSection() {
 
           <motion.div
             whileHover={{ y: -4 }}
-            className={cn(
-              "relative mt-10 max-w-2xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 text-slate-300 shadow-2xl shadow-black/20 backdrop-blur-2xl sm:mt-12",
-            )}
+            className="relative mt-10 max-w-2xl border-l border-white/15 pl-4 text-slate-300 sm:mt-12 sm:rounded-[2rem] sm:border sm:border-white/10 sm:bg-white/[0.04] sm:p-5 sm:shadow-2xl sm:shadow-black/20 sm:backdrop-blur-2xl"
           >
             <p className="text-base leading-7 sm:text-lg sm:leading-8">
               Most software breaks emotionally before it breaks technically. A finance app has to feel calm. A restaurant
@@ -748,23 +746,23 @@ function HeroSection() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.2 }}
-            className="mt-7 overflow-hidden rounded-[2rem] border border-white/10 bg-black/35 shadow-2xl shadow-black/25 backdrop-blur-xl lg:hidden"
+            className="mt-8 lg:hidden"
           >
-            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+            <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Pocket OS</p>
                 <p className="mt-1 text-sm font-medium text-white">Tap, explore, move fast</p>
               </div>
-              <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]">
+              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-white/[0.05]">
                 <Sparkles className="h-4 w-4 text-cyan-100" />
               </div>
             </div>
 
-            <div className="grid gap-3 px-4 py-4" aria-label="Mobile profile highlights">
+            <div className="mt-5 grid gap-4" aria-label="Mobile profile highlights">
               {pocketCards.map((card) => (
                 <div
                   key={card.label}
-                  className="rounded-3xl border border-white/10 bg-white/[0.045] p-4 active:scale-[0.98]"
+                  className="border-l border-white/10 pl-4 active:scale-[0.98]"
                 >
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{card.label}</p>
                   <p className="mt-3 text-lg font-semibold tracking-[-0.03em] text-white">{card.value}</p>
@@ -1009,16 +1007,16 @@ function RestroAiSection() {
           </div>
         </GlassCard>
 
-        <GlassCard className="min-w-0 overflow-hidden p-4 sm:hidden">
-          <div className="rounded-[2rem] border border-white/10 bg-black/45 p-3 shadow-2xl shadow-black/30">
-            <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.035] p-4">
+        <GlassCard className="min-w-0 overflow-hidden p-0 sm:hidden">
+          <div>
+            <div>
               <div className="mb-5 flex items-center justify-between">
                 <div>
                   <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Mobile craft</p>
                   <h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white">Android instincts, not just screens.</h3>
                 </div>
                 <motion.div
-                  className="grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-white/[0.06]"
+                  className="grid h-11 w-11 place-items-center rounded-2xl bg-white/[0.06]"
                   animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1] }}
                   transition={{ duration: 1.8, repeat: Number.POSITIVE_INFINITY }}
                 >
@@ -1026,8 +1024,8 @@ function RestroAiSection() {
                 </motion.div>
               </div>
 
-              <div className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/50 p-3">
-                <div className="mb-4 flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2">
+              <div className="relative mt-6 overflow-hidden">
+                <div className="mb-4 flex items-center justify-between border-l border-white/10 pl-3">
                   <span className="text-xs text-slate-400">aditya.mobile</span>
                   <span className="h-2 w-2 rounded-full bg-emerald-300" />
                 </div>
@@ -1037,7 +1035,7 @@ function RestroAiSection() {
                   initial={{ opacity: 0, y: 14, scale: 0.98 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   transition={{ duration: 0.3 }}
-                  className="rounded-3xl border border-white/10 bg-white/[0.055] p-4"
+                  className="border-l border-white/10 pl-4"
                 >
                   <div className="mb-5 flex items-center justify-between">
                     <activeMobileSkill.icon className="h-5 w-5 text-slate-200" />
@@ -1060,10 +1058,10 @@ function RestroAiSection() {
                         type="button"
                         onClick={() => setActiveMobileSkill(skill)}
                         className={cn(
-                          "rounded-2xl border px-2 py-3 text-center text-[11px] font-medium transition active:scale-95",
+                          "rounded-2xl px-2 py-3 text-center text-[11px] font-medium transition active:scale-95",
                           isActive
-                            ? "border-white/25 bg-white/[0.09] text-white"
-                            : "border-white/10 bg-white/[0.035] text-slate-500",
+                            ? "bg-white/[0.09] text-white"
+                            : "bg-white/[0.035] text-slate-500",
                         )}
                       >
                         {skill.label.split(" ")[0]}
@@ -1081,7 +1079,7 @@ function RestroAiSection() {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: shouldReduceMotion ? 0 : 0.35, delay: index * 0.08 }}
-                    className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3"
+                    className="flex items-center gap-3 border-l border-white/10 pl-3"
                   >
                     <span className="grid h-7 w-7 place-items-center rounded-xl bg-white/[0.06] text-xs text-slate-300">0{index + 1}</span>
                     <span className="text-sm text-slate-300">{skill}</span>
@@ -1198,7 +1196,7 @@ function WorkSection() {
           </p>
         </div>
 
-        <GlassCard className="min-w-0 overflow-hidden border-white/[0.08] bg-white/[0.025] p-3 shadow-black/20 sm:p-6 lg:p-8">
+        <GlassCard className="min-w-0 overflow-hidden border-white/[0.08] bg-white/[0.025] p-0 shadow-black/20 sm:p-6 lg:p-8">
           <div className="absolute left-8 top-12 hidden h-[calc(100%-6rem)] w-px bg-white/10 md:block" />
           <motion.div
             className="absolute left-8 top-12 hidden h-24 w-px bg-white/35 md:block"
@@ -1208,7 +1206,7 @@ function WorkSection() {
             transition={{ duration: 1.8, ease: "easeInOut" }}
           />
 
-          <div className="relative grid gap-5">
+          <div className="relative grid gap-10 sm:gap-5">
             {journeyItems.map((journey, index) => (
               <motion.article
                 key={journey.company}
@@ -1217,7 +1215,7 @@ function WorkSection() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: index * 0.08 }}
                 whileHover={{ y: -6, rotateX: 1.5, rotateY: index % 2 === 0 ? -1.5 : 1.5 }}
-                className="group relative ml-0 overflow-hidden rounded-[1.7rem] border border-white/[0.08] bg-black/25 p-4 shadow-xl shadow-black/20 backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.035] sm:p-5 md:ml-12 lg:p-6 [transform-style:preserve-3d]"
+                className="group relative ml-0 overflow-hidden border-b border-white/10 pb-10 transition last:border-b-0 last:pb-0 sm:rounded-[1.7rem] sm:border sm:border-white/[0.08] sm:bg-black/25 sm:p-5 sm:shadow-xl sm:shadow-black/20 sm:backdrop-blur-xl sm:hover:-translate-y-1 sm:hover:border-white/18 sm:hover:bg-white/[0.035] md:ml-12 lg:p-6 [transform-style:preserve-3d]"
               >
                 <div className="absolute -left-[3.7rem] top-8 hidden md:block">
                   <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.08] text-cyan-100 shadow-xl shadow-black/20">
@@ -1236,11 +1234,11 @@ function WorkSection() {
 
                 <div className="relative grid gap-6 lg:grid-cols-[0.78fr_1.22fr] lg:items-start">
                   <div>
-                    <div className="mb-6 flex items-center justify-between gap-3">
-                      <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.08] text-cyan-100 md:hidden">
+                    <div className="mb-5 flex items-center justify-between gap-3 sm:mb-6">
+                      <div className="grid h-10 w-10 place-items-center rounded-2xl bg-white/[0.06] text-cyan-100 md:hidden">
                         <journey.icon className="h-5 w-5" />
                       </div>
-                      <span className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs uppercase tracking-[0.22em] text-slate-400">
+                      <span className="text-xs uppercase tracking-[0.22em] text-slate-500 sm:rounded-full sm:border sm:border-white/10 sm:bg-white/[0.04] sm:px-3 sm:py-1 sm:text-slate-400">
                         Chapter 0{index + 1}
                       </span>
                     </div>
@@ -1255,8 +1253,8 @@ function WorkSection() {
                     <JourneyVisual visual={journey.visual} />
                     <div className="grid gap-3">
                       {journey.signals.map((signal) => (
-                        <div key={signal} className="flex gap-3 rounded-3xl border border-white/10 bg-white/[0.04] p-4">
-                          <ChevronRight className="mt-0.5 h-5 w-5 flex-none text-slate-400" />
+                        <div key={signal} className="flex gap-3 border-l border-white/10 pl-3 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-white/[0.04] sm:p-4">
+                          <ChevronRight className="mt-0.5 h-4 w-4 flex-none text-slate-500 sm:h-5 sm:w-5 sm:text-slate-400" />
                           <p className="text-sm leading-6 text-slate-300">{signal}</p>
                         </div>
                       ))}
@@ -1274,7 +1272,7 @@ function WorkSection() {
             { label: "Systems", value: "How small technical choices become big product feelings" },
             { label: "Business", value: "How orders, inventory, money, and timing quietly shape software" },
           ].map((item) => (
-            <GlassCard key={item.label} className="p-5">
+            <GlassCard key={item.label} className="border-l border-white/10 pl-4 sm:p-5">
               <p className="text-sm uppercase tracking-[0.2em] text-cyan-100">{item.label}</p>
               <p className="mt-3 text-sm leading-6 text-slate-400">{item.value}</p>
             </GlassCard>
@@ -1308,7 +1306,7 @@ function AboutSection() {
           </div>
         </div>
 
-        <div className="grid gap-5">
+        <div className="grid gap-8 sm:gap-5">
           {principles.map((principle, index) => (
             <motion.div
               key={principle.title}
@@ -1317,9 +1315,9 @@ function AboutSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: index * 0.08 }}
             >
-              <GlassCard className="p-4 transition hover:-translate-y-1 hover:border-white/20 sm:p-6">
+              <GlassCard className="border-l border-white/10 pl-4 transition hover:-translate-y-1 hover:border-white/20 sm:p-6">
                 <div className="flex gap-4">
-                  <span className="grid h-10 w-10 flex-none place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-slate-200">
+                  <span className="grid h-9 w-9 flex-none place-items-center rounded-2xl bg-white/[0.05] text-sm text-slate-300 sm:h-10 sm:w-10 sm:border sm:border-white/10 sm:bg-white/[0.06] sm:text-slate-200">
                     0{index + 1}
                   </span>
                   <div>
@@ -1340,7 +1338,7 @@ function ObsessionsSection() {
   return (
     <section className="px-4 py-20 sm:px-8 sm:py-24">
       <div className="mx-auto max-w-7xl">
-        <GlassCard className="min-w-0 overflow-hidden p-4 sm:p-8 lg:p-10">
+        <GlassCard className="min-w-0 overflow-hidden p-0 sm:p-8 lg:p-10">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
             <div>
               <SectionEyebrow>Current obsessions</SectionEyebrow>
@@ -1360,9 +1358,9 @@ function ObsessionsSection() {
                   whileHover={{ y: -4, scale: 1.02 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.35, delay: index * 0.04 }}
-                  className="rounded-3xl border border-white/10 bg-white/[0.045] p-5 text-white shadow-xl shadow-black/20"
+                  className="border-l border-white/10 pl-4 text-white sm:rounded-3xl sm:border sm:border-white/10 sm:bg-white/[0.045] sm:p-5 sm:shadow-xl sm:shadow-black/20"
                 >
-                  <div className="mb-5 flex items-center justify-between">
+                  <div className="mb-4 flex items-center justify-between sm:mb-5">
                     <Cpu className="h-5 w-5 text-slate-300" />
                     <MoveUpRight className="h-4 w-4 text-slate-500" />
                   </div>
