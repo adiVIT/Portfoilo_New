@@ -4,22 +4,22 @@ import Script from 'next/script'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Aditya Bajaj Portfolio',
-  description: 'Builder of things that don\'t break. Maker of ideas that actually ship. Full-stack developer with 3+ years of experience in Android, web development, and startup projects.',
-  keywords: ['Aditya Bajaj', 'Portfolio', 'Full Stack Developer', 'Android Developer', 'React', 'Next.js', 'Flutter', 'Kotlin', 'Java'],
+  title: 'Aditya Bajaj | Product Engineer & Founder-Minded Builder',
+  description: 'Android Developer at PhonePe. I build products that are useful, thoughtful, and strong enough to survive outside demo videos.',
+  keywords: ['Aditya Bajaj', 'Product Engineer', 'Founder', 'Android Developer', 'PhonePe', 'Restro AI', 'AI Products', 'Next.js', 'Kotlin'],
   authors: [{ name: 'Aditya Bajaj' }],
   creator: 'Aditya Bajaj',
   openGraph: {
-    title: 'Aditya Bajaj Portfolio',
-    description: 'Builder of things that don\'t break. Maker of ideas that actually ship.',
-    url: 'https://adityabajaj.dev',
-    siteName: 'Aditya Bajaj Portfolio',
+    title: 'Aditya Bajaj | Product Engineer & Founder-Minded Builder',
+    description: 'A product engineer with founder instincts, Android depth, and a taste for building things people actually use.',
+    url: 'https://adityabajaj.me',
+    siteName: 'Aditya Bajaj',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aditya Bajaj Portfolio',
-    description: 'Builder of things that don\'t break. Maker of ideas that actually ship.',
+    title: 'Aditya Bajaj | Product Engineer & Founder-Minded Builder',
+    description: 'Android Developer at PhonePe. Building useful products with care, speed, and taste.',
   },
   icons: {
     icon: [
