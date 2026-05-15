@@ -9,6 +9,7 @@ import {
   Command,
   ExternalLink,
   Mail,
+  MousePointer2,
   MoveUpRight,
   Search,
   Sparkles,
@@ -50,6 +51,7 @@ const accentMap = {
   amber: "from-amber-300/20 via-orange-300/10 to-transparent text-amber-100",
   emerald: "from-emerald-300/20 via-teal-300/10 to-transparent text-emerald-100",
 }
+const premiumEase = [0.22, 1, 0.36, 1] as const
 
 interface SectionHeaderProps {
   eyebrow: string
@@ -95,11 +97,11 @@ function Reveal({ children, className, delay = 0 }: RevealProps) {
 
   return (
     <motion.div
-      initial={shouldReduceMotion ? false : { opacity: 0, y: 28, filter: "blur(10px)" }}
+      initial={shouldReduceMotion ? false : { opacity: 0, y: 18, filter: "blur(8px)" }}
       whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, margin: "-120px" }}
-      transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
-      className={className}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.55, ease: premiumEase, delay }}
+      className={cn("min-w-0", className)}
     >
       {children}
     </motion.div>
@@ -108,21 +110,21 @@ function Reveal({ children, className, delay = 0 }: RevealProps) {
 
 function SectionHeader({ eyebrow, title, description, align = "left" }: SectionHeaderProps) {
   return (
-    <div className={cn("max-w-3xl", align === "center" && "mx-auto text-center")}>
+    <div className={cn("min-w-0 max-w-3xl", align === "center" && "mx-auto text-center")}>
       <div
         className={cn(
-          "inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-3 py-1 text-[11px] font-medium uppercase tracking-[0.28em] text-slate-400 shadow-2xl shadow-black/20 backdrop-blur-xl",
+          "inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1 text-[10px] font-medium uppercase tracking-[0.22em] text-slate-400 shadow-2xl shadow-black/20 backdrop-blur-xl sm:px-3 sm:text-[11px] sm:tracking-[0.28em]",
           align === "center" && "justify-center",
         )}
       >
         <span className="h-1.5 w-1.5 rounded-full bg-white/45" />
         {eyebrow}
       </div>
-      <h2 className="mt-6 text-balance text-3xl font-semibold leading-[1.05] tracking-[-0.045em] text-white sm:text-5xl lg:text-6xl">
+      <h2 className="mt-5 text-balance text-[2rem] font-semibold leading-[1.08] tracking-[-0.045em] text-white sm:mt-6 sm:text-5xl sm:leading-[1.05] lg:text-6xl">
         {title}
       </h2>
       {description ? (
-        <p className="mt-5 max-w-2xl text-pretty text-base leading-7 text-slate-400 sm:text-lg sm:leading-8">
+        <p className="mt-4 max-w-[34rem] text-pretty text-sm leading-7 text-slate-400 sm:mt-5 sm:max-w-2xl sm:text-lg sm:leading-8">
           {description}
         </p>
       ) : null}
@@ -132,15 +134,17 @@ function SectionHeader({ eyebrow, title, description, align = "left" }: SectionH
 
 function Surface({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
-    <div
+    <motion.div
       className={cn(
-        "premium-surface relative overflow-hidden rounded-[1.75rem] border border-white/[0.09] bg-white/[0.035] shadow-2xl shadow-black/25 backdrop-blur-xl",
+        "premium-surface relative overflow-hidden rounded-[1.35rem] border border-white/[0.09] bg-white/[0.035] shadow-2xl shadow-black/25 backdrop-blur-xl sm:rounded-[1.75rem]",
         className,
       )}
+      whileHover={{ y: -3 }}
+      transition={{ duration: 0.35, ease: premiumEase }}
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-px rounded-[inherit] bg-gradient-to-b from-white/[0.075] to-transparent opacity-70" />
       <div className="relative">{children}</div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -260,17 +264,22 @@ function CommandPalette({ activeSection }: { activeSection: string }) {
 }
 
 function Navigation({ activeSection }: { activeSection: string }) {
+  const isHeroActive = activeSection === "hero"
+
   return (
     <header className="fixed inset-x-0 top-3 z-50 px-3 sm:top-5 sm:px-6">
       <nav
-        className="mx-auto flex max-w-6xl items-center justify-between gap-3 rounded-full border border-white/10 bg-[#070812]/70 p-2 shadow-2xl shadow-black/35 backdrop-blur-2xl"
+        className={cn(
+          "mx-auto flex max-w-6xl items-center justify-between gap-2 rounded-full border border-white/10 p-1.5 shadow-2xl shadow-black/35 backdrop-blur-2xl transition duration-500 sm:gap-3 sm:p-2",
+          isHeroActive ? "bg-[#070812]/62" : "bg-[#070812]/86",
+        )}
         aria-label="Primary"
       >
-        <Link href="#hero" className="group flex items-center gap-3 rounded-full px-2 py-1.5">
-          <span className="grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[0.06] text-sm font-semibold text-white shadow-inner shadow-white/5">
+        <Link href="#hero" className="group flex min-w-0 items-center gap-2 rounded-full px-1.5 py-1 sm:gap-3 sm:px-2 sm:py-1.5">
+          <span className="grid h-8 w-8 flex-none place-items-center rounded-full border border-white/10 bg-white/[0.06] text-xs font-semibold text-white shadow-inner shadow-white/5 sm:h-9 sm:w-9 sm:text-sm">
             AB
           </span>
-          <span className="hidden text-sm font-medium text-slate-200 sm:block">Aditya Bajaj</span>
+          <span className="block truncate text-xs font-medium text-slate-200 xs:text-sm sm:text-sm">Aditya Bajaj</span>
         </Link>
 
         <div className="hidden items-center gap-1 md:flex">
@@ -294,7 +303,7 @@ function Navigation({ activeSection }: { activeSection: string }) {
 
         <div className="flex items-center gap-2">
           <CommandPalette activeSection={activeSection} />
-          <Button asChild className="rounded-full bg-white px-4 text-black shadow-xl shadow-white/10 hover:bg-slate-200">
+          <Button asChild className="magnetic-action h-9 rounded-full bg-white px-3 text-black shadow-xl shadow-white/10 hover:bg-slate-200 sm:h-10 sm:px-4">
             <Link href="mailto:adityabajaj2222@gmail.com">
               <span className="hidden sm:inline">Let's Build</span>
               <Mail className="h-4 w-4 sm:ml-2" />
@@ -311,7 +320,7 @@ function MobileDock({ activeSection }: { activeSection: string }) {
 
   return (
     <nav
-      className="fixed inset-x-4 bottom-4 z-50 rounded-full border border-white/10 bg-black/75 p-1.5 shadow-2xl shadow-black/40 backdrop-blur-2xl md:hidden"
+      className="fixed inset-x-4 bottom-[max(1rem,env(safe-area-inset-bottom))] z-50 rounded-full border border-white/10 bg-black/72 p-1.5 shadow-2xl shadow-black/40 backdrop-blur-2xl md:hidden"
       aria-label="Mobile navigation"
     >
       <div className="grid grid-cols-4 gap-1">
@@ -323,7 +332,7 @@ function MobileDock({ activeSection }: { activeSection: string }) {
               key={item.href}
               href={item.href}
               className={cn(
-                "rounded-full px-2 py-2.5 text-center text-[11px] font-medium transition active:scale-95",
+                "rounded-full px-2 py-3 text-center text-[11px] font-medium transition active:scale-95",
                 isActive ? "bg-white text-black" : "text-slate-400",
               )}
             >
@@ -353,7 +362,7 @@ function HeroSection() {
   }, [shouldReduceMotion])
 
   return (
-    <section id="hero" className="relative min-h-screen px-4 pb-24 pt-36 sm:px-6 sm:pt-44 lg:px-8">
+    <section id="hero" className="relative px-4 pb-16 pt-28 sm:min-h-screen sm:px-6 sm:pb-24 sm:pt-44 lg:px-8">
       <motion.div
         aria-hidden="true"
         style={{ y }}
@@ -368,14 +377,14 @@ function HeroSection() {
         />
       </motion.div>
 
-      <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
-        <Reveal className="max-w-4xl">
-          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-sm text-slate-300 shadow-2xl shadow-black/20 backdrop-blur-xl">
-            <span className="h-2 w-2 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.45)]" />
+      <div className="mx-auto grid w-full max-w-6xl gap-6 overflow-hidden sm:gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+        <Reveal className="min-w-0 max-w-4xl">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1.5 text-xs text-slate-300 shadow-2xl shadow-black/20 backdrop-blur-xl sm:px-3 sm:text-sm">
+            <span className="h-1.5 w-1.5 rounded-full bg-emerald-300 shadow-[0_0_18px_rgba(110,231,183,0.45)] sm:h-2 sm:w-2" />
             Product engineer. Independent builder.
           </div>
 
-          <h1 className="mt-8 text-balance text-5xl font-semibold leading-[0.95] tracking-[-0.06em] text-white sm:text-7xl lg:text-8xl">
+          <h1 className="mt-5 text-balance text-4xl font-semibold leading-[0.98] tracking-[-0.055em] text-white sm:mt-8 sm:text-7xl sm:leading-[0.95] lg:text-8xl">
             Ideas are easy. Making them survive reality is the fun part.
           </h1>
 
@@ -383,13 +392,16 @@ function HeroSection() {
             key={heroRoles[roleIndex]}
             initial={shouldReduceMotion ? false : { opacity: 0, y: 10 }}
             animate={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
-            className="mt-7 min-h-8 max-w-2xl text-pretty text-lg leading-8 text-slate-300 sm:text-xl sm:leading-9"
+            className="mt-5 hidden min-h-20 max-w-2xl text-pretty text-lg leading-8 text-slate-300 sm:block sm:text-xl sm:leading-9"
           >
             {heroRoles[roleIndex]}. I care about products that work when users are impatient, teams are moving fast, and the real world refuses to behave like a neat mockup.
           </motion.p>
+          <p className="mt-5 max-w-xl text-pretty text-base leading-7 text-slate-300 sm:hidden">
+            I&apos;m an Android Developer at PhonePe and a builder at heart. I care about products that work when users are impatient and the real world refuses to behave like a neat mockup.
+          </p>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg" className="group rounded-full bg-white px-6 text-black shadow-2xl shadow-white/10 transition hover:-translate-y-0.5 hover:bg-slate-200">
+          <div className="mt-7 flex flex-col gap-2.5 sm:mt-9 sm:flex-row sm:gap-3">
+            <Button asChild size="lg" className="magnetic-action group h-11 rounded-full bg-white px-5 text-black shadow-2xl shadow-white/10 transition hover:-translate-y-0.5 hover:bg-slate-200 sm:h-12 sm:px-6">
               <Link href="#projects">
                 View Builds
                 <ArrowRight className="ml-2 h-4 w-4 transition group-hover:translate-x-0.5" />
@@ -399,35 +411,35 @@ function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="rounded-full border-white/15 bg-white/[0.035] px-6 text-white hover:border-white/25 hover:bg-white/[0.075] hover:text-white"
+              className="magnetic-action h-11 rounded-full border-white/15 bg-white/[0.035] px-5 text-white hover:border-white/25 hover:bg-white/[0.075] hover:text-white sm:h-12 sm:px-6"
             >
               <Link href="#restro-ai">Explore Restro AI</Link>
             </Button>
           </div>
         </Reveal>
 
-        <Reveal delay={0.12}>
-          <Surface className="p-4 sm:p-5">
-            <div className="rounded-[1.35rem] border border-white/10 bg-black/35 p-5">
+        <Reveal className="w-full min-w-0" delay={0.12}>
+          <Surface className="p-3 sm:p-5">
+            <div className="rounded-[1.15rem] border border-white/10 bg-black/35 p-3.5 sm:rounded-[1.35rem] sm:p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-xs uppercase tracking-[0.24em] text-slate-500">Pocket OS</p>
-                  <p className="mt-2 text-lg font-medium text-white">Tap, explore, move fast</p>
+                  <p className="text-[10px] uppercase tracking-[0.22em] text-slate-500 sm:text-xs sm:tracking-[0.24em]">Pocket OS</p>
+                  <p className="mt-1 text-sm font-medium text-white sm:mt-2 sm:text-lg">Tap, explore, move fast</p>
                 </div>
-                <Sparkles className="h-5 w-5 text-slate-300" />
+                <Sparkles className="h-4 w-4 text-slate-300 sm:h-5 sm:w-5" />
               </div>
-              <div className="mt-8 grid gap-3">
+              <div className="mt-4 grid gap-2 sm:mt-8 sm:gap-3">
                 {currentSignals.map((signal, index) => (
                   <motion.div
                     key={signal.label}
                     initial={shouldReduceMotion ? false : { opacity: 0, x: 18 }}
                     animate={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.25 + index * 0.08 }}
-                    className="rounded-3xl border border-white/[0.08] bg-white/[0.035] p-4"
+                    className="border-t border-white/[0.08] py-3 first:border-t-0 sm:rounded-3xl sm:border sm:bg-white/[0.035] sm:p-4"
                   >
-                    <p className="text-xs uppercase tracking-[0.22em] text-slate-500">{signal.label}</p>
-                    <p className="mt-2 font-medium text-white">{signal.value}</p>
-                    <p className="mt-2 text-sm leading-6 text-slate-400">{signal.detail}</p>
+                    <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 sm:text-xs sm:tracking-[0.22em]">{signal.label}</p>
+                    <p className="mt-1 text-sm font-medium text-white sm:mt-2 sm:text-base">{signal.value}</p>
+                    <p className="mt-1 text-xs leading-5 text-slate-400 sm:mt-2 sm:text-sm sm:leading-6">{signal.detail}</p>
                   </motion.div>
                 ))}
               </div>
@@ -442,7 +454,7 @@ function HeroSection() {
 function NowSection() {
   return (
     <section id="now" className="px-4 py-20 sm:px-6 lg:px-8 lg:py-28">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto w-full max-w-6xl overflow-hidden">
         <Reveal>
           <SectionHeader
             eyebrow="Currently building"
@@ -451,13 +463,13 @@ function NowSection() {
           />
         </Reveal>
 
-        <div className="mt-10 grid gap-4 lg:grid-cols-3">
+        <div className="mt-10 grid w-full min-w-0 gap-0 border-y border-white/10 lg:grid-cols-3 lg:gap-4 lg:border-y-0">
           {currentSignals.map((signal, index) => (
             <Reveal key={signal.label} delay={index * 0.06}>
-              <Surface className="h-full p-5 sm:p-6">
+              <Surface className="h-full rounded-none border-0 border-b border-white/10 bg-transparent p-0 py-5 shadow-none backdrop-blur-0 last:border-b-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-6 sm:shadow-2xl sm:backdrop-blur-xl lg:border">
                 <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{signal.label}</p>
-                <h3 className="mt-5 text-2xl font-semibold tracking-[-0.035em] text-white">{signal.value}</h3>
-                <p className="mt-4 text-sm leading-6 text-slate-400">{signal.detail}</p>
+                <h3 className="mt-3 text-xl font-semibold tracking-[-0.035em] text-white sm:mt-5 sm:text-2xl">{signal.value}</h3>
+                <p className="mt-3 text-sm leading-6 text-slate-400 sm:mt-4">{signal.detail}</p>
               </Surface>
             </Reveal>
           ))}
@@ -470,7 +482,7 @@ function NowSection() {
 function JourneyVisual({ visual }: { visual: string }) {
   if (visual === "wealth-graph") {
     return (
-      <div className="flex h-32 items-end gap-2 rounded-3xl border border-white/10 bg-black/25 p-4">
+      <div className="flex h-24 items-end gap-2 rounded-2xl bg-white/[0.025] p-3 sm:h-32 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-black/25 sm:p-4">
         {[34, 48, 42, 66, 78, 72, 88, 94].map((height, index) => (
           <motion.div
             key={`${height}-${index}`}
@@ -487,7 +499,7 @@ function JourneyVisual({ visual }: { visual: string }) {
 
   if (visual === "mobility-grid") {
     return (
-      <div className="relative h-32 overflow-hidden rounded-3xl border border-white/10 bg-black/25">
+      <div className="relative h-24 overflow-hidden rounded-2xl bg-white/[0.025] sm:h-32 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-black/25">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.055)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.055)_1px,transparent_1px)] bg-[size:28px_28px]" />
         <motion.div
           className="absolute left-5 top-1/2 h-1 w-32 rounded-full bg-white/45"
@@ -502,7 +514,7 @@ function JourneyVisual({ visual }: { visual: string }) {
 
   if (visual === "trust-network") {
     return (
-      <div className="relative h-32 rounded-3xl border border-white/10 bg-black/25 p-4">
+      <div className="relative h-24 rounded-2xl bg-white/[0.025] p-3 sm:h-32 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-black/25 sm:p-4">
         <div className="absolute left-1/2 top-1/2 h-px w-2/3 -translate-x-1/2 bg-white/15" />
         <div className="absolute left-1/2 top-1/2 h-2/3 w-px -translate-y-1/2 bg-white/15" />
         {[["left-5 top-5"], ["right-5 top-5"], ["bottom-5 left-5"], ["bottom-5 right-5"], ["left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2"]].map((classes, index) => (
@@ -522,7 +534,7 @@ function JourneyVisual({ visual }: { visual: string }) {
   }
 
   return (
-    <div className="grid h-32 grid-cols-3 gap-3 rounded-3xl border border-white/10 bg-black/25 p-4">
+    <div className="grid h-24 grid-cols-3 gap-2 rounded-2xl bg-white/[0.025] p-3 sm:h-32 sm:gap-3 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-black/25 sm:p-4">
       {["Supply", "Demand", "Timing"].map((label, index) => (
         <motion.div
           key={label}
@@ -542,8 +554,8 @@ function JourneyVisual({ visual }: { visual: string }) {
 
 function ExperienceJourneySection() {
   return (
-    <section id="journey" className="px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section id="journey" className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl overflow-hidden">
         <Reveal>
           <SectionHeader
             eyebrow="Experience journey"
@@ -552,31 +564,31 @@ function ExperienceJourneySection() {
           />
         </Reveal>
 
-        <div className="mt-12 grid gap-5">
+        <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-5">
           {experienceChapters.map((chapter, index) => (
             <Reveal key={chapter.company} delay={index * 0.06}>
-              <Surface className="p-5 sm:p-7">
-                <article className="grid gap-7 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
+      <Surface className="rounded-none border-0 border-t border-white/10 bg-transparent p-0 py-6 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-7 sm:shadow-2xl sm:backdrop-blur-xl">
+                <article className="grid min-w-0 gap-5 sm:gap-7 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
                   <div>
                     <div className="flex items-center justify-between gap-4">
-                      <div className="grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-white/[0.05] text-slate-200">
-                        <chapter.icon className="h-5 w-5" />
+                      <div className="grid h-10 w-10 place-items-center rounded-2xl border border-white/10 bg-white/[0.05] text-slate-200 sm:h-11 sm:w-11">
+                        <chapter.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
-                      <span className="rounded-full border border-white/10 bg-white/[0.035] px-3 py-1 text-xs uppercase tracking-[0.22em] text-slate-500">
+                      <span className="rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] text-slate-500 sm:px-3 sm:text-xs sm:tracking-[0.22em]">
                         Chapter 0{index + 1}
                       </span>
                     </div>
-                    <p className="mt-7 text-sm text-slate-500">{chapter.period} / {chapter.role}</p>
-                    <h3 className="mt-2 text-3xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">{chapter.company}</h3>
-                    <p className="mt-4 text-xl leading-8 text-slate-200">{chapter.training}</p>
-                    <p className="mt-4 text-base leading-7 text-slate-400">{chapter.story}</p>
+                    <p className="mt-5 text-xs text-slate-500 sm:mt-7 sm:text-sm">{chapter.period} / {chapter.role}</p>
+                    <h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">{chapter.company}</h3>
+                    <p className="mt-3 text-lg leading-7 text-slate-200 sm:mt-4 sm:text-xl sm:leading-8">{chapter.training}</p>
+                    <p className="mt-3 text-sm leading-7 text-slate-400 sm:mt-4 sm:text-base">{chapter.story}</p>
                   </div>
 
-                  <div className="grid gap-4">
+                  <div className="grid min-w-0 gap-4">
                     <JourneyVisual visual={chapter.visual} />
                     <div className="grid gap-3">
                       {chapter.signals.map((signal) => (
-                        <div key={signal} className="flex gap-3 rounded-3xl border border-white/[0.08] bg-white/[0.03] p-4">
+                        <div key={signal} className="flex gap-3 border-t border-white/[0.08] py-3 first:border-t-0 sm:rounded-3xl sm:border sm:bg-white/[0.03] sm:p-4">
                           <ChevronRight className="mt-0.5 h-4 w-4 flex-none text-slate-500" />
                           <p className="text-sm leading-6 text-slate-300">{signal}</p>
                         </div>
@@ -593,13 +605,58 @@ function ExperienceJourneySection() {
   )
 }
 
+function RestroCommandCenter({ shouldReduceMotion }: { shouldReduceMotion: boolean | null }) {
+  return (
+    <div className="mt-3 overflow-hidden border-y border-white/10 py-4 sm:mt-4 sm:rounded-3xl sm:border sm:bg-black/30 sm:p-4">
+      <div className="mb-4 flex items-center justify-between">
+        <div>
+          <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Operations loop</p>
+          <p className="mt-1 text-sm font-medium text-white">Sense. Predict. Recommend. Learn.</p>
+        </div>
+        <MousePointer2 className="h-4 w-4 text-slate-400" />
+      </div>
+
+      <div className="relative grid gap-2 sm:grid-cols-4">
+        <motion.div
+          aria-hidden="true"
+          className="absolute left-8 right-8 top-8 hidden h-px bg-gradient-to-r from-transparent via-white/25 to-transparent sm:block"
+          initial={{ scaleX: 0, opacity: 0 }}
+          whileInView={{ scaleX: 1, opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: shouldReduceMotion ? 0 : 0.9, ease: premiumEase }}
+        />
+        {restroFlow.map((step, index) => (
+          <motion.div
+            key={step.label}
+            initial={shouldReduceMotion ? false : { opacity: 0, y: 12 }}
+            whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.42, delay: index * 0.08, ease: premiumEase }}
+            className="relative border-t border-white/[0.08] py-3 first:border-t-0 sm:rounded-2xl sm:border sm:bg-white/[0.035] sm:p-3"
+          >
+            <motion.div
+              className="grid h-9 w-9 place-items-center rounded-2xl bg-white/[0.06] text-slate-200 sm:border sm:border-white/10"
+              animate={shouldReduceMotion ? undefined : { y: [0, -3, 0] }}
+              transition={{ duration: 3.2, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay: index * 0.35 }}
+            >
+              <step.icon className="h-4 w-4" />
+            </motion.div>
+            <p className="mt-4 text-sm font-medium text-white">{step.label}</p>
+            <p className="mt-1 text-xs leading-5 text-slate-500">{step.detail}</p>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 function RestroAiSection() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section id="restro-ai" className="px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
+    <section id="restro-ai" className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl overflow-hidden">
+        <div className="grid min-w-0 gap-10 lg:grid-cols-[0.86fr_1.14fr] lg:items-start">
           <Reveal>
             <div className="lg:sticky lg:top-32">
               <SectionHeader
@@ -607,14 +664,14 @@ function RestroAiSection() {
                 title="Restro AI is an idea I keep coming back to."
                 description="Restaurants already have software. Most of it still does not help them think ahead. The idea is simple: give restaurant teams a calm operating layer that can read demand, inventory, staffing, and waste before the day gets away from them. I want it to feel less like another dashboard and more like a second brain for the person running the floor."
               />
-              <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-                <Button asChild className="rounded-full bg-white px-5 text-black hover:bg-slate-200">
+              <div className="mt-7 flex flex-col gap-2.5 sm:mt-8 sm:flex-row sm:gap-3">
+                <Button asChild className="magnetic-action rounded-full bg-white px-5 text-black hover:bg-slate-200">
                   <Link href="https://restro-ai.com" target="_blank" rel="noreferrer">
                     Visit Restro AI
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" className="rounded-full border-white/15 bg-white/[0.035] px-5 text-white hover:bg-white/[0.075] hover:text-white">
+                <Button asChild variant="outline" className="magnetic-action rounded-full border-white/15 bg-white/[0.035] px-5 text-white hover:bg-white/[0.075] hover:text-white">
                   <Link href="#projects">See product thinking</Link>
                 </Button>
               </div>
@@ -622,12 +679,12 @@ function RestroAiSection() {
           </Reveal>
 
           <Reveal delay={0.12}>
-            <Surface className="p-4 sm:p-5">
-              <div className="rounded-[1.4rem] border border-white/10 bg-black/35 p-4 sm:p-5">
+            <Surface className="w-full min-w-0 rounded-none border-0 bg-transparent p-0 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-5 sm:shadow-2xl sm:backdrop-blur-xl">
+              <div className="p-0 sm:rounded-[1.4rem] sm:border sm:border-white/10 sm:bg-black/35 sm:p-5">
                 <div className="flex items-center justify-between gap-4">
                   <div>
-                    <p className="text-sm text-slate-400">Restaurant intelligence</p>
-                    <h3 className="mt-1 text-2xl font-semibold tracking-[-0.035em] text-white">Tomorrow's rush, a little less mysterious.</h3>
+                    <p className="text-xs text-slate-400 sm:text-sm">Restaurant intelligence</p>
+                    <h3 className="mt-1 text-xl font-semibold tracking-[-0.035em] text-white sm:text-2xl">Tomorrow's rush, a little less mysterious.</h3>
                   </div>
                   <motion.span
                     className="h-2.5 w-2.5 rounded-full bg-emerald-300"
@@ -636,22 +693,22 @@ function RestroAiSection() {
                   />
                 </div>
 
-                <div className="mt-6 grid gap-3 sm:grid-cols-3">
+                <div className="mt-5 grid gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-3">
                   {restroMetrics.map((metric) => (
-                    <div key={metric.label} className="rounded-3xl border border-white/10 bg-white/[0.04] p-4">
-                      <metric.icon className="h-5 w-5 text-slate-300" />
-                      <p className="mt-7 text-2xl font-semibold text-white">{metric.value}</p>
-                      <p className="mt-1 text-sm text-slate-500">{metric.label}</p>
+                    <div key={metric.label} className="border-l border-white/10 pl-3 sm:rounded-3xl sm:border sm:bg-white/[0.04] sm:p-4">
+                      <metric.icon className="h-4 w-4 text-slate-300 sm:h-5 sm:w-5" />
+                      <p className="mt-5 text-xl font-semibold text-white sm:mt-7 sm:text-2xl">{metric.value}</p>
+                      <p className="mt-1 text-xs text-slate-500 sm:text-sm">{metric.label}</p>
                     </div>
                   ))}
                 </div>
 
-                <div className="mt-4 rounded-3xl border border-white/10 bg-white/[0.035] p-4">
+                <div className="mt-5 sm:mt-4 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-white/[0.035] sm:p-4">
                   <div className="mb-4 flex items-center justify-between">
                     <p className="text-sm font-medium text-white">Demand curve</p>
                     <span className="rounded-full bg-white/[0.06] px-2 py-1 text-xs text-slate-400">live simulation</span>
                   </div>
-                  <div className="flex h-44 items-end gap-1.5 sm:gap-2">
+                  <div className="flex h-28 items-end gap-1.5 sm:h-44 sm:gap-2">
                     {demandBars.map((height, index) => (
                       <motion.div
                         key={`${height}-${index}`}
@@ -665,8 +722,10 @@ function RestroAiSection() {
                   </div>
                 </div>
 
-                <div className="mt-4 grid gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-                  <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-4">
+                <RestroCommandCenter shouldReduceMotion={shouldReduceMotion} />
+
+                <div className="mt-3 grid min-w-0 gap-3 sm:mt-4 sm:gap-4 xl:grid-cols-[0.9fr_1.1fr]">
+                  <div className="sm:rounded-3xl sm:border sm:border-white/10 sm:bg-white/[0.035] sm:p-4">
                     <p className="text-sm font-medium text-white">Outlet heatmap</p>
                     <div className="mt-4 grid grid-cols-4 gap-2">
                       {heatmapCells.map((intensity, index) => (
@@ -683,7 +742,7 @@ function RestroAiSection() {
                     </div>
                   </div>
 
-                  <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-4">
+                  <div className="border-t border-white/10 pt-4 sm:rounded-3xl sm:border sm:bg-white/[0.035] sm:p-4">
                     <p className="text-sm font-medium text-white">AI recommendation feed</p>
                     <div className="mt-4 space-y-3">
                       {restroSignals.map((signal, index) => (
@@ -693,7 +752,7 @@ function RestroAiSection() {
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: shouldReduceMotion ? 0 : 0.4, delay: index * 0.06 }}
-                          className="rounded-2xl border border-white/10 bg-black/25 p-3 text-sm leading-6 text-slate-300"
+                          className="border-t border-white/[0.08] py-3 text-sm leading-6 text-slate-300 first:border-t-0 sm:rounded-2xl sm:border sm:bg-black/25 sm:p-3"
                         >
                           {signal}
                         </motion.div>
@@ -706,13 +765,13 @@ function RestroAiSection() {
           </Reveal>
         </div>
 
-        <div className="mt-8 grid gap-4 lg:grid-cols-4">
+        <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4 lg:grid-cols-4">
           {restroFlow.map((step, index) => (
             <Reveal key={step.label} delay={index * 0.05}>
-              <Surface className="h-full p-5">
-                <step.icon className="h-5 w-5 text-slate-300" />
-                <p className="mt-6 text-sm uppercase tracking-[0.22em] text-slate-500">0{index + 1}</p>
-                <h3 className="mt-2 text-xl font-semibold text-white">{step.label}</h3>
+              <Surface className="h-full rounded-none border-0 border-t border-white/10 bg-transparent p-0 py-4 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-5 sm:shadow-2xl sm:backdrop-blur-xl">
+                <step.icon className="h-4 w-4 text-slate-300 sm:h-5 sm:w-5" />
+                <p className="mt-5 text-xs uppercase tracking-[0.22em] text-slate-500 sm:mt-6 sm:text-sm">0{index + 1}</p>
+                <h3 className="mt-2 text-lg font-semibold text-white sm:text-xl">{step.label}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{step.detail}</p>
               </Surface>
             </Reveal>
@@ -726,8 +785,8 @@ function RestroAiSection() {
 function ProjectMockup({ projectName }: { projectName: string }) {
   if (projectName === "FileHoster") {
     return (
-      <div className="rounded-3xl border border-white/10 bg-black/25 p-4">
-        <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.035] p-6 text-center">
+      <div className="rounded-2xl bg-white/[0.025] p-3 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-black/25 sm:p-4">
+        <div className="rounded-2xl border border-dashed border-white/15 bg-white/[0.035] p-5 text-center sm:p-6">
           <MoveUpRight className="mx-auto h-6 w-6 text-slate-300" />
           <p className="mt-4 text-sm text-slate-300">Drop file. Generate secure link. Track state.</p>
         </div>
@@ -745,7 +804,7 @@ function ProjectMockup({ projectName }: { projectName: string }) {
 
   if (projectName === "HonReview") {
     return (
-      <div className="rounded-3xl border border-white/10 bg-black/25 p-4">
+      <div className="rounded-2xl bg-white/[0.025] p-3 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-black/25 sm:p-4">
         {[92, 78, 61].map((score, index) => (
           <div key={score} className="mb-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3 last:mb-0">
             <div className="flex items-center justify-between text-xs text-slate-500">
@@ -763,8 +822,8 @@ function ProjectMockup({ projectName }: { projectName: string }) {
 
   if (projectName === "FitSpot") {
     return (
-      <div className="grid grid-cols-[0.7fr_1fr] gap-3 rounded-3xl border border-white/10 bg-black/25 p-4">
-        <div className="rounded-[1.5rem] border border-white/10 bg-white/[0.04] p-3">
+      <div className="grid min-w-0 grid-cols-[0.7fr_1fr] gap-3 rounded-2xl bg-white/[0.025] p-3 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-black/25 sm:p-4">
+        <div className="rounded-[1.25rem] bg-white/[0.04] p-3 sm:rounded-[1.5rem] sm:border sm:border-white/10">
           <div className="h-24 rounded-2xl bg-gradient-to-br from-white/20 to-white/[0.03]" />
           <div className="mt-3 h-2 w-16 rounded-full bg-white/20" />
           <div className="mt-2 h-2 w-10 rounded-full bg-white/10" />
@@ -781,10 +840,10 @@ function ProjectMockup({ projectName }: { projectName: string }) {
   }
 
   return (
-    <div className="rounded-3xl border border-white/10 bg-black/25 p-4">
+    <div className="rounded-2xl bg-white/[0.025] p-3 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-black/25 sm:p-4">
       <div className="grid grid-cols-2 gap-3">
         {architectureNodes.map((node) => (
-          <div key={node.label} className="rounded-2xl border border-white/10 bg-white/[0.035] p-3">
+          <div key={node.label} className="rounded-2xl bg-white/[0.035] p-3 sm:border sm:border-white/10">
             <node.icon className="h-4 w-4 text-slate-300" />
             <p className="mt-4 text-sm font-medium text-white">{node.label}</p>
             <p className="mt-1 text-xs leading-5 text-slate-500">{node.detail}</p>
@@ -800,8 +859,8 @@ function ProjectsSection() {
   const activeProject = projectCaseStudies.find((project) => project.name === activeProjectName) ?? projectCaseStudies[0]
 
   return (
-    <section id="projects" className="px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-6xl">
+    <section id="projects" className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl overflow-hidden">
         <Reveal>
           <SectionHeader
             eyebrow="Signature projects"
@@ -810,8 +869,8 @@ function ProjectsSection() {
           />
         </Reveal>
 
-        <div className="mt-12 grid gap-5 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="grid gap-3">
+        <div className="mt-10 grid min-w-0 gap-4 sm:mt-12 sm:gap-5 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="grid min-w-0 gap-3">
             {projectCaseStudies.map((project) => {
               const isActive = activeProject.name === project.name
 
@@ -821,7 +880,7 @@ function ProjectsSection() {
                   type="button"
                   onClick={() => setActiveProjectName(project.name)}
                   className={cn(
-                    "group rounded-[1.5rem] border p-5 text-left transition duration-300",
+                    "group border-t border-white/10 py-4 text-left transition duration-300 first:border-t-0 sm:rounded-[1.5rem] sm:border sm:p-5",
                     isActive
                       ? "border-white/20 bg-white/[0.07] shadow-2xl shadow-black/25"
                       : "border-white/10 bg-white/[0.025] hover:-translate-y-0.5 hover:border-white/18 hover:bg-white/[0.045]",
@@ -839,25 +898,25 @@ function ProjectsSection() {
                     </div>
                     <ArrowRight className={cn("h-4 w-4 transition", isActive ? "text-white" : "text-slate-600 group-hover:text-slate-300")} />
                   </div>
-                  <p className="mt-4 text-sm leading-6 text-slate-400">{project.summary}</p>
+                  <p className="mt-3 text-sm leading-6 text-slate-400 sm:mt-4">{project.summary}</p>
                 </button>
               )
             })}
           </div>
 
-          <Surface className="p-4 sm:p-6">
+          <Surface className="w-full min-w-0 rounded-none border-0 bg-transparent p-0 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-6 sm:shadow-2xl sm:backdrop-blur-xl">
             <motion.div
               key={activeProject.name}
               initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <div className={cn("rounded-[1.4rem] bg-gradient-to-br p-px", accentMap[activeProject.accent])}>
-                <div className="rounded-[1.35rem] bg-[#070812]/95 p-5">
+              <div className={cn("w-full min-w-0 rounded-[1.25rem] bg-gradient-to-br p-px sm:rounded-[1.4rem]", accentMap[activeProject.accent])}>
+                <div className="rounded-[1.2rem] bg-[#070812]/95 p-4 sm:rounded-[1.35rem] sm:p-5">
                   <div className="flex items-start justify-between gap-4">
                     <div>
                       <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{activeProject.label}</p>
-                      <h3 className="mt-3 text-3xl font-semibold tracking-[-0.04em] text-white">{activeProject.name}</h3>
+                      <h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white sm:mt-3 sm:text-3xl">{activeProject.name}</h3>
                     </div>
                     {activeProject.href ? (
                       <Link href={activeProject.href} target="_blank" rel="noreferrer" className="rounded-full border border-white/10 bg-white/[0.04] p-2 text-slate-300 transition hover:bg-white/[0.08] hover:text-white">
@@ -870,14 +929,14 @@ function ProjectsSection() {
                     <ProjectMockup projectName={activeProject.name} />
                   </div>
 
-                  <div className="mt-6 grid gap-4">
+                  <div className="mt-5 grid gap-3 sm:mt-6 sm:gap-4">
                     {[
                       ["Product", activeProject.product],
                       ["Engineering", activeProject.engineering],
                       ["Hard part", activeProject.difficulty],
                       ["Impact", activeProject.impact],
                     ].map(([label, value]) => (
-                      <div key={label} className="rounded-3xl border border-white/10 bg-white/[0.035] p-4">
+                      <div key={label} className="border-t border-white/10 py-3 first:border-t-0 sm:rounded-3xl sm:border sm:bg-white/[0.035] sm:p-4">
                         <p className="text-xs uppercase tracking-[0.22em] text-slate-500">{label}</p>
                         <p className="mt-3 text-sm leading-6 text-slate-300">{value}</p>
                       </div>
@@ -903,9 +962,9 @@ function ProjectsSection() {
 
 function PrinciplesSection() {
   return (
-    <section id="principles" className="px-4 py-20 sm:px-6 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-6xl">
-        <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
+    <section id="principles" className="px-4 py-24 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl overflow-hidden">
+        <div className="grid min-w-0 gap-8 sm:gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-start">
           <Reveal>
             <SectionHeader
               eyebrow="Product philosophy"
@@ -914,16 +973,16 @@ function PrinciplesSection() {
             />
           </Reveal>
 
-          <div className="grid gap-4">
+          <div className="grid gap-3 sm:gap-4">
             {principles.map((principle, index) => (
               <Reveal key={principle.title} delay={index * 0.05}>
-                <Surface className="p-5">
-                  <div className="flex gap-4">
-                    <span className="grid h-10 w-10 flex-none place-items-center rounded-2xl border border-white/10 bg-white/[0.05] text-sm text-slate-300">
+                <Surface className="rounded-none border-0 border-t border-white/10 bg-transparent p-0 py-4 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-5 sm:shadow-2xl sm:backdrop-blur-xl">
+                  <div className="flex gap-3 sm:gap-4">
+                    <span className="grid h-9 w-9 flex-none place-items-center rounded-2xl border border-white/10 bg-white/[0.05] text-xs text-slate-300 sm:h-10 sm:w-10 sm:text-sm">
                       0{index + 1}
                     </span>
                     <div>
-                      <h3 className="text-xl font-semibold text-white">{principle.title}</h3>
+                      <h3 className="text-lg font-semibold text-white sm:text-xl">{principle.title}</h3>
                       <p className="mt-2 text-sm leading-6 text-slate-400">{principle.description}</p>
                     </div>
                   </div>
@@ -933,12 +992,12 @@ function PrinciplesSection() {
           </div>
         </div>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {stackNodes.map((node, index) => (
             <Reveal key={node.label} delay={index * 0.035}>
-              <Surface className="group h-full p-5 transition duration-300 hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.055]">
+              <Surface className="group h-full rounded-none border-0 border-t border-white/10 bg-transparent p-0 py-4 shadow-none backdrop-blur-0 transition duration-300 hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.055] sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-5 sm:shadow-2xl sm:backdrop-blur-xl">
                 <node.icon className="h-5 w-5 text-slate-300 transition group-hover:text-white" />
-                <h3 className="mt-6 text-xl font-semibold text-white">{node.label}</h3>
+                <h3 className="mt-5 text-lg font-semibold text-white sm:mt-6 sm:text-xl">{node.label}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{node.detail}</p>
               </Surface>
             </Reveal>
@@ -951,10 +1010,10 @@ function PrinciplesSection() {
 
 function ContactSection() {
   return (
-    <section id="contact" className="px-4 py-20 pb-32 sm:px-6 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-6xl">
-        <Surface className="p-6 sm:p-10 lg:p-12">
-          <div className="grid gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
+    <section id="contact" className="px-4 py-24 pb-36 sm:px-6 lg:px-8 lg:py-32">
+      <div className="mx-auto w-full max-w-6xl overflow-hidden">
+        <Surface className="rounded-none border-0 bg-transparent p-0 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-10 sm:shadow-2xl sm:backdrop-blur-xl lg:p-12">
+          <div className="grid gap-8 sm:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
             <Reveal>
               <SectionHeader
                 eyebrow="Let's build"
@@ -962,7 +1021,7 @@ function ContactSection() {
                 description="Especially if it needs someone who can think through product, write the code, notice the details, and still keep the room calm when things get messy."
               />
               <div className="mt-8">
-                <Button asChild size="lg" className="rounded-full bg-white px-6 text-black hover:bg-slate-200">
+                <Button asChild size="lg" className="magnetic-action rounded-full bg-white px-6 text-black hover:bg-slate-200">
                   <Link href="mailto:adityabajaj2222@gmail.com">
                     Email Aditya
                     <Mail className="ml-2 h-4 w-4" />
@@ -971,17 +1030,17 @@ function ContactSection() {
               </div>
             </Reveal>
 
-            <div className="grid gap-3">
+            <div className="grid gap-2.5 sm:gap-3">
               {contactLinks.map((item, index) => (
                 <Reveal key={item.label} delay={index * 0.04}>
                   <Link
                     href={item.href}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
                     rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="group flex items-center gap-4 rounded-3xl border border-white/10 bg-black/25 p-4 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.055]"
+                    className="group flex items-center gap-3 border-t border-white/10 py-4 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.055] first:border-t-0 sm:gap-4 sm:rounded-3xl sm:border sm:bg-black/25 sm:p-4"
                   >
-                    <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/[0.06] text-slate-200">
-                      <item.icon className="h-5 w-5" />
+                    <span className="grid h-10 w-10 place-items-center rounded-2xl bg-white/[0.06] text-slate-200 sm:h-11 sm:w-11">
+                      <item.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block text-sm text-slate-500">{item.label}</span>
