@@ -435,7 +435,7 @@ function HeroSection() {
                     initial={shouldReduceMotion ? false : { opacity: 0, x: 18 }}
                     animate={shouldReduceMotion ? undefined : { opacity: 1, x: 0 }}
                     transition={{ duration: 0.5, delay: 0.25 + index * 0.08 }}
-                    className="border-t border-white/[0.08] py-3 first:border-t-0 sm:rounded-3xl sm:border sm:bg-white/[0.035] sm:p-4"
+                    className="rounded-2xl border border-white/[0.08] bg-white/[0.035] p-3 sm:rounded-3xl sm:p-4"
                   >
                     <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 sm:text-xs sm:tracking-[0.22em]">{signal.label}</p>
                     <p className="mt-1 text-sm font-medium text-white sm:mt-2 sm:text-base">{signal.value}</p>
@@ -463,10 +463,10 @@ function NowSection() {
           />
         </Reveal>
 
-        <div className="mt-10 grid w-full min-w-0 gap-0 border-y border-white/10 lg:grid-cols-3 lg:gap-4 lg:border-y-0">
+        <div className="mt-10 grid w-full min-w-0 gap-3 sm:gap-4 lg:grid-cols-3">
           {currentSignals.map((signal, index) => (
             <Reveal key={signal.label} delay={index * 0.06}>
-              <Surface className="h-full rounded-none border-0 border-b border-white/10 bg-transparent p-0 py-5 shadow-none backdrop-blur-0 last:border-b-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-6 sm:shadow-2xl sm:backdrop-blur-xl lg:border">
+              <Surface className="h-full rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl backdrop-blur-xl sm:rounded-[1.75rem] sm:p-6">
                 <p className="text-xs uppercase tracking-[0.24em] text-slate-500">{signal.label}</p>
                 <h3 className="mt-3 text-xl font-semibold tracking-[-0.035em] text-white sm:mt-5 sm:text-2xl">{signal.value}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400 sm:mt-4">{signal.detail}</p>
@@ -567,7 +567,7 @@ function ExperienceJourneySection() {
         <div className="mt-10 grid gap-4 sm:mt-12 sm:gap-5">
           {experienceChapters.map((chapter, index) => (
             <Reveal key={chapter.company} delay={index * 0.06}>
-      <Surface className="rounded-none border-0 border-t border-white/10 bg-transparent p-0 py-6 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-7 sm:shadow-2xl sm:backdrop-blur-xl">
+              <Surface className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl backdrop-blur-xl sm:rounded-[1.75rem] sm:p-7">
                 <article className="grid min-w-0 gap-5 sm:gap-7 lg:grid-cols-[0.82fr_1.18fr] lg:items-start">
                   <div>
                     <div className="flex items-center justify-between gap-4">
@@ -588,7 +588,7 @@ function ExperienceJourneySection() {
                     <JourneyVisual visual={chapter.visual} />
                     <div className="grid gap-3">
                       {chapter.signals.map((signal) => (
-                        <div key={signal} className="flex gap-3 border-t border-white/[0.08] py-3 first:border-t-0 sm:rounded-3xl sm:border sm:bg-white/[0.03] sm:p-4">
+                        <div key={signal} className="flex gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.03] p-3 sm:rounded-3xl sm:p-4">
                           <ChevronRight className="mt-0.5 h-4 w-4 flex-none text-slate-500" />
                           <p className="text-sm leading-6 text-slate-300">{signal}</p>
                         </div>
@@ -607,7 +607,7 @@ function ExperienceJourneySection() {
 
 function RestroCommandCenter({ shouldReduceMotion }: { shouldReduceMotion: boolean | null }) {
   return (
-    <div className="mt-3 overflow-hidden border-y border-white/10 py-4 sm:mt-4 sm:rounded-3xl sm:border sm:bg-black/30 sm:p-4">
+    <div className="mt-3 overflow-hidden rounded-[1.35rem] border border-white/10 bg-black/30 p-4 sm:mt-4 sm:rounded-3xl">
       <div className="mb-4 flex items-center justify-between">
         <div>
           <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Operations loop</p>
@@ -632,7 +632,7 @@ function RestroCommandCenter({ shouldReduceMotion }: { shouldReduceMotion: boole
             whileInView={shouldReduceMotion ? undefined : { opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.42, delay: index * 0.08, ease: premiumEase }}
-            className="relative border-t border-white/[0.08] py-3 first:border-t-0 sm:rounded-2xl sm:border sm:bg-white/[0.035] sm:p-3"
+            className="relative rounded-2xl border border-white/[0.08] bg-white/[0.035] p-3"
           >
             <motion.div
               className="grid h-9 w-9 place-items-center rounded-2xl bg-white/[0.06] text-slate-200 sm:border sm:border-white/10"
@@ -647,6 +647,60 @@ function RestroCommandCenter({ shouldReduceMotion }: { shouldReduceMotion: boole
         ))}
       </div>
     </div>
+  )
+}
+
+function RestroMobileSnapshot({ shouldReduceMotion }: { shouldReduceMotion: boolean | null }) {
+  return (
+    <Surface className="w-full min-w-0 rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 shadow-2xl backdrop-blur-xl">
+      <div className="rounded-[1.15rem] border border-white/10 bg-black/35 p-4">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-xs text-slate-400">Restaurant intelligence</p>
+            <h3 className="mt-1 text-xl font-semibold tracking-[-0.035em] text-white">Tomorrow&apos;s rush preview</h3>
+          </div>
+          <motion.span
+            className="mt-1 h-2.5 w-2.5 flex-none rounded-full bg-emerald-300"
+            animate={shouldReduceMotion ? undefined : { opacity: [0.35, 1, 0.35] }}
+            transition={{ duration: 1.6, repeat: Number.POSITIVE_INFINITY }}
+          />
+        </div>
+
+        <div className="mt-4 grid grid-cols-2 gap-2">
+          {restroMetrics.slice(0, 2).map((metric) => (
+            <div key={metric.label} className="rounded-2xl border border-white/10 bg-white/[0.04] p-3">
+              <metric.icon className="h-4 w-4 text-slate-300" />
+              <p className="mt-4 text-lg font-semibold text-white">{metric.value}</p>
+              <p className="mt-1 text-xs text-slate-500">{metric.label}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3">
+          <div className="mb-3 flex items-center justify-between">
+            <p className="text-sm font-medium text-white">Demand curve</p>
+            <span className="rounded-full bg-white/[0.06] px-2 py-1 text-[11px] text-slate-400">sample</span>
+          </div>
+          <div className="flex h-20 items-end gap-1.5">
+            {demandBars.slice(0, 8).map((height, index) => (
+              <motion.div
+                key={`${height}-${index}`}
+                className="flex-1 rounded-t-lg bg-white/45"
+                initial={{ height: 10, opacity: 0.35 }}
+                whileInView={{ height: `${height}%`, opacity: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: shouldReduceMotion ? 0 : 0.55, delay: index * 0.025 }}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-3 rounded-2xl border border-white/[0.08] bg-black/25 p-3">
+          <p className="text-xs uppercase tracking-[0.22em] text-slate-500">AI note</p>
+          <p className="mt-2 text-sm leading-6 text-slate-300">{restroSignals[0]}</p>
+        </div>
+      </div>
+    </Surface>
   )
 }
 
@@ -678,9 +732,13 @@ function RestroAiSection() {
             </div>
           </Reveal>
 
-          <Reveal delay={0.12}>
-            <Surface className="w-full min-w-0 rounded-none border-0 bg-transparent p-0 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-5 sm:shadow-2xl sm:backdrop-blur-xl">
-              <div className="p-0 sm:rounded-[1.4rem] sm:border sm:border-white/10 sm:bg-black/35 sm:p-5">
+          <Reveal className="sm:hidden" delay={0.12}>
+            <RestroMobileSnapshot shouldReduceMotion={shouldReduceMotion} />
+          </Reveal>
+
+          <Reveal className="hidden sm:block" delay={0.12}>
+            <Surface className="w-full min-w-0 rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 shadow-2xl backdrop-blur-xl sm:rounded-[1.75rem] sm:p-5">
+              <div className="rounded-[1.15rem] border border-white/10 bg-black/35 p-4 sm:rounded-[1.4rem] sm:p-5">
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <p className="text-xs text-slate-400 sm:text-sm">Restaurant intelligence</p>
@@ -695,7 +753,7 @@ function RestroAiSection() {
 
                 <div className="mt-5 grid gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-3">
                   {restroMetrics.map((metric) => (
-                    <div key={metric.label} className="border-l border-white/10 pl-3 sm:rounded-3xl sm:border sm:bg-white/[0.04] sm:p-4">
+                    <div key={metric.label} className="rounded-2xl border border-white/10 bg-white/[0.04] p-3 sm:rounded-3xl sm:p-4">
                       <metric.icon className="h-4 w-4 text-slate-300 sm:h-5 sm:w-5" />
                       <p className="mt-5 text-xl font-semibold text-white sm:mt-7 sm:text-2xl">{metric.value}</p>
                       <p className="mt-1 text-xs text-slate-500 sm:text-sm">{metric.label}</p>
@@ -703,7 +761,7 @@ function RestroAiSection() {
                   ))}
                 </div>
 
-                <div className="mt-5 sm:mt-4 sm:rounded-3xl sm:border sm:border-white/10 sm:bg-white/[0.035] sm:p-4">
+                <div className="mt-5 rounded-3xl border border-white/10 bg-white/[0.035] p-4 sm:mt-4">
                   <div className="mb-4 flex items-center justify-between">
                     <p className="text-sm font-medium text-white">Demand curve</p>
                     <span className="rounded-full bg-white/[0.06] px-2 py-1 text-xs text-slate-400">live simulation</span>
@@ -725,7 +783,7 @@ function RestroAiSection() {
                 <RestroCommandCenter shouldReduceMotion={shouldReduceMotion} />
 
                 <div className="mt-3 grid min-w-0 gap-3 sm:mt-4 sm:gap-4 xl:grid-cols-[0.9fr_1.1fr]">
-                  <div className="sm:rounded-3xl sm:border sm:border-white/10 sm:bg-white/[0.035] sm:p-4">
+                  <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-4">
                     <p className="text-sm font-medium text-white">Outlet heatmap</p>
                     <div className="mt-4 grid grid-cols-4 gap-2">
                       {heatmapCells.map((intensity, index) => (
@@ -742,7 +800,7 @@ function RestroAiSection() {
                     </div>
                   </div>
 
-                  <div className="border-t border-white/10 pt-4 sm:rounded-3xl sm:border sm:bg-white/[0.035] sm:p-4">
+                  <div className="rounded-3xl border border-white/10 bg-white/[0.035] p-4">
                     <p className="text-sm font-medium text-white">AI recommendation feed</p>
                     <div className="mt-4 space-y-3">
                       {restroSignals.map((signal, index) => (
@@ -752,7 +810,7 @@ function RestroAiSection() {
                           whileInView={{ opacity: 1, x: 0 }}
                           viewport={{ once: true }}
                           transition={{ duration: shouldReduceMotion ? 0 : 0.4, delay: index * 0.06 }}
-                          className="border-t border-white/[0.08] py-3 text-sm leading-6 text-slate-300 first:border-t-0 sm:rounded-2xl sm:border sm:bg-black/25 sm:p-3"
+                          className="rounded-2xl border border-white/[0.08] bg-black/25 p-3 text-sm leading-6 text-slate-300"
                         >
                           {signal}
                         </motion.div>
@@ -765,10 +823,10 @@ function RestroAiSection() {
           </Reveal>
         </div>
 
-        <div className="mt-6 grid gap-3 sm:mt-8 sm:gap-4 lg:grid-cols-4">
+        <div className="mt-6 hidden gap-3 sm:mt-8 sm:grid sm:gap-4 lg:grid-cols-4">
           {restroFlow.map((step, index) => (
             <Reveal key={step.label} delay={index * 0.05}>
-              <Surface className="h-full rounded-none border-0 border-t border-white/10 bg-transparent p-0 py-4 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-5 sm:shadow-2xl sm:backdrop-blur-xl">
+              <Surface className="h-full rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl backdrop-blur-xl sm:rounded-[1.75rem]">
                 <step.icon className="h-4 w-4 text-slate-300 sm:h-5 sm:w-5" />
                 <p className="mt-5 text-xs uppercase tracking-[0.22em] text-slate-500 sm:mt-6 sm:text-sm">0{index + 1}</p>
                 <h3 className="mt-2 text-lg font-semibold text-white sm:text-xl">{step.label}</h3>
@@ -880,7 +938,7 @@ function ProjectsSection() {
                   type="button"
                   onClick={() => setActiveProjectName(project.name)}
                   className={cn(
-                    "group border-t border-white/10 py-4 text-left transition duration-300 first:border-t-0 sm:rounded-[1.5rem] sm:border sm:p-5",
+                    "group rounded-[1.5rem] border p-5 text-left transition duration-300",
                     isActive
                       ? "border-white/20 bg-white/[0.07] shadow-2xl shadow-black/25"
                       : "border-white/10 bg-white/[0.025] hover:-translate-y-0.5 hover:border-white/18 hover:bg-white/[0.045]",
@@ -904,7 +962,7 @@ function ProjectsSection() {
             })}
           </div>
 
-          <Surface className="w-full min-w-0 rounded-none border-0 bg-transparent p-0 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-6 sm:shadow-2xl sm:backdrop-blur-xl">
+          <Surface className="w-full min-w-0 rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 shadow-2xl backdrop-blur-xl sm:rounded-[1.75rem] sm:p-6">
             <motion.div
               key={activeProject.name}
               initial={{ opacity: 0, y: 18 }}
@@ -936,7 +994,7 @@ function ProjectsSection() {
                       ["Hard part", activeProject.difficulty],
                       ["Impact", activeProject.impact],
                     ].map(([label, value]) => (
-                      <div key={label} className="border-t border-white/10 py-3 first:border-t-0 sm:rounded-3xl sm:border sm:bg-white/[0.035] sm:p-4">
+                      <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.035] p-3 sm:rounded-3xl sm:p-4">
                         <p className="text-xs uppercase tracking-[0.22em] text-slate-500">{label}</p>
                         <p className="mt-3 text-sm leading-6 text-slate-300">{value}</p>
                       </div>
@@ -976,7 +1034,7 @@ function PrinciplesSection() {
           <div className="grid gap-3 sm:gap-4">
             {principles.map((principle, index) => (
               <Reveal key={principle.title} delay={index * 0.05}>
-                <Surface className="rounded-none border-0 border-t border-white/10 bg-transparent p-0 py-4 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-5 sm:shadow-2xl sm:backdrop-blur-xl">
+                <Surface className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 shadow-2xl backdrop-blur-xl sm:rounded-[1.75rem] sm:p-5">
                   <div className="flex gap-3 sm:gap-4">
                     <span className="grid h-9 w-9 flex-none place-items-center rounded-2xl border border-white/10 bg-white/[0.05] text-xs text-slate-300 sm:h-10 sm:w-10 sm:text-sm">
                       0{index + 1}
@@ -995,7 +1053,7 @@ function PrinciplesSection() {
         <div className="mt-8 grid gap-3 sm:mt-10 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {stackNodes.map((node, index) => (
             <Reveal key={node.label} delay={index * 0.035}>
-              <Surface className="group h-full rounded-none border-0 border-t border-white/10 bg-transparent p-0 py-4 shadow-none backdrop-blur-0 transition duration-300 hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.055] sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-5 sm:shadow-2xl sm:backdrop-blur-xl">
+              <Surface className="group h-full rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-4 shadow-2xl backdrop-blur-xl transition duration-300 hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.055] sm:rounded-[1.75rem] sm:p-5">
                 <node.icon className="h-5 w-5 text-slate-300 transition group-hover:text-white" />
                 <h3 className="mt-5 text-lg font-semibold text-white sm:mt-6 sm:text-xl">{node.label}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-400">{node.detail}</p>
@@ -1012,7 +1070,7 @@ function ContactSection() {
   return (
     <section id="contact" className="px-4 py-24 pb-36 sm:px-6 lg:px-8 lg:py-32">
       <div className="mx-auto w-full max-w-6xl overflow-hidden">
-        <Surface className="rounded-none border-0 bg-transparent p-0 shadow-none backdrop-blur-0 sm:rounded-[1.75rem] sm:border sm:bg-white/[0.035] sm:p-10 sm:shadow-2xl sm:backdrop-blur-xl lg:p-12">
+        <Surface className="rounded-[1.35rem] border border-white/10 bg-white/[0.035] p-5 shadow-2xl backdrop-blur-xl sm:rounded-[1.75rem] sm:p-10 lg:p-12">
           <div className="grid gap-8 sm:gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:items-end">
             <Reveal>
               <SectionHeader
@@ -1037,7 +1095,7 @@ function ContactSection() {
                     href={item.href}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
                     rel={item.href.startsWith("http") ? "noreferrer" : undefined}
-                    className="group flex items-center gap-3 border-t border-white/10 py-4 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.055] first:border-t-0 sm:gap-4 sm:rounded-3xl sm:border sm:bg-black/25 sm:p-4"
+                    className="group flex items-center gap-3 rounded-3xl border border-white/10 bg-black/25 p-4 transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.055] sm:gap-4"
                   >
                     <span className="grid h-10 w-10 place-items-center rounded-2xl bg-white/[0.06] text-slate-200 sm:h-11 sm:w-11">
                       <item.icon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -1061,8 +1119,7 @@ function ContactSection() {
 function Footer() {
   return (
     <footer className="border-t border-white/10 px-5 py-8 sm:px-8">
-      <div className="mx-auto flex max-w-6xl flex-col gap-3 text-sm text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-        <p>Aditya Bajaj / Product engineer and independent builder</p>
+      <div className="mx-auto flex max-w-6xl justify-center text-sm text-slate-500 sm:justify-end">
         <div className="flex gap-4">
           <Link href="#restro-ai" className="hover:text-white">Restro AI</Link>
           <Link href="#projects" className="hover:text-white">Projects</Link>
