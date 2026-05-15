@@ -62,6 +62,20 @@
 
 html {
   scroll-behavior: smooth;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+img,
+svg,
+canvas,
+video {
+  max-width: 100%;
 }
 
 @media (pointer: fine) {
@@ -77,6 +91,12 @@ html {
 
 /* Mobile optimizations */
 @media (max-width: 768px) {
+  html,
+  body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
   * {
     /* Reduce animation complexity on mobile */
     animation-duration: 0.3s !important;
