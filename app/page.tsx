@@ -39,15 +39,6 @@ const navItems = [
   { label: "Contact", href: "#contact" },
 ]
 
-const bookChapters = [
-  { number: "00", label: "Opening", href: "#" },
-  { number: "01", label: "Paths", href: "#paths" },
-  { number: "02", label: "Thinking", href: "#console" },
-  { number: "03", label: "Restro AI", href: "#restro-ai" },
-  { number: "04", label: "Journeys", href: "#journeys" },
-  { number: "05", label: "Principles", href: "#about" },
-]
-
 const explorerPaths = [
   {
     id: "product",
@@ -286,11 +277,10 @@ function GlassCard({ children, className }: GlassCardProps) {
   )
 }
 
-function PageLabel({ number, title }: { number: string; title: string }) {
+function PageLabel({ title }: { title: string }) {
   return (
     <div className="mb-6 flex items-center gap-3 text-xs uppercase tracking-[0.26em] text-slate-500">
       <span className="h-px w-8 bg-white/20" />
-      <span>{number}</span>
       <span>{title}</span>
     </div>
   )
@@ -301,29 +291,11 @@ function BookProgress() {
   const scaleX = useSpring(scrollYProgress, { stiffness: 120, damping: 24 })
 
   return (
-    <>
-      <motion.div
-        aria-hidden="true"
-        className="fixed left-0 top-0 z-[60] h-px w-full origin-left bg-white/55"
-        style={{ scaleX }}
-      />
-      <aside className="fixed left-6 top-1/2 z-40 hidden -translate-y-1/2 xl:block">
-        <div className="rounded-full border border-white/10 bg-black/25 p-2 shadow-2xl shadow-black/30 backdrop-blur-2xl">
-          {bookChapters.map((chapter) => (
-            <Link
-              key={chapter.number}
-              href={chapter.href}
-              className="group flex items-center gap-3 rounded-full px-3 py-2 text-xs text-slate-500 transition hover:bg-white/[0.06] hover:text-white"
-            >
-              <span className="font-mono">{chapter.number}</span>
-              <span className="w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 group-hover:w-20 group-hover:opacity-100">
-                {chapter.label}
-              </span>
-            </Link>
-          ))}
-        </div>
-      </aside>
-    </>
+    <motion.div
+      aria-hidden="true"
+      className="fixed left-0 top-0 z-[60] h-px w-full origin-left bg-white/55"
+      style={{ scaleX }}
+    />
   )
 }
 
@@ -537,7 +509,7 @@ function BuilderConsoleSection() {
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.6 }}
         >
-          <PageLabel number="02" title="Thinking Log" />
+          <PageLabel title="Thinking Log" />
           <SectionEyebrow>Thinking log</SectionEyebrow>
           <h2 className="mt-6 text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
             A small window into how I think while building.
@@ -605,7 +577,7 @@ function PathExplorerSection() {
     <section id="paths" className="px-4 py-20 sm:px-8 lg:py-28">
       <div className="mx-auto max-w-7xl">
         <div className="mb-10 max-w-3xl">
-          <PageLabel number="01" title="Choose a Path" />
+          <PageLabel title="Choose a Path" />
           <SectionEyebrow>Explore</SectionEyebrow>
           <h2 className="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl">
             Pick the route you care about.
@@ -693,7 +665,7 @@ function HeroSection() {
 
       <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
         <motion.div initial={false} animate="visible" variants={fadeIn} transition={{ duration: 0.7 }}>
-          <PageLabel number="00" title="Opening" />
+          <PageLabel title="Opening" />
           <SectionEyebrow>Product engineer. Independent builder.</SectionEyebrow>
 
           <h1 className="mt-7 max-w-5xl text-4xl font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:mt-8 sm:text-6xl lg:text-7xl xl:text-8xl">
@@ -846,7 +818,7 @@ function RestroAiSection() {
           transition={{ duration: 0.7 }}
           className="mb-10 max-w-3xl"
         >
-          <PageLabel number="03" title="Current Build" />
+          <PageLabel title="Current Build" />
           <SectionEyebrow>Current build</SectionEyebrow>
           <h2 className="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
             Restro AI is an idea I keep coming back to.
@@ -1214,7 +1186,7 @@ function WorkSection() {
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div>
-            <PageLabel number="04" title="Journeys" />
+            <PageLabel title="Journeys" />
             <SectionEyebrow>Capabilities through journeys</SectionEyebrow>
             <h2 className="mt-6 max-w-3xl text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl">
               Not just where I worked. What those places trained in me.
@@ -1318,7 +1290,7 @@ function AboutSection() {
     <section id="about" className="px-4 py-20 sm:px-8 sm:py-24 lg:py-32">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
-          <PageLabel number="05" title="Principles" />
+          <PageLabel title="Principles" />
           <SectionEyebrow>Principles</SectionEyebrow>
           <h2 className="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl">
             I care a lot about products feeling alive.
@@ -1513,8 +1485,8 @@ export default function Portfolio() {
         <HeroSection />
         <PathExplorerSection />
         <BuilderConsoleSection />
-        <RestroAiSection />
         <WorkSection />
+        <RestroAiSection />
         <AboutSection />
         <ObsessionsSection />
         <ContactSection />
