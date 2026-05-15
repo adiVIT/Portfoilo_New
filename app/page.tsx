@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import Lenis from "lenis"
 import { motion, useMotionValue, useReducedMotion, useScroll, useSpring, useTransform } from "framer-motion"
 import {
   ArrowRight,
@@ -25,6 +24,7 @@ import {
   Phone,
   Route,
   Sparkles,
+  ThumbsUp,
   Zap,
 } from "lucide-react"
 
@@ -107,6 +107,26 @@ const aiRecommendationFeed = [
 ]
 
 const heatmapCells = [42, 58, 71, 64, 85, 93, 76, 69, 54, 88, 97, 82, 61, 73, 90, 66]
+
+const hiddenTorchNotes = [
+  { text: "built at 3AM energy", className: "left-6 top-[18rem]" },
+  { text: "too many tabs, one useful thread", className: "right-8 top-[32rem]" },
+  { text: "pretty screens do not save confused products", className: "left-8 top-[58rem]" },
+  { text: "real users make every idea honest", className: "right-10 top-[82rem]" },
+]
+
+const mobileDockItems = [
+  { label: "Paths", href: "#paths" },
+  { label: "Build", href: "#restro-ai" },
+  { label: "Story", href: "#journeys" },
+  { label: "Talk", href: "#contact" },
+]
+
+const pocketCards = [
+  { label: "Now", value: "Building Restro AI" },
+  { label: "Mode", value: "Product-first Android" },
+  { label: "Signal", value: "Messy products welcome" },
+]
 
 const journeyItems = [
   {
@@ -286,43 +306,42 @@ function BookProgress() {
   )
 }
 
+function MobileDock() {
+  return (
+    <nav
+      className="fixed inset-x-4 bottom-4 z-50 rounded-3xl border border-white/10 bg-black/80 p-1.5 shadow-2xl shadow-black/40 backdrop-blur-xl md:hidden"
+      aria-label="Mobile quick paths"
+    >
+      <div className="grid grid-cols-4 gap-1">
+        {mobileDockItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className="rounded-2xl px-1.5 py-2.5 text-center text-[11px] font-medium text-slate-300 transition active:scale-95 active:bg-white/[0.08]"
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
+    </nav>
+  )
+}
+
 function SmoothScroll() {
-  const shouldReduceMotion = useReducedMotion()
-
-  useEffect(() => {
-    if (shouldReduceMotion) return
-
-    const lenis = new Lenis({
-      duration: 1.05,
-      smoothWheel: true,
-      wheelMultiplier: 0.85,
-    })
-
-    function raf(time: number) {
-      lenis.raf(time)
-      requestAnimationFrame(raf)
-    }
-
-    const frame = requestAnimationFrame(raf)
-
-    return () => {
-      cancelAnimationFrame(frame)
-      lenis.destroy()
-    }
-  }, [shouldReduceMotion])
-
   return null
 }
 
-function CursorLight() {
+function TorchCursor() {
   const shouldReduceMotion = useReducedMotion()
   const mouseX = useMotionValue(-400)
   const mouseY = useMotionValue(-400)
-  const smoothX = useSpring(mouseX, { damping: 35, stiffness: 180 })
-  const smoothY = useSpring(mouseY, { damping: 35, stiffness: 180 })
+  const smoothX = useSpring(mouseX, { damping: 30, stiffness: 360, mass: 0.25 })
+  const smoothY = useSpring(mouseY, { damping: 30, stiffness: 360, mass: 0.25 })
 
   useEffect(() => {
     if (shouldReduceMotion) return
+
+    document.documentElement.classList.add("torch-cursor")
 
     function handlePointerMove(event: PointerEvent) {
       mouseX.set(event.clientX)
@@ -330,17 +349,45 @@ function CursorLight() {
     }
 
     window.addEventListener("pointermove", handlePointerMove)
-    return () => window.removeEventListener("pointermove", handlePointerMove)
+    return () => {
+      document.documentElement.classList.remove("torch-cursor")
+      window.removeEventListener("pointermove", handlePointerMove)
+    }
   }, [mouseX, mouseY, shouldReduceMotion])
 
   if (shouldReduceMotion) return null
 
   return (
-    <motion.div
-      aria-hidden="true"
-      className="pointer-events-none fixed left-0 top-0 z-40 hidden h-64 w-64 -translate-x-1/2 -translate-y-1/2 rounded-full bg-white/[0.055] blur-3xl mix-blend-screen md:block"
-      style={{ x: smoothX, y: smoothY }}
-    />
+    <>
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none fixed left-0 top-0 z-[70] hidden h-36 w-36 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle,rgba(255,255,255,0.16)_0%,rgba(255,255,255,0.06)_42%,transparent_72%)] opacity-90 will-change-transform md:block"
+        style={{ x: smoothX, y: smoothY }}
+      />
+      <motion.div
+        aria-hidden="true"
+        className="pointer-events-none fixed left-0 top-0 z-[71] hidden h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/45 bg-black/50 will-change-transform md:block"
+        style={{ x: smoothX, y: smoothY }}
+      />
+    </>
+  )
+}
+
+function HiddenTorchNotes() {
+  return (
+    <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-[5] hidden md:block">
+      {hiddenTorchNotes.map((note) => (
+        <div
+          key={note.text}
+          className={cn(
+            "torch-secret absolute max-w-44 rounded-2xl border border-white/10 bg-black/80 px-4 py-3 text-xs leading-5 text-white/80 opacity-0 shadow-2xl shadow-black/40 backdrop-blur-xl transition-opacity duration-300",
+            note.className,
+          )}
+        >
+          {note.text}
+        </div>
+      ))}
+    </div>
   )
 }
 
@@ -350,24 +397,12 @@ function AnimatedBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#03040a]">
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.18),transparent_28%),radial-gradient(circle_at_80%_20%,rgba(168,85,247,0.18),transparent_28%),radial-gradient(circle_at_45%_75%,rgba(16,185,129,0.12),transparent_32%)]" />
-      <motion.div
-        aria-hidden="true"
-        className="absolute left-1/2 top-[-20rem] h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-cyan-400/[0.06] blur-3xl"
-        animate={shouldReduceMotion ? undefined : { scale: [1, 1.18, 1], opacity: [0.45, 0.75, 0.45] }}
-        transition={{ duration: 9, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-      />
-      <motion.div
-        aria-hidden="true"
-        className="absolute bottom-[-14rem] right-[-8rem] h-[30rem] w-[30rem] rounded-full bg-white/[0.035] blur-3xl"
-        animate={shouldReduceMotion ? undefined : { x: [0, -40, 0], y: [0, 30, 0] }}
-        transition={{ duration: 12, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-      />
+      <div aria-hidden="true" className="absolute left-1/2 top-[-20rem] h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-white/[0.035] blur-3xl" />
+      <div aria-hidden="true" className="absolute bottom-[-14rem] right-[-8rem] h-[30rem] w-[30rem] rounded-full bg-white/[0.025] blur-3xl" />
       <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:52px_52px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
-      <motion.div
+      <div
         aria-hidden="true"
-        className="absolute inset-0 opacity-30"
-        animate={shouldReduceMotion ? undefined : { backgroundPosition: ["0px 0px", "52px 52px"] }}
-        transition={{ duration: 18, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
+        className="absolute inset-0 opacity-20"
         style={{
           backgroundImage:
             "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.22) 1px, transparent 0)",
@@ -395,12 +430,7 @@ function AnimatedBackground() {
           transition={{ duration: 5 + item, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay: item * 0.4 }}
         />
       ))}
-      <motion.div
-        aria-hidden="true"
-        className="absolute inset-x-0 top-1/3 h-px bg-white/15"
-        animate={shouldReduceMotion ? undefined : { x: ["-35%", "35%", "-35%"], opacity: [0.15, 0.6, 0.15] }}
-        transition={{ duration: 8, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut" }}
-      />
+      <div aria-hidden="true" className="absolute inset-x-0 top-1/3 h-px bg-white/15" />
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent,rgba(0,0,0,0.72))]" />
     </div>
   )
@@ -413,9 +443,24 @@ function BookBackdrop() {
 }
 
 function Navigation() {
+  const [likeCount, setLikeCount] = useState(127)
+
+  useEffect(() => {
+    const storedLikeCount = window.localStorage.getItem("portfolio-like-count")
+    if (storedLikeCount) setLikeCount(Number(storedLikeCount))
+  }, [])
+
+  function handleLike() {
+    setLikeCount((currentCount) => {
+      const nextCount = currentCount + 1
+      window.localStorage.setItem("portfolio-like-count", String(nextCount))
+      return nextCount
+    })
+  }
+
   return (
     <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/35 backdrop-blur-2xl">
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 sm:px-8" aria-label="Primary">
+      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3 sm:px-8 sm:py-4" aria-label="Primary">
         <Link href="#" className="group flex items-center gap-3">
           <span className="grid h-9 w-9 place-items-center rounded-2xl border border-white/15 bg-white/[0.06] text-sm font-semibold text-white shadow-xl shadow-black/20">
             AB
@@ -435,12 +480,23 @@ function Navigation() {
           ))}
         </div>
 
-        <Button asChild className="rounded-full bg-white text-black shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-slate-200">
-          <Link href="mailto:adityabajaj2222@gmail.com">
-            Let&apos;s Build
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            onClick={handleLike}
+            variant="outline"
+            className="h-10 rounded-full border-white/15 bg-white/[0.04] px-3 text-white transition hover:-translate-y-0.5 hover:bg-white/[0.08] sm:px-4"
+          >
+            <ThumbsUp className="mr-2 h-4 w-4" />
+            {likeCount}
+          </Button>
+          <Button asChild className="hidden rounded-full bg-white text-black shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-slate-200 sm:inline-flex">
+            <Link href="mailto:adityabajaj2222@gmail.com">
+              Let&apos;s Build
+              <ArrowRight className="ml-2 h-4 w-4" />
+            </Link>
+          </Button>
+        </div>
       </nav>
     </header>
   )
@@ -528,17 +584,17 @@ function PathExplorerSection() {
         <div className="mb-10 max-w-3xl">
           <PageLabel number="01" title="Choose a Path" />
           <SectionEyebrow>Explore</SectionEyebrow>
-          <h2 className="mt-6 text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
+          <h2 className="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl">
             Pick the route you care about.
           </h2>
-          <p className="mt-5 text-lg leading-8 text-slate-300">
+          <p className="mt-5 text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
             Not everyone visits a portfolio for the same reason. Choose a path and the page will point you toward the
             part of me that matters most to you.
           </p>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-[0.9fr_1.1fr] lg:items-stretch">
-          <div className="grid gap-3">
+          <div className="grid gap-3" aria-label="Choose an exploration path">
             {explorerPaths.map((path, index) => {
               const isActive = activePath.id === path.id
 
@@ -548,7 +604,7 @@ function PathExplorerSection() {
                   type="button"
                   onClick={() => setActivePath(path)}
                   className={cn(
-                    "group rounded-[1.5rem] border p-5 text-left transition duration-300",
+                    "group rounded-[1.5rem] border p-4 text-left transition duration-300 sm:p-5",
                     isActive
                       ? "border-white/25 bg-white/[0.075] text-white shadow-2xl shadow-black/25"
                       : "border-white/10 bg-white/[0.035] text-slate-400 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.055] hover:text-slate-200",
@@ -567,7 +623,7 @@ function PathExplorerSection() {
             })}
           </div>
 
-          <GlassCard className="overflow-hidden p-6 lg:p-8">
+          <GlassCard className="overflow-hidden p-5 lg:p-8">
             <motion.div
               key={activePath.id}
               initial={{ opacity: 0, y: 16 }}
@@ -577,8 +633,8 @@ function PathExplorerSection() {
             >
               <div>
                 <p className="text-sm uppercase tracking-[0.24em] text-cyan-100">{activePath.label}</p>
-                <h3 className="mt-5 text-4xl font-semibold tracking-[-0.04em] text-white">{activePath.title}</h3>
-                <p className="mt-5 max-w-xl text-lg leading-8 text-slate-300">{activePath.note}</p>
+                <h3 className="mt-5 text-2xl font-semibold tracking-[-0.04em] text-white sm:text-4xl">{activePath.title}</h3>
+                <p className="mt-5 max-w-xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">{activePath.note}</p>
               </div>
 
               <div className="mt-10">
@@ -604,7 +660,7 @@ function HeroSection() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section className="relative min-h-screen overflow-hidden px-5 pb-20 pt-32 sm:px-8 sm:pt-40">
+    <section className="relative min-h-screen overflow-hidden px-5 pb-20 pt-28 sm:px-8 sm:pb-20 sm:pt-40">
       <motion.div
         style={{ y }}
         className="absolute right-8 top-28 hidden rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-sm text-slate-300 backdrop-blur-xl lg:block"
@@ -612,22 +668,22 @@ function HeroSection() {
         Currently building Restro AI
       </motion.div>
 
-      <div className="mx-auto grid max-w-7xl items-center gap-14 lg:grid-cols-[1.08fr_0.92fr]">
+      <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
         <motion.div initial={false} animate="visible" variants={fadeIn} transition={{ duration: 0.7 }}>
           <PageLabel number="00" title="Opening" />
           <SectionEyebrow>Product engineer. Independent builder.</SectionEyebrow>
 
-          <h1 className="mt-8 max-w-5xl text-5xl font-semibold tracking-[-0.06em] text-white sm:text-6xl lg:text-7xl xl:text-8xl">
+          <h1 className="mt-7 max-w-5xl text-4xl font-semibold leading-[1.02] tracking-[-0.055em] text-white sm:mt-8 sm:text-6xl lg:text-7xl xl:text-8xl">
             Ideas are easy. Making them survive reality is the fun part.
           </h1>
 
-          <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">
+          <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:mt-7 sm:text-xl sm:leading-8">
             I’m an Android Developer at PhonePe and a builder at heart. I care about products that work when users are
             impatient, teams are moving fast, and the real world refuses to behave like a neat mockup.
           </p>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <Button asChild size="lg" className="rounded-full bg-white px-6 text-black shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-slate-200">
+          <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row">
+            <Button asChild size="lg" className="rounded-full bg-white px-6 text-black shadow-xl shadow-black/20 transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-slate-200">
               <Link href="#journeys">
                 View Journeys
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -637,7 +693,7 @@ function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="rounded-full border-white/15 bg-white/[0.03] px-6 text-white transition hover:-translate-y-0.5 hover:bg-white/10 hover:text-white"
+              className="rounded-full border-white/15 bg-white/[0.03] px-6 text-white transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-white/10 hover:text-white"
             >
               <Link href="mailto:adityabajaj2222@gmail.com">Let&apos;s Build</Link>
             </Button>
@@ -645,7 +701,7 @@ function HeroSection() {
               asChild
               size="lg"
               variant="ghost"
-              className="rounded-full text-slate-200 transition hover:-translate-y-0.5 hover:bg-white/[0.07] hover:text-white"
+              className="rounded-full bg-white/[0.03] text-slate-200 transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-white/[0.07] hover:text-white"
             >
               <Link href="#restro-ai">
                 Restro AI
@@ -655,7 +711,7 @@ function HeroSection() {
           </div>
 
           <motion.div
-            className="mt-10 flex flex-wrap gap-2"
+            className="mt-8 flex flex-wrap gap-2 sm:mt-10"
             initial="hidden"
             animate="visible"
             variants={{
@@ -674,7 +730,7 @@ function HeroSection() {
                   hidden: { opacity: 0, y: 12 },
                   visible: { opacity: 1, y: 0 },
                 }}
-                className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-sm text-slate-300 shadow-lg shadow-black/20 backdrop-blur-xl transition hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.07] hover:text-white"
+                className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-sm text-slate-300 shadow-lg shadow-black/20 backdrop-blur-xl transition active:scale-95 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.07] hover:text-white"
               >
                 {signal}
               </motion.span>
@@ -684,13 +740,42 @@ function HeroSection() {
           <motion.div
             whileHover={{ y: -4 }}
             className={cn(
-              "relative mt-12 max-w-2xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 text-slate-300 shadow-2xl shadow-black/20 backdrop-blur-2xl",
+              "relative mt-10 max-w-2xl rounded-[2rem] border border-white/10 bg-white/[0.04] p-5 text-slate-300 shadow-2xl shadow-black/20 backdrop-blur-2xl sm:mt-12",
             )}
           >
-            <p className="text-lg leading-8">
+            <p className="text-base leading-7 sm:text-lg sm:leading-8">
               Most software breaks emotionally before it breaks technically. A finance app has to feel calm. A restaurant
               tool has to respect rush hour. A marketplace listing has to understand that visibility is survival.
             </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.55, delay: 0.2 }}
+            className="mt-7 overflow-hidden rounded-[2rem] border border-white/10 bg-black/35 shadow-2xl shadow-black/25 backdrop-blur-xl lg:hidden"
+          >
+            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+              <div>
+                <p className="text-xs uppercase tracking-[0.22em] text-slate-500">Pocket OS</p>
+                <p className="mt-1 text-sm font-medium text-white">Tap, explore, move fast</p>
+              </div>
+              <div className="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/[0.05]">
+                <Sparkles className="h-4 w-4 text-cyan-100" />
+              </div>
+            </div>
+
+            <div className="grid gap-3 px-4 py-4" aria-label="Mobile profile highlights">
+              {pocketCards.map((card) => (
+                <div
+                  key={card.label}
+                  className="rounded-3xl border border-white/10 bg-white/[0.045] p-4 active:scale-[0.98]"
+                >
+                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">{card.label}</p>
+                  <p className="mt-3 text-lg font-semibold tracking-[-0.03em] text-white">{card.value}</p>
+                </div>
+              ))}
+            </div>
           </motion.div>
         </motion.div>
 
@@ -727,7 +812,7 @@ function RestroAiSection() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <section id="restro-ai" className="relative px-5 py-24 sm:px-8 lg:py-32">
+    <section id="restro-ai" className="relative px-5 py-20 sm:px-8 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
         <motion.div
           initial="hidden"
@@ -739,15 +824,15 @@ function RestroAiSection() {
         >
           <PageLabel number="03" title="Current Build" />
           <SectionEyebrow>Current build</SectionEyebrow>
-          <h2 className="mt-6 text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
+          <h2 className="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
             Restro AI is an idea I keep coming back to.
           </h2>
-          <p className="mt-6 text-lg leading-8 text-slate-300">
+          <p className="mt-6 text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
             Restaurants already have software. Most of it still does not help them think ahead. The idea is simple:
             give restaurant teams a calm operating layer that can read demand, inventory, staffing, and waste before
             the day gets away from them.
           </p>
-          <p className="mt-4 text-lg leading-8 text-slate-400">
+          <p className="mt-4 text-base leading-7 text-slate-400 sm:text-lg sm:leading-8">
             I want it to feel less like another dashboard and more like a second brain for the person running the floor.
           </p>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row">
@@ -769,11 +854,11 @@ function RestroAiSection() {
 
         <GlassCard className="overflow-hidden p-4 sm:p-6 lg:p-8">
           <div className="relative grid gap-5 xl:grid-cols-[1.08fr_0.92fr]">
-            <div className="rounded-[1.5rem] border border-white/10 bg-black/40 p-5 shadow-2xl sm:p-6">
+            <div className="rounded-[1.5rem] border border-white/10 bg-black/40 p-4 shadow-2xl sm:p-6">
               <div className="mb-6 flex items-center justify-between">
                 <div>
                   <p className="text-sm text-slate-400">Restaurant intelligence</p>
-                  <h3 className="mt-1 text-2xl font-semibold text-white">Tomorrow’s rush, a little less mysterious</h3>
+                  <h3 className="mt-1 text-xl font-semibold leading-tight text-white sm:text-2xl">Tomorrow’s rush, a little less mysterious</h3>
                 </div>
                 <div className="rounded-2xl border border-white/10 bg-white/[0.06] p-3 text-slate-200">
                   <BrainCircuit className="h-5 w-5" />
@@ -799,7 +884,7 @@ function RestroAiSection() {
                   <p className="text-sm font-medium text-white">Demand curve</p>
                   <span className="rounded-full bg-white/[0.06] px-2 py-1 text-xs text-slate-300">live</span>
                 </div>
-                <div className="flex h-44 items-end gap-2">
+                <div className="flex h-36 items-end gap-1.5 sm:h-44 sm:gap-2">
                   {[44, 52, 68, 61, 74, 86, 92, 88, 96, 73, 67, 58].map((height, index) => (
                     <motion.div
                       key={`${height}-${index}`}
@@ -943,6 +1028,7 @@ function JourneyVisual({ visual }: { visual: string }) {
           whileInView={{ x: 150, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.8, ease: "easeInOut" }}
+          style={{ maxWidth: "calc(100% - 3rem)" }}
         />
         <motion.div
           className="absolute left-10 top-8 grid h-9 w-9 place-items-center rounded-full border border-white/10 bg-white/[0.08] text-white shadow-xl shadow-black/20"
@@ -950,6 +1036,7 @@ function JourneyVisual({ visual }: { visual: string }) {
           whileInView={{ x: 150 }}
           viewport={{ once: true }}
           transition={{ duration: 1.8, ease: "easeInOut" }}
+          style={{ maxWidth: "calc(100% - 4rem)" }}
         >
           <Route className="h-4 w-4" />
         </motion.div>
@@ -1016,13 +1103,13 @@ function JourneyVisual({ visual }: { visual: string }) {
 
 function WorkSection() {
   return (
-    <section id="journeys" className="px-5 py-24 sm:px-8 lg:py-32">
+    <section id="journeys" className="px-5 py-20 sm:px-8 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
         <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
           <div>
             <PageLabel number="04" title="Journeys" />
             <SectionEyebrow>Capabilities through journeys</SectionEyebrow>
-            <h2 className="mt-6 max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
+            <h2 className="mt-6 max-w-3xl text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl">
               Not just where I worked. What those places trained in me.
             </h2>
           </div>
@@ -1051,7 +1138,7 @@ function WorkSection() {
                 viewport={{ once: true, margin: "-100px" }}
                 transition={{ duration: 0.6, delay: index * 0.08 }}
                 whileHover={{ y: -6, rotateX: 1.5, rotateY: index % 2 === 0 ? -1.5 : 1.5 }}
-                className="group relative ml-0 overflow-hidden rounded-[1.7rem] border border-white/[0.08] bg-black/25 p-5 shadow-xl shadow-black/20 backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.035] md:ml-12 lg:p-6 [transform-style:preserve-3d]"
+                className="group relative ml-0 overflow-hidden rounded-[1.7rem] border border-white/[0.08] bg-black/25 p-4 shadow-xl shadow-black/20 backdrop-blur-xl transition hover:-translate-y-1 hover:border-white/18 hover:bg-white/[0.035] sm:p-5 md:ml-12 lg:p-6 [transform-style:preserve-3d]"
               >
                 <div className="absolute -left-[3.7rem] top-8 hidden md:block">
                   <div className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.08] text-cyan-100 shadow-xl shadow-black/20">
@@ -1079,7 +1166,7 @@ function WorkSection() {
                       </span>
                     </div>
                     <p className="text-sm font-medium text-slate-300">{journey.chapter}</p>
-                    <h3 className="mt-2 text-3xl font-semibold tracking-[-0.03em] text-white sm:text-4xl">
+                    <h3 className="mt-2 text-2xl font-semibold tracking-[-0.03em] text-white sm:text-4xl">
                       {journey.company}
                     </h3>
                     <p className="mt-4 text-base leading-7 text-slate-300">{journey.story}</p>
@@ -1121,15 +1208,15 @@ function WorkSection() {
 
 function AboutSection() {
   return (
-    <section id="about" className="px-5 py-24 sm:px-8 lg:py-32">
+    <section id="about" className="px-5 py-20 sm:px-8 sm:py-24 lg:py-32">
       <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
         <div>
           <PageLabel number="05" title="Principles" />
           <SectionEyebrow>Principles</SectionEyebrow>
-          <h2 className="mt-6 text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl">
+          <h2 className="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl">
             I care a lot about products feeling alive.
           </h2>
-          <p className="mt-6 text-lg leading-8 text-slate-300">
+          <p className="mt-6 text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
             Not loud. Not overdesigned. Just useful, quick, thoughtful, and a little memorable. I like building with
             people who care about the same details users may never name but always feel.
           </p>
@@ -1151,7 +1238,7 @@ function AboutSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.55, delay: index * 0.08 }}
             >
-              <GlassCard className="p-6 transition hover:-translate-y-1 hover:border-white/20">
+              <GlassCard className="p-4 transition hover:-translate-y-1 hover:border-white/20 sm:p-6">
                 <div className="flex gap-4">
                   <span className="grid h-10 w-10 flex-none place-items-center rounded-2xl border border-white/10 bg-white/[0.06] text-slate-200">
                     0{index + 1}
@@ -1172,13 +1259,13 @@ function AboutSection() {
 
 function ObsessionsSection() {
   return (
-    <section className="px-5 py-24 sm:px-8">
+    <section className="px-5 py-20 sm:px-8 sm:py-24">
       <div className="mx-auto max-w-7xl">
         <GlassCard className="overflow-hidden p-6 sm:p-8 lg:p-10">
           <div className="grid gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:items-center">
             <div>
               <SectionEyebrow>Current obsessions</SectionEyebrow>
-              <h2 className="mt-6 text-4xl font-semibold tracking-[-0.04em] text-white">
+              <h2 className="mt-6 text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-4xl">
                 The ideas I keep coming back to.
               </h2>
               <p className="mt-5 leading-7 text-slate-400">
@@ -1213,16 +1300,16 @@ function ObsessionsSection() {
 
 function ContactSection() {
   return (
-    <section id="contact" className="px-5 py-24 sm:px-8 lg:py-32">
+    <section id="contact" className="px-5 py-20 pb-32 sm:px-8 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-7xl">
         <GlassCard className="overflow-hidden p-6 sm:p-10 lg:p-12">
           <div className="relative grid gap-10 lg:grid-cols-[1fr_0.8fr] lg:items-end">
             <div>
               <SectionEyebrow>Let&apos;s build</SectionEyebrow>
-              <h2 className="mt-6 max-w-3xl text-4xl font-semibold tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
+              <h2 className="mt-6 max-w-3xl text-3xl font-semibold leading-tight tracking-[-0.04em] text-white sm:text-5xl lg:text-6xl">
                 If you are building something interesting, I would probably like to hear about it.
               </h2>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">
+              <p className="mt-6 max-w-2xl text-base leading-7 text-slate-300 sm:text-lg sm:leading-8">
                 Especially if it needs someone who can think through product, write the code, notice the details, and
                 still keep the room calm when things get messy.
               </p>
@@ -1310,8 +1397,10 @@ export default function Portfolio() {
       <SmoothScroll />
       <AnimatedBackground />
       <BookBackdrop />
-      <CursorLight />
+      <TorchCursor />
+      <HiddenTorchNotes />
       <BookProgress />
+      <MobileDock />
       <Navigation />
       <div className="relative z-10">
         <HeroSection />

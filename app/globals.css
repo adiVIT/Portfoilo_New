@@ -64,6 +64,17 @@ html {
   scroll-behavior: smooth;
 }
 
+@media (pointer: fine) {
+  html.torch-cursor,
+  html.torch-cursor * {
+    cursor: none !important;
+  }
+
+  .torch-secret:hover {
+    opacity: 1;
+  }
+}
+
 /* Mobile optimizations */
 @media (max-width: 768px) {
   * {
@@ -89,12 +100,6 @@ html {
     backdrop-filter: blur(4px) !important;
   }
   
-  /* Better touch targets */
-  button, a {
-    min-height: 44px;
-    min-width: 44px;
-  }
-  
   /* Reduce complex gradients on mobile */
   .bg-gradient-to-br {
     background: linear-gradient(135deg, var(--tw-gradient-stops)) !important;
@@ -105,6 +110,14 @@ html {
     transform: translateZ(0);
     backface-visibility: hidden;
   }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
 
 /* Custom scrollbar with neon effect */
