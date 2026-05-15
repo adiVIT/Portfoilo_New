@@ -254,11 +254,11 @@ function SectionEyebrow({ children, className }: SectionEyebrowProps) {
   return (
     <div
       className={cn(
-        "inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-slate-300 sm:rounded-full sm:border sm:border-white/10 sm:bg-white/[0.04] sm:px-3 sm:py-1 sm:shadow-xl sm:shadow-black/20 sm:backdrop-blur-xl",
+        "inline-flex items-center gap-2 text-xs font-medium uppercase tracking-[0.24em] text-slate-200 sm:rounded-full sm:border sm:border-cyan-100/15 sm:bg-cyan-100/[0.045] sm:px-3 sm:py-1 sm:shadow-xl sm:shadow-cyan-950/20 sm:backdrop-blur-xl",
         className,
       )}
     >
-      <Sparkles className="h-3.5 w-3.5 text-slate-300" />
+      <Sparkles className="h-3.5 w-3.5 text-cyan-100" />
       {children}
     </div>
   )
@@ -268,11 +268,16 @@ function GlassCard({ children, className }: GlassCardProps) {
   return (
     <div
       className={cn(
-        "relative rounded-[1.5rem] border border-white/[0.08] bg-white/[0.025] shadow-xl shadow-black/15 sm:rounded-[2rem] sm:border-white/10 sm:bg-white/[0.045] sm:shadow-2xl sm:shadow-black/30 sm:backdrop-blur-2xl",
+        "relative rounded-[1.5rem] border border-white/[0.09] bg-white/[0.032] shadow-xl shadow-black/15 ring-1 ring-white/[0.025] sm:rounded-[2rem] sm:border-white/12 sm:bg-white/[0.052] sm:shadow-2xl sm:shadow-cyan-950/20 sm:backdrop-blur-2xl",
         className,
       )}
     >
-      {children}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-px rounded-[inherit] bg-[radial-gradient(circle_at_20%_0%,rgba(125,211,252,0.08),transparent_34%),radial-gradient(circle_at_90%_15%,rgba(216,180,254,0.07),transparent_28%)] opacity-80"
+      />
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 rounded-[inherit] shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]" />
+      <div className="relative">{children}</div>
     </div>
   )
 }
@@ -388,26 +393,17 @@ function AnimatedBackground() {
   const shouldReduceMotion = useReducedMotion()
 
   return (
-    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#03040a]">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.18),transparent_28%),radial-gradient(circle_at_80%_20%,rgba(168,85,247,0.18),transparent_28%),radial-gradient(circle_at_45%_75%,rgba(16,185,129,0.12),transparent_32%)]" />
-      <div aria-hidden="true" className="absolute left-1/2 top-[-20rem] h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-white/[0.035] blur-3xl" />
-      <div aria-hidden="true" className="absolute bottom-[-14rem] right-[-8rem] h-[30rem] w-[30rem] rounded-full bg-white/[0.025] blur-3xl" />
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.035)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.035)_1px,transparent_1px)] bg-[size:52px_52px] [mask-image:linear-gradient(to_bottom,black,transparent_85%)]" />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 opacity-20"
-        style={{
-          backgroundImage:
-            "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.22) 1px, transparent 0)",
-          backgroundSize: "52px 52px",
-        }}
-      />
+    <div className="pointer-events-none fixed inset-0 -z-10 overflow-hidden bg-[#02030a]">
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_18%_8%,rgba(45,212,191,0.2),transparent_32%),radial-gradient(circle_at_80%_18%,rgba(168,85,247,0.18),transparent_30%),radial-gradient(circle_at_60%_84%,rgba(244,114,182,0.1),transparent_28%),linear-gradient(180deg,#02030a_0%,#050716_46%,#02030a_100%)]" />
+      <div aria-hidden="true" className="absolute left-[18%] top-[-18rem] h-[42rem] w-[42rem] rounded-full bg-cyan-300/[0.055] blur-3xl" />
+      <div aria-hidden="true" className="absolute right-[-12rem] top-[12rem] h-[36rem] w-[36rem] rounded-full bg-fuchsia-300/[0.045] blur-3xl" />
+      <div aria-hidden="true" className="absolute bottom-[-16rem] left-[25%] h-[34rem] w-[34rem] rounded-full bg-emerald-300/[0.035] blur-3xl" />
       <div className="absolute inset-0 opacity-[0.08] [background-image:url('data:image/svg+xml,%3Csvg_viewBox=%220_0_256_256%22_xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter_id=%22noise%22%3E%3CfeTurbulence_type=%22fractalNoise%22_baseFrequency=%220.8%22_numOctaves=%223%22_stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect_width=%22256%22_height=%22256%22_filter=%22url(%23noise)%22_opacity=%220.45%22/%3E%3C/svg%3E')]" />
       {[0, 1, 2, 3, 4].map((item) => (
         <motion.div
           key={item}
           aria-hidden="true"
-            className="absolute h-1.5 w-1.5 rounded-full bg-white/25 shadow-[0_0_16px_rgba(255,255,255,0.22)]"
+          className="absolute h-1.5 w-1.5 rounded-full bg-cyan-100/30 shadow-[0_0_18px_rgba(125,211,252,0.22)]"
           style={{
             left: `${16 + item * 17}%`,
             top: `${24 + (item % 3) * 18}%`,
@@ -423,15 +419,8 @@ function AnimatedBackground() {
           transition={{ duration: 5 + item, repeat: Number.POSITIVE_INFINITY, ease: "easeInOut", delay: item * 0.4 }}
         />
       ))}
-      <div aria-hidden="true" className="absolute inset-x-0 top-1/3 h-px bg-white/15" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent,rgba(0,0,0,0.72))]" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent,rgba(0,0,0,0.78))]" />
     </div>
-  )
-}
-
-function BookBackdrop() {
-  return (
-    <div aria-hidden="true" className="pointer-events-none fixed inset-y-0 left-1/2 z-0 hidden w-px -translate-x-1/2 bg-white/10 lg:block" />
   )
 }
 
@@ -452,10 +441,10 @@ function Navigation() {
   }
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-black/35 backdrop-blur-2xl">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-[#040612]/55 shadow-[0_18px_60px_rgba(0,0,0,0.28)] backdrop-blur-2xl">
       <nav className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-3 py-3 sm:px-8 sm:py-4" aria-label="Primary">
         <Link href="#" className="group flex min-w-0 items-center gap-2 sm:gap-3">
-          <span className="grid h-9 w-9 flex-none place-items-center rounded-2xl border border-white/15 bg-white/[0.06] text-sm font-semibold text-white shadow-xl shadow-black/20">
+          <span className="grid h-9 w-9 flex-none place-items-center rounded-2xl border border-cyan-100/20 bg-cyan-100/[0.08] text-sm font-semibold text-white shadow-xl shadow-cyan-950/20">
             AB
           </span>
           <span className="truncate text-sm font-medium text-slate-200">
@@ -468,7 +457,7 @@ function Navigation() {
             <Link
               key={item.href}
               href={item.href}
-                className="rounded-full px-4 py-2 text-sm text-slate-300 transition hover:bg-white/[0.07] hover:text-white"
+              className="rounded-full px-4 py-2 text-sm text-slate-300 transition hover:bg-cyan-100/[0.08] hover:text-white"
             >
               {item.label}
             </Link>
@@ -480,12 +469,12 @@ function Navigation() {
             type="button"
             onClick={handleLike}
             variant="outline"
-            className="h-10 rounded-full border-white/15 bg-white/[0.04] px-3 text-white transition hover:-translate-y-0.5 hover:bg-white/[0.08] sm:px-4"
+            className="h-10 rounded-full border-white/15 bg-white/[0.04] px-3 text-white transition hover:-translate-y-0.5 hover:border-cyan-100/25 hover:bg-cyan-100/[0.08] sm:px-4"
           >
             <ThumbsUp className="mr-1.5 h-4 w-4 sm:mr-2" />
             {likeCount}
           </Button>
-          <Button asChild className="hidden rounded-full bg-white text-black shadow-xl shadow-black/20 transition hover:-translate-y-0.5 hover:bg-slate-200 sm:inline-flex">
+          <Button asChild className="hidden rounded-full bg-white text-black shadow-xl shadow-cyan-950/20 transition hover:-translate-y-0.5 hover:bg-cyan-100 sm:inline-flex">
             <Link href="mailto:adityabajaj2222@gmail.com">
               Let&apos;s Build
               <ArrowRight className="ml-2 h-4 w-4" />
@@ -663,7 +652,7 @@ function HeroSection() {
         Currently building Restro AI
       </motion.div>
 
-      <div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.08fr_0.92fr] lg:gap-14">
+      <div className="mx-auto max-w-7xl">
         <motion.div initial={false} animate="visible" variants={fadeIn} transition={{ duration: 0.7 }}>
           <PageLabel title="Opening" />
           <SectionEyebrow>Product engineer. Independent builder.</SectionEyebrow>
@@ -678,7 +667,7 @@ function HeroSection() {
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:mt-9 sm:flex-row">
-            <Button asChild size="lg" className="rounded-full bg-white px-6 text-black shadow-xl shadow-black/20 transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-slate-200">
+            <Button asChild size="lg" className="rounded-full bg-white px-6 text-black shadow-xl shadow-cyan-950/20 transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-cyan-100">
               <Link href="#journeys">
                 View Journeys
                 <ArrowRight className="ml-2 h-4 w-4" />
@@ -688,7 +677,7 @@ function HeroSection() {
               asChild
               size="lg"
               variant="outline"
-              className="rounded-full border-white/15 bg-white/[0.03] px-6 text-white transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-white/10 hover:text-white"
+              className="rounded-full border-white/15 bg-white/[0.03] px-6 text-white transition active:scale-[0.98] hover:-translate-y-0.5 hover:border-cyan-100/25 hover:bg-cyan-100/[0.08] hover:text-white"
             >
               <Link href="mailto:adityabajaj2222@gmail.com">Let&apos;s Build</Link>
             </Button>
@@ -696,7 +685,7 @@ function HeroSection() {
               asChild
               size="lg"
               variant="ghost"
-              className="rounded-full bg-white/[0.03] text-slate-200 transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-white/[0.07] hover:text-white"
+              className="rounded-full bg-white/[0.03] text-slate-200 transition active:scale-[0.98] hover:-translate-y-0.5 hover:bg-fuchsia-100/[0.07] hover:text-white"
             >
               <Link href="#restro-ai">
                 Restro AI
@@ -725,7 +714,7 @@ function HeroSection() {
                   hidden: { opacity: 0, y: 12 },
                   visible: { opacity: 1, y: 0 },
                 }}
-                className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-sm text-slate-300 shadow-lg shadow-black/20 backdrop-blur-xl transition active:scale-95 hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.07] hover:text-white"
+                className="rounded-full border border-white/10 bg-white/[0.045] px-3 py-1.5 text-sm text-slate-300 shadow-lg shadow-black/20 backdrop-blur-xl transition active:scale-95 hover:-translate-y-0.5 hover:border-cyan-100/20 hover:bg-cyan-100/[0.07] hover:text-white"
               >
                 {signal}
               </motion.span>
@@ -734,8 +723,9 @@ function HeroSection() {
 
           <motion.div
             whileHover={{ y: -4 }}
-            className="relative mt-10 max-w-2xl rounded-[1.5rem] border border-white/[0.08] bg-white/[0.025] p-4 text-slate-300 sm:mt-12 sm:rounded-[2rem] sm:border-white/10 sm:bg-white/[0.04] sm:p-5 sm:shadow-2xl sm:shadow-black/20 sm:backdrop-blur-2xl"
+            className="relative mt-10 max-w-2xl overflow-hidden rounded-[1.5rem] border border-cyan-100/[0.12] bg-cyan-100/[0.035] p-4 text-slate-300 shadow-xl shadow-cyan-950/10 sm:mt-12 sm:rounded-[2rem] sm:border-white/10 sm:bg-white/[0.045] sm:p-5 sm:shadow-2xl sm:backdrop-blur-2xl"
           >
+            <div aria-hidden="true" className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-100/40 to-transparent" />
             <p className="text-base leading-7 sm:text-lg sm:leading-8">
               Most software breaks emotionally before it breaks technically. A finance app has to feel calm. A restaurant
               tool has to respect rush hour. A marketplace listing has to understand that visibility is survival.
@@ -746,7 +736,7 @@ function HeroSection() {
             initial={{ opacity: 0, y: 18 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.55, delay: 0.2 }}
-            className="mt-8 rounded-[1.5rem] border border-white/[0.08] bg-white/[0.025] p-4 lg:hidden"
+            className="mt-8 rounded-[1.5rem] border border-cyan-100/[0.1] bg-white/[0.035] p-4 shadow-xl shadow-black/20 backdrop-blur-xl lg:hidden"
           >
             <div className="flex items-center justify-between">
               <div>
@@ -772,30 +762,6 @@ function HeroSection() {
           </motion.div>
         </motion.div>
 
-        <motion.div
-          aria-hidden="true"
-          initial={{ opacity: 0, y: 28, rotateX: 8 }}
-          animate={{ opacity: 1, y: 0, rotateX: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative mx-auto hidden h-[34rem] w-full max-w-xl lg:block"
-        >
-          <div className="absolute inset-0 rounded-[3rem] border border-white/10 bg-white/[0.035] shadow-2xl shadow-black/30 backdrop-blur-2xl" />
-          <div className="absolute -inset-8 rounded-[3.5rem] bg-white/[0.035] blur-3xl" />
-          <motion.div
-            className="absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rounded-full border border-cyan-100/10"
-            animate={shouldReduceMotion ? undefined : { rotate: 360 }}
-            transition={{ duration: 28, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-          />
-          <motion.div
-            className="absolute left-1/2 top-1/2 h-44 w-44 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"
-            animate={shouldReduceMotion ? undefined : { rotate: -360 }}
-            transition={{ duration: 22, repeat: Number.POSITIVE_INFINITY, ease: "linear" }}
-          />
-          <div className="absolute inset-10 rounded-[2rem] bg-[linear-gradient(rgba(255,255,255,0.045)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.045)_1px,transparent_1px)] bg-[size:34px_34px] opacity-70" />
-          <div className="absolute bottom-10 left-10 right-10 rounded-3xl border border-white/10 bg-black/25 p-5 text-sm leading-6 text-slate-300 backdrop-blur-xl">
-            Most good products feel obvious in hindsight. Getting there is the interesting part.
-          </div>
-        </motion.div>
       </div>
     </section>
   )
@@ -1473,7 +1439,6 @@ export default function Portfolio() {
     <main className="relative isolate min-h-screen overflow-x-hidden bg-[#03040a] text-white selection:bg-white selection:text-black">
       <SmoothScroll />
       <AnimatedBackground />
-      <BookBackdrop />
       <TorchCursor />
       <HiddenTorchNotes />
       <BookProgress />
