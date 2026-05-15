@@ -128,6 +128,27 @@ const pocketCards = [
   { label: "Signal", value: "Messy products welcome" },
 ]
 
+const mobileSkillCards = [
+  {
+    label: "Android craft",
+    title: "Interfaces that feel fast, calm, and native.",
+    detail: "I care about touch states, loading moments, empty states, motion, and the little details that make an app feel alive.",
+    icon: Phone,
+  },
+  {
+    label: "System thinking",
+    title: "Mobile flows that survive real users.",
+    detail: "Payments, trust, retries, offline-ish moments, and production debugging taught me to design beyond the happy path.",
+    icon: CircuitBoard,
+  },
+  {
+    label: "Product speed",
+    title: "Small screens. High intent. No wasted taps.",
+    detail: "The best mobile products compress complexity without making users feel rushed or lost.",
+    icon: Zap,
+  },
+]
+
 const journeyItems = [
   {
     company: "Phool.co",
@@ -812,6 +833,7 @@ function HeroSection() {
 
 function RestroAiSection() {
   const shouldReduceMotion = useReducedMotion()
+  const [activeMobileSkill, setActiveMobileSkill] = useState(mobileSkillCards[0])
 
   return (
     <section id="restro-ai" className="relative px-4 py-20 sm:px-8 sm:py-24 lg:py-32">
@@ -854,7 +876,7 @@ function RestroAiSection() {
           </div>
         </motion.div>
 
-        <GlassCard className="min-w-0 overflow-hidden p-3 sm:p-6 lg:p-8">
+        <GlassCard className="hidden min-w-0 overflow-hidden p-3 sm:block sm:p-6 lg:p-8">
           <div className="relative grid gap-5 xl:grid-cols-[1.08fr_0.92fr]">
             <div className="rounded-[1.5rem] border border-white/10 bg-black/40 p-4 shadow-2xl sm:p-6">
               <div className="mb-6 flex items-center justify-between">
@@ -1014,6 +1036,89 @@ function RestroAiSection() {
             </div>
           </div>
         </GlassCard>
+
+        <GlassCard className="min-w-0 overflow-hidden p-4 sm:hidden">
+          <div className="rounded-[2rem] border border-white/10 bg-black/45 p-3 shadow-2xl shadow-black/30">
+            <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.035] p-4">
+              <div className="mb-5 flex items-center justify-between">
+                <div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-slate-500">Mobile craft</p>
+                  <h3 className="mt-2 text-2xl font-semibold tracking-[-0.04em] text-white">Android instincts, not just screens.</h3>
+                </div>
+                <motion.div
+                  className="grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-white/[0.06]"
+                  animate={shouldReduceMotion ? undefined : { scale: [1, 1.05, 1] }}
+                  transition={{ duration: 1.8, repeat: Number.POSITIVE_INFINITY }}
+                >
+                  <Phone className="h-5 w-5 text-cyan-100" />
+                </motion.div>
+              </div>
+
+              <div className="relative overflow-hidden rounded-[1.5rem] border border-white/10 bg-black/50 p-3">
+                <div className="mb-4 flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.04] px-3 py-2">
+                  <span className="text-xs text-slate-400">aditya.mobile</span>
+                  <span className="h-2 w-2 rounded-full bg-emerald-300" />
+                </div>
+
+                <motion.div
+                  key={activeMobileSkill.label}
+                  initial={{ opacity: 0, y: 14, scale: 0.98 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="rounded-3xl border border-white/10 bg-white/[0.055] p-4"
+                >
+                  <div className="mb-5 flex items-center justify-between">
+                    <activeMobileSkill.icon className="h-5 w-5 text-slate-200" />
+                    <span className="rounded-full bg-white/[0.06] px-2 py-1 text-[11px] uppercase tracking-[0.18em] text-slate-400">
+                      live
+                    </span>
+                  </div>
+                  <p className="text-xs uppercase tracking-[0.2em] text-cyan-100">{activeMobileSkill.label}</p>
+                  <h4 className="mt-3 text-xl font-semibold leading-tight tracking-[-0.03em] text-white">{activeMobileSkill.title}</h4>
+                  <p className="mt-3 text-sm leading-6 text-slate-300">{activeMobileSkill.detail}</p>
+                </motion.div>
+
+                <div className="mt-4 grid grid-cols-3 gap-2">
+                  {mobileSkillCards.map((skill) => {
+                    const isActive = activeMobileSkill.label === skill.label
+
+                    return (
+                      <button
+                        key={skill.label}
+                        type="button"
+                        onClick={() => setActiveMobileSkill(skill)}
+                        className={cn(
+                          "rounded-2xl border px-2 py-3 text-center text-[11px] font-medium transition active:scale-95",
+                          isActive
+                            ? "border-white/25 bg-white/[0.09] text-white"
+                            : "border-white/10 bg-white/[0.035] text-slate-500",
+                        )}
+                      >
+                        {skill.label.split(" ")[0]}
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+
+              <div className="mt-4 grid gap-2">
+                {["Jetpack Compose mindset", "Performance and lifecycle awareness", "Fintech-grade reliability"].map((skill, index) => (
+                  <motion.div
+                    key={skill}
+                    initial={{ opacity: 0, x: -12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: shouldReduceMotion ? 0 : 0.35, delay: index * 0.08 }}
+                    className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.035] p-3"
+                  >
+                    <span className="grid h-7 w-7 place-items-center rounded-xl bg-white/[0.06] text-xs text-slate-300">0{index + 1}</span>
+                    <span className="text-sm text-slate-300">{skill}</span>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </GlassCard>
       </div>
     </section>
   )
@@ -1022,7 +1127,7 @@ function RestroAiSection() {
 function JourneyVisual({ visual }: { visual: string }) {
   if (visual === "mobility grid") {
     return (
-      <div className="relative h-28 overflow-hidden rounded-3xl border border-white/10 bg-black/30">
+      <div className="relative h-24 overflow-hidden rounded-3xl border border-white/10 bg-black/30 sm:h-28">
         <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:24px_24px]" />
         <motion.div
           className="absolute left-4 top-1/2 h-1 w-28 rounded-full bg-white/35"
@@ -1048,7 +1153,7 @@ function JourneyVisual({ visual }: { visual: string }) {
 
   if (visual === "wealth graph") {
     return (
-      <div className="flex h-28 items-end gap-2 rounded-3xl border border-white/10 bg-black/30 p-4">
+      <div className="flex h-24 items-end gap-1.5 rounded-3xl border border-white/10 bg-black/30 p-3 sm:h-28 sm:gap-2 sm:p-4">
         {[38, 52, 45, 68, 74, 86, 78, 92].map((height, index) => (
           <motion.div
             key={`${height}-${index}`}
@@ -1065,11 +1170,11 @@ function JourneyVisual({ visual }: { visual: string }) {
 
   if (visual === "ops flow") {
     return (
-      <div className="grid h-28 grid-cols-3 gap-3 rounded-3xl border border-white/10 bg-black/30 p-4">
+      <div className="grid h-24 grid-cols-3 gap-2 rounded-3xl border border-white/10 bg-black/30 p-3 sm:h-28 sm:gap-3 sm:p-4">
         {["Supply", "Route", "Demand"].map((label, index) => (
           <motion.div
             key={label}
-            className="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.04] p-3"
+            className="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.04] p-2 sm:p-3"
             initial={{ opacity: 0, y: 12 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -1084,12 +1189,12 @@ function JourneyVisual({ visual }: { visual: string }) {
   }
 
   return (
-    <div className="relative h-28 overflow-hidden rounded-3xl border border-white/10 bg-black/30 p-4">
+    <div className="relative h-24 overflow-hidden rounded-3xl border border-white/10 bg-black/30 p-3 sm:h-28 sm:p-4">
       <div className="relative flex h-full items-center justify-between gap-3">
         {[1, 2, 3].map((item, index) => (
           <motion.div
             key={item}
-            className="grid h-14 w-14 place-items-center rounded-2xl border border-white/10 bg-white/[0.05]"
+            className="grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-white/[0.05] sm:h-14 sm:w-14"
             initial={{ scale: 0.9, opacity: 0 }}
             whileInView={{ scale: 1, opacity: 1 }}
             viewport={{ once: true }}
