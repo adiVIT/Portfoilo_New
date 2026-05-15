@@ -333,8 +333,8 @@ function TorchCursor() {
   const shouldReduceMotion = useReducedMotion()
   const mouseX = useMotionValue(-400)
   const mouseY = useMotionValue(-400)
-  const smoothX = useSpring(mouseX, { damping: 30, stiffness: 360, mass: 0.25 })
-  const smoothY = useSpring(mouseY, { damping: 30, stiffness: 360, mass: 0.25 })
+  const smoothX = useSpring(mouseX, { damping: 24, stiffness: 1200, mass: 0.08 })
+  const smoothY = useSpring(mouseY, { damping: 24, stiffness: 1200, mass: 0.08 })
 
   useEffect(() => {
     if (shouldReduceMotion) return

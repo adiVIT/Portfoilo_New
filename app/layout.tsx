@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Analytics } from '@vercel/analytics/next'
 import Script from 'next/script'
 import './globals.css'
@@ -120,6 +120,11 @@ export const metadata: Metadata = {
       },
     ],
   },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#02030a',
+  colorScheme: 'dark',
 }
 
 export default function RootLayout({

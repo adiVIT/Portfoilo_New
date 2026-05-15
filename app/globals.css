@@ -63,14 +63,16 @@
 html {
   scroll-behavior: smooth;
   background: #02030a;
+  color-scheme: dark;
   max-width: 100%;
+  min-height: 100%;
   overflow-x: clip;
 }
 
 body {
   background: #02030a;
   max-width: 100%;
-  min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: hidden;
 }
 
@@ -96,7 +98,9 @@ video {
 @media (max-width: 768px) {
   html,
   body {
+    background: #02030a;
     width: 100%;
+    min-height: 100dvh;
     overflow-x: hidden;
   }
 
@@ -109,9 +113,6 @@ video {
   /* Optimize scrolling on mobile */
   body {
     -webkit-overflow-scrolling: touch;
-    overscroll-behavior: none;
-    /* Improve touch responsiveness */
-    touch-action: manipulation;
   }
   
   /* Reduce blur effects on mobile for better performance */
@@ -143,23 +144,24 @@ video {
   display: none;
 }
 
-/* Custom scrollbar with neon effect */
+/* Glass scrollbar */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-black;
+  background: #02030a;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #8b5cf6, #06b6d4, #ec4899);
-  border-radius: 10px;
-  border: 2px solid black;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.24), rgba(125, 211, 252, 0.16));
+  border: 2px solid #02030a;
+  border-radius: 999px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 0 18px rgba(125, 211, 252, 0.08);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #a855f7, #0891b2, #db2777);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.34), rgba(125, 211, 252, 0.24));
 }
 
 /* Glitch effect keyframes */
