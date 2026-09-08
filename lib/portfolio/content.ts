@@ -83,32 +83,33 @@ export interface ContactLink {
 }
 
 export const navItems: NavItem[] = [
-  { label: "Now", href: "#now" },
+  { label: "About", href: "#now" },
+  { label: "Hobbies", href: "#hobbies" },
+  { label: "Work", href: "#work" },
+  { label: "Play", href: "#playground" },
   { label: "Journey", href: "#journey" },
-  { label: "Restro AI", href: "#restro-ai" },
-  { label: "Projects", href: "#projects" },
-  { label: "Principles", href: "#principles" },
 ]
 
 export const commandItems: NavItem[] = [
-  { label: "Open the hero", href: "#hero" },
-  { label: "See what I am building now", href: "#now" },
-  { label: "Read the experience journey", href: "#journey" },
-  { label: "Explore Restro AI", href: "#restro-ai" },
-  { label: "View signature projects", href: "#projects" },
-  { label: "Read product principles", href: "#principles" },
+  { label: "Home", href: "#hero" },
+  { label: "About Aditya", href: "#now" },
+  { label: "Hobbies & interests", href: "#hobbies" },
+  { label: "Things I’ve built", href: "#work" },
+  { label: "The journey", href: "#journey" },
+  { label: "Playground", href: "#playground" },
+  { label: "Mindset", href: "#principles" },
   { label: "Contact Aditya", href: "#contact" },
 ]
 
 export const currentSignals: CurrentSignal[] = [
   {
     label: "Now",
-    value: "Building Restro AI",
-    detail: "The current idea I keep returning to: restaurant software that helps teams think ahead.",
+    value: "At Synthiolabs",
+    detail: "A new chapter.",
   },
   {
     label: "Mode",
-    value: "Product-first Android",
+    value: "Product-first Mobile",
     detail: "Small screens, high intent, calm interactions, and no wasted taps.",
   },
   {
@@ -119,16 +120,16 @@ export const currentSignals: CurrentSignal[] = [
 ]
 
 export const heroRoles = [
-  "Android Developer at PhonePe",
+  "Currently at Synthiolabs",
   "Previously close to product, fintech, and marketplace reality at Fi and Phool",
-  "Building Restro AI and the kind of software that survives real users",
+  "Cofounder of Restro AI, building software for real users",
   "Product-minded engineer who enjoys messy products",
 ]
 
 export const experienceChapters: ExperienceChapter[] = [
   {
     company: "Phool.co",
-    role: "Startup operations and marketplace work",
+    role: "Startup operations",
     period: "Early chapter",
     chapter: "Startup hunger, marketing work, and marketplace reality",
     training: "The non-code parts of a startup still move the company.",
@@ -145,7 +146,7 @@ export const experienceChapters: ExperienceChapter[] = [
   },
   {
     company: "Fi",
-    role: "Android product engineering",
+    role: "Mobile engineering",
     period: "Fintech chapter",
     chapter: "Product clarity, founder proximity, and calm finance UX",
     training: "Good fintech products reduce anxiety instead of adding more screens.",
@@ -179,12 +180,12 @@ export const experienceChapters: ExperienceChapter[] = [
   },
   {
     company: "PhonePe",
-    role: "Android Engineer",
-    period: "Current chapter",
+    role: "Mobile Engineer",
+    period: "Previous chapter",
     chapter: "Trust, money movement, and fast shipping environments",
     training: "Money movement teaches product judgment quickly.",
     story:
-      "PhonePe taught me how serious product work feels when money is involved. I work in a fast-moving, high-ownership pod around DigiMetal, where reliability and speed both matter.",
+      "PhonePe taught me how serious product work feels when money is involved. I worked in a fast-moving, high-ownership pod around DigiMetal, where reliability and speed both matter.",
     signals: [
       "Shipped DigiGold and DigiSilver features for 700M+ registered PhonePe users across India",
       "Built across DigiGold and DigiSilver journeys where trust, clarity, and edge cases matter",
@@ -193,6 +194,18 @@ export const experienceChapters: ExperienceChapter[] = [
     metric: "Trust systems",
     visual: "trust-network",
     icon: Phone,
+  },
+  {
+    company: "Synthiolabs",
+    role: "Currently here",
+    period: "Now",
+    chapter: "The next chapter",
+    training: "Currently at Synthiolabs. Still curious, still building.",
+    story: "Currently at Synthiolabs. Still curious, still building.",
+    signals: [],
+    metric: "A new chapter",
+    visual: "trust-network",
+    icon: Sparkles,
   },
 ]
 
@@ -278,33 +291,17 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
     accent: "amber",
     icon: MessageSquareText,
   },
+
 ]
 
 export const principles: Principle[] = [
-  {
-    title: "Product before polish",
-    description:
-      "I like polish, but only after the core problem is honest. Pretty screens do not save confused products.",
-  },
-  {
-    title: "Speed with taste",
-    description:
-      "I enjoy moving fast. I care even more about whether the thing feels thoughtful when someone finally uses it.",
-  },
-  {
-    title: "Calm beats clever",
-    description:
-      "The best products usually feel obvious after someone else has done the hard thinking.",
-  },
-  {
-    title: "Build past the demo",
-    description:
-      "Some of my favorite projects started as random late-night ideas. The good ones survive outside demo videos.",
-  },
+  { title: "Stay curious", description: "Ask questions. Try things. Keep learning." },
+  { title: "Keep it simple", description: "Make the complicated feel easy." },
+  { title: "Care about the details", description: "The small things shape how something feels." },
 ]
 
 export const stackNodes: StackNode[] = [
-  { label: "Android", detail: "Kotlin, Compose, lifecycle, performance", icon: Phone },
+  { label: "Mobile", detail: "Kotlin, Compose, Flutter, multiplatform", icon: Phone },
   { label: "AI UX", detail: "Agents, orchestration, recommendation surfaces", icon: BrainCircuit },
   { label: "Product Systems", detail: "Flows, metrics, trust, feedback loops", icon: CircuitBoard },
   { label: "Web Apps", detail: "Next.js, TypeScript, responsive interfaces", icon: Code2 },

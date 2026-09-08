@@ -1,12 +1,12 @@
 import type { Metadata, Viewport } from 'next'
 import { Analytics } from '@vercel/analytics/next'
-import { Inter, JetBrains_Mono } from 'next/font/google'
+import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 
 const siteUrl = 'https://adityabajaj.me'
 
-const inter = Inter({
+const displayFont = Space_Grotesk({
   subsets: ['latin'],
   variable: '--font-geist-sans',
   display: 'swap',
@@ -23,21 +23,20 @@ const structuredData = {
   '@type': 'Person',
   name: 'Aditya Bajaj',
   url: siteUrl,
-  image: `${siteUrl}/favicon_new.png`,
-  jobTitle: 'Android Developer and Product Engineer',
+  image: `${siteUrl}/images/aditya-portrait.webp`,
+  jobTitle: 'Cofounder of Restro AI and Mobile Product Engineer',
   worksFor: {
     '@type': 'Organization',
-    name: 'PhonePe',
+    name: 'Synthiolabs',
   },
   description:
-    'Aditya Bajaj is an Android developer at PhonePe and a product-minded software builder working across fintech, AI products, mobile apps, and restaurant technology.',
+    'Aditya Bajaj is the cofounder of Restro AI and builds across mobile, AI, and the web. Explore his projects, experiments, and the person behind them.',
   sameAs: [
     'https://www.linkedin.com/in/aditya-bajaj-6128811b6/',
     'https://github.com/adiVIT',
-    'https://restro-ai.com',
   ],
   knowsAbout: [
-    'Android development',
+    'Mobile development',
     'Kotlin',
     'Product engineering',
     'Fintech products',
@@ -52,25 +51,24 @@ const structuredData = {
     name: 'Aditya Bajaj',
     url: siteUrl,
     description:
-      'The personal portfolio of Aditya Bajaj, an Android developer, product engineer, and independent builder.',
+      'The personal portfolio of Aditya Bajaj, a mobile product engineer and cofounder of Restro AI.',
   },
 }
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   applicationName: 'Aditya Bajaj',
-  title: 'Aditya Bajaj - Building thoughtful software',
+  title: 'Aditya Bajaj — Code, products & a human side',
   description:
-    'Aditya Bajaj is an Android developer at PhonePe and a product-minded software builder working on fintech, AI tools, mobile apps, and Restro AI.',
+    'Aditya Bajaj is the cofounder of Restro AI and builds across mobile, AI, and the web. Projects, experiments, and the person behind them.',
   keywords: [
     'Aditya Bajaj',
     'Aditya Bajaj portfolio',
-    'Android developer PhonePe',
+    'Aditya Bajaj Synthiolabs',
     'Product engineer India',
-    'Kotlin Android developer',
+    'Kotlin mobile developer',
     'fintech product engineer',
     'AI product builder',
-    'Restro AI founder',
     'Next.js developer',
     'TypeScript developer',
     'mobile app developer',
@@ -94,9 +92,9 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'Aditya Bajaj - Building thoughtful software',
+    title: 'Aditya Bajaj — Code, products & a human side',
     description:
-      'Android developer at PhonePe, product engineer, and independent builder working across fintech, AI tools, mobile apps, and Restro AI.',
+      'Aditya Bajaj is the cofounder of Restro AI and builds across mobile, AI, and the web. Projects, experiments, and the person behind them.',
     url: siteUrl,
     siteName: 'Aditya Bajaj',
     type: 'website',
@@ -104,9 +102,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Aditya Bajaj - Building thoughtful software',
+    title: 'Aditya Bajaj — Code, products & a human side',
     description:
-      'Android developer at PhonePe and product-minded builder working on fintech, AI tools, mobile apps, and Restro AI.',
+      'Aditya Bajaj is the cofounder of Restro AI and builds across mobile, AI, and the web. Projects, experiments, and the person behind them.',
   },
   manifest: '/manifest.webmanifest',
   icons: {
@@ -136,7 +134,7 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  themeColor: '#02030a',
+  themeColor: '#10110f',
   colorScheme: 'dark',
 }
 
@@ -146,7 +144,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrainsMono.variable} dark`}>
+    <html lang="en" className={`${displayFont.variable} ${jetbrainsMono.variable} dark`}>
       <body className="antialiased">
         <Script
           id="person-structured-data"
