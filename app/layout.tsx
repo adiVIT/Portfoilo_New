@@ -4,7 +4,7 @@ import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 
-const siteUrl = 'https://adityabajaj.me'
+const siteUrl = 'https://adityabajaj.online'
 
 const displayFont = Space_Grotesk({
   subsets: ['latin'],

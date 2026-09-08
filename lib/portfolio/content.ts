@@ -313,7 +313,7 @@ export const contactLinks: ContactLink[] = [
   { label: "Email", value: "adityabajaj2222@gmail.com", href: "mailto:adityabajaj2222@gmail.com", icon: Mail },
   { label: "LinkedIn", value: "aditya-bajaj-6128811b6", href: "https://www.linkedin.com/in/aditya-bajaj-6128811b6/", icon: Linkedin },
   { label: "GitHub", value: "adiVIT", href: "https://github.com/adiVIT", icon: Github },
-  { label: "Portfolio", value: "adityabajaj.me", href: "https://adityabajaj.me", icon: Building2 },
+  { label: "Portfolio", value: "adityabajaj.online", href: "https://adityabajaj.online", icon: Building2 },
 ]
 
 export const architectureNodes = [
