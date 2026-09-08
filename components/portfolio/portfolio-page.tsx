@@ -48,6 +48,7 @@ import { Playground } from "./playground";
 import { SelectedWork } from "./selected-work";
 import { usePortfolioSound } from "./use-portfolio-sound";
 import { PersonalScenes } from "./personal-scenes";
+import { KineticManifesto } from "./kinetic-manifesto";
 
 const HeroSculpture = dynamic(() => import("./hero-sculpture"), {
   ssr: false,
@@ -66,7 +67,7 @@ function SplitName({ text }: { text: string }) {
     <>
       {text.split("").map((letter, i) => (
         <span className="hero-letter" key={i}>
-          {letter}
+          <span className="hero-glyph">{letter}</span>
         </span>
       ))}
     </>
@@ -91,8 +92,8 @@ export function PortfolioPage() {
   const enabled = motionOn && !reducedMotion;
   const sceneProgress = useRef({ value: 0 });
   const hobbyProgress = useRef<{ value: number; draw?: (progress: number) => void }>({ value: 0 });
-  const { soundOn, soundError, toggleSound, playInstrument } = usePortfolioSound(root);
-  const { moveGallery, moveJourney, moveHobbies, pauseScroll } = usePortfolioMotion(
+  const { soundOn, soundError, toggleSound, playInstrument, music } = usePortfolioSound(root);
+  const { moveGallery, moveWork, moveJourney, moveHobbies, pauseScroll } = usePortfolioMotion(
     root,
     enabled,
     sceneProgress,
@@ -176,7 +177,7 @@ export function PortfolioPage() {
   }
 
   return (
-    <div ref={root} className="portfolio" data-motion={enabled ? "on" : "off"}>
+    <div ref={root} className="portfolio portfolio-experience" data-motion={enabled ? "on" : "off"}>
       <a className="skip-link" href="#now">
         Skip to content
       </a>
@@ -205,9 +206,9 @@ export function PortfolioPage() {
             data-sound-toggle
             onClick={toggleSound}
             aria-pressed={soundOn}
-            aria-label={soundOn ? "Mute sounds" : "Enable sounds"}
-            title="Click sounds"
-            data-tooltip={soundOn ? "Sound on" : "Sound off"}
+            aria-label={soundOn ? "Mute all audio" : "Play music"}
+            title="Sound and music"
+            data-tooltip={soundOn ? "Mute sound & music" : "Play music"}
           >
             {soundOn ? <Volume2 size={17} /> : <VolumeX size={17} />}
             <span className="sr-only">Sound {soundOn ? "on" : "off"}</span>
@@ -278,12 +279,11 @@ export function PortfolioPage() {
           </nav>
         ) : null}
       </header>
-      {soundError && <p className="sr-only" role="status">{soundError}</p>}
       <main>
         <section id="hero" className="hero">
           <div className="hero-intro">
-            <span>Software, with a human side.</span>
-            <span className="hero-current">Mobile / AI / Web</span>
+            <span>Creative by instinct.</span>
+            <span className="hero-current">Engineer by trade.</span>
           </div>
           <h1 className="hero-name" aria-label="Aditya Bajaj">
             <span className="name-line name-first" aria-hidden="true">
@@ -303,30 +303,34 @@ export function PortfolioPage() {
               />
             </div>
           </div>
+          <p className="hero-side-note">A curious mind.<br />A hands-on maker.<br /><span>A work in progress.</span></p>
           <div className="hero-portal" aria-hidden="true">
             <div className="portal-story">
-              <span>STILL CURIOUS.</span>
-              <strong>STILL <em>EXPLORING.</em></strong>
+              <span>GOOD THINGS START WITH</span>
+              <strong>A LITTLE<br /><em>CURIOSITY.</em></strong>
             </div>
           </div>
           <div className="hero-bottom">
             <p>
-              From an idea
+              Code. Form. Feeling.
               <br />
-              to something you can <em>use.</em>
+              <em>Come for a little wander.</em>
             </p>
-            <button
-              className="remix-button"
-              onClick={() => setForm((value) => value + 1)}
-            >
-              <Shuffle size={15} />
-              Remix the form
-              <span className="sr-only">
-                , current variation {(form % 3) + 1}
-              </span>
-            </button>
-            <a href="#work" className="hero-work magnetic">
-              See what I make
+            <div className="hero-interaction">
+              <span className="sculpture-instruction">Drag the sculpture to rotate</span>
+              <button
+                className="remix-button"
+                onClick={() => setForm((value) => value + 1)}
+              >
+                <Shuffle size={15} />
+                Remix the form
+                <span className="sr-only">
+                  , current variation {(form % 3) + 1}
+                </span>
+              </button>
+            </div>
+            <a href="#creative" className="hero-work magnetic">
+              Scroll to explore
               <span>
                 <ArrowDown size={22} />
               </span>
@@ -334,19 +338,21 @@ export function PortfolioPage() {
           </div>
         </section>
 
+        <KineticManifesto />
+
         <section id="now" className="about section-space">
           <div className="section-kicker">
             <span>A little about me</span>
             <Asterisk size={22} />
           </div>
-          <h2 className="manifesto" aria-label={manifesto}>
-            {manifesto.split(" ").map((word, index) => (
-              <span className="manifesto-word" aria-hidden="true" key={index}>
-                {word}{" "}
-              </span>
-            ))}
-          </h2>
           <div className="about-grid">
+            <h2 className="manifesto" aria-label={manifesto}>
+              {manifesto.split(" ").map((word, index) => (
+                <span className="manifesto-word" aria-hidden="true" key={index}>
+                  {word}{" "}
+                </span>
+              ))}
+            </h2>
             <div className="portrait-frame">
               <Image
                 src="/images/aditya-portrait.webp"
@@ -359,24 +365,10 @@ export function PortfolioPage() {
                 Hey, I’m Aditya.
               </span>
             </div>
-            <div className="about-copy reveal">
-              <p>
-                I like taking a half-formed idea and making it something you
-                can actually use.
-              </p>
-              <a className="founder-credit" href="https://www.restro-ai.com/" target="_blank" rel="noreferrer"><span>Currently building</span><strong>Restro AI <ArrowUpRight size={20} /></strong><small>Cofounder</small></a>
-              <a
-                className="text-link"
-                href="https://www.instagram.com/adityabajaj_____/"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Off-screen, on Instagram <ArrowUpRight size={17} />
-              </a>
-            </div>
           </div>
         </section>
-        <PersonalScenes animated={enabled} progress={hobbyProgress} onJump={moveHobbies} />
+        <PersonalScenes animated={enabled} progress={hobbyProgress} onJump={moveHobbies}
+          onAction={(index) => { if (soundOn) void playInstrument([60, 64, 67, 72][index], 0); }} />
         <div className="type-interlude" aria-hidden="true">
           <div className="kinetic-band">
             STAY CURIOUS <Asterisk /> KEEP EXPLORING <Asterisk /> STAY CURIOUS{" "}
@@ -384,9 +376,9 @@ export function PortfolioPage() {
           </div>
         </div>
 
-        <SelectedWork />
+        <SelectedWork onJump={moveWork} />
 
-        <Playground onJump={moveGallery} onNote={playInstrument} />
+        <Playground onJump={moveGallery} onNote={playInstrument} music={music} soundError={soundError} soundOn={soundOn} onMute={toggleSound} />
 
         <JourneyStack onOpen={setSelectedChapter} onJump={moveJourney} />
 
@@ -454,7 +446,7 @@ export function PortfolioPage() {
         </div>
 
         <section id="contact" className="contact section-space">
-          <span className="eyebrow">Glad you stopped by.</span>
+          <span className="eyebrow">Every good thing starts with a conversation.</span>
           <div className="contact-heading">
             <h2 className="contact-title">
               <span>SAY</span>
@@ -510,6 +502,7 @@ export function PortfolioPage() {
               </a>
             </div>
           </div>
+          <div className="contact-signoff"><span>Made with curiosity, by Aditya.</span><a href="#hero">Back to the beginning <ArrowUpRight size={16} /></a></div>
         </section>
       </main>
       <Dialog

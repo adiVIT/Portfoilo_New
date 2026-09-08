@@ -2,6 +2,8 @@
 
 import { useRef, useState, type CSSProperties } from "react";
 import { ArrowLeft, ArrowRight, Asterisk, Shuffle } from "lucide-react";
+import { SoundRoom } from "./sound-room";
+import type { MusicController } from "./music-types";
 
 const experiments = [
   { name: "Form", hint: "Nothing stays in one shape." },
@@ -20,18 +22,18 @@ const melody = [
   { midi: 72, label: "C" }, { midi: 67, label: "G" },
 ];
 
-export function Playground({ onJump, onNote }: {
+export function Playground({ onJump, onNote, music, soundError, soundOn, onMute }: {
   onJump: (index: number) => void;
   onNote: (midi: number, voice: number) => Promise<void>;
+  music: MusicController;
+  soundError: string;
+  soundOn: boolean;
+  onMute: () => Promise<void>;
 }) {
   const [variations, setVariations] = useState([0, 0, 0]);
   const nextNote = useRef(0);
-  const [playedNote, setPlayedNote] = useState<number | null>(null);
-  const [strike, setStrike] = useState(0);
   function playNote(index: number, voice = 0) {
     nextNote.current = (index + 1) % melody.length;
-    setPlayedNote(index);
-    setStrike((value) => value + 1);
     void onNote(melody[index].midi, voice);
   }
   function remix(index: number) {
@@ -39,15 +41,12 @@ export function Playground({ onJump, onNote }: {
     setVariations((current) => current.map((value, i) => i === index ? (value + 1) % 3 : value));
   }
   return (
-    <section id="playground" className="projects-section section-space" onKeyDown={(event) => {
-      if (event.repeat || event.altKey || event.ctrlKey || event.metaKey || !(event.target instanceof HTMLElement) || event.target.isContentEditable || event.target.closest("input, textarea, select")) return;
-      const index = Number(event.key) - 1;
-      if (/^[1-8]$/.test(event.key)) { event.preventDefault(); playNote(index); }
-    }}>
+    <section id="playground" className="projects-section section-space">
+      <SoundRoom music={music} soundError={soundError} soundOn={soundOn} onMute={onMute} />
       <div className="projects-pin">
         <div className="projects-heading">
           <h2>
-            A little <em>play.</em>
+            Keep <em>playing.</em>
           </h2>
           <div className="gallery-controls">
             <button
@@ -65,25 +64,6 @@ export function Playground({ onJump, onNote }: {
               <ArrowRight size={20} />
             </button>
           </div>
-        </div>
-        <div className="play-instrument" data-instrument>
-          <div className="play-instructions">
-            <p>Eight notes. Your rhythm.</p>
-            <span>Tap a key, or remix a shape to play the next note.</span>
-          </div>
-          <div className="melody-keyboard" role="group" aria-label="Eight-note keyboard">
-            {melody.map((note, index) => (
-              <button key={index} className="melody-key" onClick={() => playNote(index)}
-                aria-label={`Play note ${index + 1}: ${note.label}`}
-                aria-current={playedNote === index ? "step" : undefined}>
-                <kbd>{index + 1}</kbd><span>{note.label}</span>
-                {playedNote === index && <i key={strike} aria-hidden="true" />}
-              </button>
-            ))}
-          </div>
-          <span className="instrument-readout" aria-live="polite">
-            {playedNote === null ? "Click to play" : `NOTE ${String(playedNote + 1).padStart(2, "0")} / 08`}
-          </span>
         </div>
         <div
           className="project-viewport"

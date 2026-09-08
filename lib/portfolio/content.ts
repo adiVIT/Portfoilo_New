@@ -96,7 +96,7 @@ export const commandItems: NavItem[] = [
   { label: "Hobbies & interests", href: "#hobbies" },
   { label: "Things I’ve built", href: "#work" },
   { label: "The journey", href: "#journey" },
-  { label: "Playground", href: "#playground" },
+  { label: "Playground · make some music", href: "#playground" },
   { label: "Mindset", href: "#principles" },
   { label: "Contact Aditya", href: "#contact" },
 ]
