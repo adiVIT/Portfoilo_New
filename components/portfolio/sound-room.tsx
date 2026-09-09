@@ -97,7 +97,7 @@ export function SoundRoom({ music, soundError, soundOn, onMute }: {
           <div className="sound-presets" role="group" aria-label="Choose a groove">
             {grooveOptions.map((option) => (
               <button key={option.id} aria-pressed={music.preset === option.id}
-                onClick={() => music.setPreset(option.id)}>{option.name}</button>
+                onClick={() => music.setPreset(option.id)}><span>{option.name}</span><small aria-hidden="true">{option.bpm} BPM</small></button>
             ))}
           </div>
 

@@ -1,6 +1,11 @@
 .sound-room { --sound-accent: #d0f575; --record-angle: 0deg; padding-right: var(--gutter); padding-bottom: clamp(90px, 12vw, 180px); }
 .sound-room[data-preset="daylight"] { --sound-accent: #efd293; }
 .sound-room[data-preset="night-drive"] { --sound-accent: #bdb4ef; }
+.sound-room[data-preset="rooftop"] { --sound-accent: #f3b28c; }
+.sound-room[data-preset="blue-hour"] { --sound-accent: #a8c9ed; }
+.sound-room[data-preset="pocket"] { --sound-accent: #e9a9bf; }
+.sound-room[data-preset="moonwalk"] { --sound-accent: #d5b8f3; }
+.sound-room[data-preset="first-light"] { --sound-accent: #b2dfcd; }
 .sound-room-heading { margin-bottom: 46px; }
 .sound-room-heading h2 { font-size: clamp(62px, 8.5vw, 136px); font-weight: 500; line-height: .93; letter-spacing: -.065em; }
 .sound-room-heading br { display: none; }
@@ -25,9 +30,11 @@
 .sound-groove-name small { display: block; margin-top: 6px; font-size: 10px; color: #9ba18e; letter-spacing: 0; }
 .sound-record-footer > svg { margin-left: auto; color: var(--sound-accent); }
 .sound-desk { padding: clamp(22px, 2.5vw, 36px); min-width: 0; }
-.sound-presets { display: flex; border-bottom: 1px solid #36382e; margin-bottom: 26px; gap: 24px; }
-.sound-presets button { color: #969e86; padding: 0 0 14px; font-size: 12px; min-height: 38px; border-bottom: 2px solid transparent; margin-bottom: -1px; }
-.sound-presets button[aria-pressed="true"] { color: var(--sound-accent); border-color: var(--sound-accent); }
+.sound-presets { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); margin-bottom: 26px; gap: 7px; }
+.sound-presets button { display: flex; flex-direction: column; align-items: start; justify-content: center; gap: 6px; color: #aab29c; padding: 10px; font-size: 11px; min-height: 58px; border: 1px solid #363e2c; border-radius: 6px; text-align: left; transition: border-color .2s, background .2s; }
+.sound-presets button small { font: 8px var(--font-geist-mono), monospace; opacity: .65; }
+.sound-presets button:hover { background: #252b1c; }
+.sound-presets button[aria-pressed="true"] { color: var(--sound-accent); border-color: var(--sound-accent); background: #272e1e; }
 .sound-pad-hint { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 13px; font-size: 11px; color: #acb399; }
 .sound-pad-hint > span:last-child { color: #81896f; font-size: 10px; }
 .sound-pads { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 9px; }
@@ -90,7 +97,7 @@
   .sound-record-label > span { font-size: 7px; }
   .sound-record-footer { flex-wrap: wrap; gap: 12px; }
   .sound-record-footer > svg { display: none; }
-  .sound-presets { gap: 17px; }
+  .sound-presets { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
   .sound-presets button { font-size: 10px; }
   .sound-pad-hint { flex-wrap: wrap; }
   .sound-pad { height: 88px; }
@@ -117,7 +124,7 @@
   .sound-groove-name { font-size: 15px; }
   .sound-groove-name small { font-size: 9px; line-height: 1.4; max-width: 150px; }
   .sound-desk { padding: 22px 17px 17px; }
-  .sound-presets { justify-content: space-between; gap: 8px; margin-bottom: 20px; }
+  .sound-presets { gap: 7px; margin-bottom: 20px; }
   .sound-presets button { font-size: 11px; }
   .sound-pad-hint { font-size: 10px; }
   .sound-pad-hint > span:last-child { font-size: 9px; }

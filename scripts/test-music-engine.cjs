@@ -95,7 +95,7 @@ function fixture() {
   }
   const events = [], masks = [];
   const engine = load('lib/portfolio/music-engine.ts').createMusicEngine((event) => events.push(event), (mask) => masks.push([...mask]));
-  return { engine, context: contexts[0], events, masks, advance, tasks, sources: () => contexts[0].nodes.filter((node) => node.started) };
+  return { engine, options: load('components/portfolio/music-types.ts').grooveOptions, context: contexts[0], events, masks, advance, tasks, sources: () => contexts[0].nodes.filter((node) => node.started) };
 }
 
 test('audio is opt-in; simultaneous first gestures share one resume', async () => {
@@ -153,4 +153,26 @@ test('preset changes restart one scheduler, retaining recorded taps and layer ch
   f.engine.stop(); f.advance(100);
   assert.equal(f.tasks.size, 0);
   f.engine.dispose();
+});
+
+
+test('all eight grooves play four bars with distinct arrangements and respect disabled layers', async () => {
+  const catalog = fixture();
+  const options = catalog.options; catalog.engine.dispose();
+  assert.equal(options.length, 8);
+  assert.equal(new Set(options.map((option) => option.id)).size, 8);
+  const fingerprints = new Set();
+  for (const option of options) {
+    const f = fixture(); await f.engine.activate(); f.engine.setPreset(option.id); f.engine.start();
+    f.advance(16 * 60 / option.bpm * 1000 + 150);
+    assert(f.events.filter((event) => event.type === 'step').length >= 64, option.id);
+    assert(f.sources().length > 50, `${option.id} schedules a complete arrangement`);
+    assert(f.sources().every((node) => Number.isFinite(node.frequency.value) && Number.isFinite(node.stopAt)), `${option.id} has finite voices`);
+    fingerprints.add(JSON.stringify(f.sources().slice(0, 160).map((node) => [node.kind, node.frequency.value])));
+    f.engine.setLayers({ drums: false, bass: false, chords: false });
+    const count = f.sources().length; f.advance(1500);
+    assert.equal(f.sources().length, count, `${option.id} honors all mixer switches`);
+    f.engine.dispose(); assert.equal(f.tasks.size, 0);
+  }
+  assert.equal(fingerprints.size, 8, 'Every groove has its own arrangement, not just a tempo change');
 });

@@ -166,7 +166,65 @@ function createVoiceBank(context: BaseAudioContext, maxVoices = 80) {
   };
 }
 type VoiceBank = ReturnType<typeof createVoiceBank>;
+type Arrangement = {
+  kick: number[]; snare: number[]; clap: number[]; hats: number[];
+  bass: number[][]; progression: number[]; stabs: number[];
+  duration: number; bright: boolean; melody: number[][]; quiet?: boolean;
+};
+// All five arrangements share the pads' C-major / A-minor palette, so live taps stay musical.
+const extraArrangements: Partial<Record<GrooveId, Arrangement>> = {
+  rooftop: {
+    kick: [0, 4, 8, 12], snare: [], clap: [4, 12], hats: [2, 6, 10, 14, 15],
+    bass: [[2, 0, 1.5], [6, 0, 1.5], [10, 12, 1.5], [14, 7, 1.2]],
+    progression: [2, 3, 1, 0], stabs: [2, 6, 10, 14], duration: .45, bright: true,
+    melody: [[3, 76], [7, 79], [11, 81], [15, 79]],
+  },
+  "blue-hour": {
+    kick: [0, 7, 10], snare: [4, 12], clap: [], hats: [0, 3, 6, 8, 11, 14],
+    bass: [[0, 0, 5.5], [7, 7, 2.6], [11, 0, 4]],
+    progression: [1, 2, 0, 3], stabs: [0, 11], duration: 2.5, bright: false,
+    melody: [[6, 79], [14, 76]], quiet: true,
+  },
+  pocket: {
+    kick: [0, 3, 6, 10, 14], snare: [4, 12], clap: [12], hats: [0, 2, 3, 6, 8, 10, 11, 14, 15],
+    bass: [[0, 0, 1.4], [3, 12, .8], [5, 7, 1.2], [7, 12, .8], [10, 0, 1.5], [13, 7, .8], [15, 12, .65]],
+    progression: [1, 1, 2, 3], stabs: [1, 7, 11], duration: .36, bright: true,
+    melody: [[2, 72], [9, 76], [15, 74]],
+  },
+  moonwalk: {
+    kick: [0, 4, 8, 12], snare: [4, 12], clap: [4, 12], hats: [0, 2, 4, 6, 8, 10, 12, 14],
+    bass: [[0, 0, 1.4], [2, 12, 1.2], [4, 7, 1.4], [6, 12, 1.2], [8, 0, 1.4], [10, 12, 1.2], [12, 7, 1.4], [14, 12, 1.2]],
+    progression: [0, 2, 1, 3], stabs: [0, 3, 8, 11], duration: .58, bright: true,
+    melody: [[1, 79], [5, 76], [9, 74], [13, 72]],
+  },
+  "first-light": {
+    kick: [0], snare: [], clap: [], hats: [6, 14],
+    bass: [[0, 0, 10]], progression: [2, 0, 3, 1], stabs: [0], duration: 3.8, bright: false,
+    melody: [[2, 72], [7, 79], [12, 76]], quiet: true,
+  },
+};
 function scheduleArrangement(bank: VoiceBank, preset: GrooveId, step: number, bar: number, at: number, beat: number, layers: Record<MusicLayer, boolean>) {
+  const arrangement = extraArrangements[preset];
+  if (arrangement) {
+    const chordIndex = arrangement.progression[bar];
+    if (layers.drums) {
+      if (arrangement.kick.includes(step)) bank.drum(0, at, arrangement.quiet ? .52 : .76);
+      if (arrangement.snare.includes(step)) bank.drum(1, at + .007, arrangement.quiet ? .42 : .62);
+      if (arrangement.clap.includes(step)) bank.drum(3, at + .012, .32);
+      if (arrangement.hats.includes(step)) bank.drum(2, at, (step % 4 === 2 ? .65 : .35) * (arrangement.quiet ? .6 : 1));
+    }
+    if (layers.bass) for (const [position, interval, length] of arrangement.bass) {
+      if (step === position) bank.bass(bassRoots[chordIndex] + interval, at, beat * length, arrangement.quiet ? .52 : .7, arrangement.bright);
+    }
+    if (layers.chords) {
+      if (arrangement.stabs.includes(step)) chords[chordIndex].forEach((midi, i) =>
+        bank.keys(midi, at + i * .012, arrangement.quiet ? .32 : .36, arrangement.duration, "chords", arrangement.bright));
+      for (const [position, midi] of arrangement.melody) if (step === position) {
+        bank.keys(midi + (bar % 2 ? -12 : 0), at, .34, arrangement.quiet ? 2.4 : .7, "chords", arrangement.bright);
+      }
+    }
+    return;
+  }
   const bright = preset === "daylight"; const driving = preset === "night-drive";
   if (layers.drums) {
     const kicks = driving ? [0, 4, 8, 12] : bright ? [0, 6, 8, 14] : [0, 6, 10];
@@ -232,7 +290,7 @@ export function createMusicEngine(onEvent: (event: MusicEvent) => void, onRecord
     }
     while (nextStepTime < context.currentTime + 0.11) {
       const step = stepNumber % 16; const bar = Math.floor(stepNumber / 16) % 4;
-      const swing = preset === "after-hours" ? 0.13 : preset === "daylight" ? 0.08 : 0.025;
+      const swing = grooveOptions.find((option) => option.id === preset)!.swing;
       const at = nextStepTime + (step % 2 ? stepDuration * swing : 0);
       scheduleArrangement(bank, preset, step, bar, at, stepDuration, layers);
       recorded[step].forEach((availableAt, index) => { if (stepNumber >= availableAt) hit(index, at, "recording", 0.72); });
@@ -312,7 +370,7 @@ export async function renderMusicPreview(context: OfflineAudioContext, preset: G
   const bpm = grooveOptions.find((option) => option.id === preset)!.bpm;
   bank.setTempo(bpm); bank.setVolume(0.65, true);
   const stepDuration = 60 / bpm / 4;
-  const swing = preset === "after-hours" ? 0.13 : preset === "daylight" ? 0.08 : 0.025;
+  const swing = grooveOptions.find((option) => option.id === preset)!.swing;
   for (let position = 0; position < bars * 16; position++) {
     const step = position % 16;
     const at = 0.05 + position * stepDuration + (step % 2 ? stepDuration * swing : 0);

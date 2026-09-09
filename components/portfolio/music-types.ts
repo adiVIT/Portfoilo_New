@@ -1,7 +1,12 @@
 export const grooveOptions = [
-  { id: "after-hours", name: "After hours", description: "Warm keys. A laid-back pocket.", bpm: 82 },
-  { id: "daylight", name: "Daylight", description: "Bright chords. A little bounce.", bpm: 96 },
-  { id: "night-drive", name: "Night drive", description: "Deep bass. Keep it moving.", bpm: 112 },
+  { id: "after-hours", name: "After hours", description: "Warm keys. A laid-back pocket.", bpm: 82, swing: 0.13 },
+  { id: "daylight", name: "Daylight", description: "Bright chords. A little bounce.", bpm: 96, swing: 0.08 },
+  { id: "night-drive", name: "Night drive", description: "Deep bass. Keep it moving.", bpm: 112, swing: 0.025 },
+  { id: "rooftop", name: "Rooftop", description: "House drums. Sunset energy.", bpm: 120, swing: 0.02 },
+  { id: "blue-hour", name: "Blue hour", description: "Soft chords. A slower heartbeat.", bpm: 74, swing: 0.16 },
+  { id: "pocket", name: "Pocket", description: "Skipping bass. Loose and funky.", bpm: 104, swing: 0.19 },
+  { id: "moonwalk", name: "Moonwalk", description: "Disco pulse. Glittering keys.", bpm: 116, swing: 0.04 },
+  { id: "first-light", name: "First light", description: "Airy notes. Room to breathe.", bpm: 68, swing: 0.03 },
 ] as const;
 
 export type GrooveId = (typeof grooveOptions)[number]["id"];
