@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { ArrowUpRight, Circle, Music2, Pause, Play, RotateCcw, Volume2 } from "lucide-react";
-import { grooveOptions, musicPads, type MusicController, type MusicLayer } from "./music-types";
+import { grooveOptions, padsForGroove, type MusicController, type MusicLayer } from "./music-types";
 import "./sound-room.css";
 
 const layers: { id: MusicLayer; label: string }[] = [
@@ -103,7 +103,7 @@ export function SoundRoom({ music, soundError, soundOn, onMute }: {
 
           <div className="sound-pad-hint"><span>{touched ? "Nice. Keep going." : "Every tap belongs here."}</span><span>Tap or use keys 1–8</span></div>
           <div className="sound-pads" role="group" aria-label="Drum and melody pads">
-            {musicPads.map((pad, index) => (
+            {padsForGroove(music.preset).map((pad, index) => (
               <button key={pad.key} className={`sound-pad sound-pad-${pad.kind}`} data-pad={index}
                 aria-label={`Play ${pad.name}, key ${pad.key}`} aria-keyshortcuts={pad.key}
                 onPointerDown={(event) => {

@@ -5,9 +5,7 @@ type Source = OscillatorNode | AudioBufferSourceNode;
 type Voice = { sources: Source[]; nodes: AudioNode[]; envelope: GainNode; group: VoiceGroup };
 const frequency = (midi: number) => 440 * 2 ** ((midi - 69) / 12);
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
-const padNotes = [72, 74, 76, 79];
-const chords = [[48, 55, 62, 64, 69], [45, 55, 60, 64, 67], [53, 57, 60, 64, 67], [43, 55, 60, 62, 64]];
-const bassRoots = [36, 33, 41, 43];
+type Timbre = "rhodes" | "marimba" | "analog" | "organ" | "bell" | "clav" | "strings" | "pad";
 const initialLayers: Record<MusicLayer, boolean> = { drums: true, bass: true, chords: true };
 
 /** Finite synthesized voices; no downloaded samples or continuously running oscillators. */
@@ -104,6 +102,39 @@ function createVoiceBank(context: BaseAudioContext, maxVoices = 80) {
     body.connect(bodyLevel).connect(v.envelope); v.nodes.push(modulation, tone, bodyLevel);
     source(v, carrier, at, duration); source(v, modulator, at, duration); source(v, body, at, duration);
   }
+  function tone(midi: number, at: number, velocity: number, duration: number, group: VoiceGroup, timbre: Timbre) {
+    if (timbre === "rhodes") { keys(midi, at, velocity, duration, group); return; }
+    const hz = frequency(midi);
+    const sustained = timbre === "pad" || timbre === "strings" || timbre === "organ";
+    const attack = timbre === "pad" ? .42 : timbre === "strings" ? .16 : .004;
+    const v = voice(at, duration, velocity * .13, group, attack, clamp((midi - 67) / 30, -.5, .5), timbre === "bell" || timbre === "pad" ? .9 : .25, timbre === "analog" ? .55 : .12);
+    if (sustained) {
+      v.envelope.gain.cancelScheduledValues(at);
+      v.envelope.gain.setValueAtTime(0, at);
+      v.envelope.gain.linearRampToValueAtTime(velocity * .13, at + attack);
+      v.envelope.gain.linearRampToValueAtTime(velocity * .085, at + duration * .65);
+      v.envelope.gain.exponentialRampToValueAtTime(.0001, at + duration);
+    }
+    const filter = context.createBiquadFilter();
+    filter.type = timbre === "clav" ? "bandpass" : "lowpass";
+    const cutoff = timbre === "pad" ? 1100 : timbre === "strings" ? 2300 : timbre === "clav" ? 2100 : timbre === "analog" ? 3800 : 7500;
+    filter.frequency.setValueAtTime(cutoff, at);
+    filter.frequency.exponentialRampToValueAtTime(timbre === "clav" ? 450 : cutoff * .55, at + duration);
+    filter.Q.value = timbre === "clav" ? 2 : .6;
+    filter.connect(v.envelope); v.nodes.push(filter);
+    const partials: [OscillatorType, number, number][] = timbre === "marimba" ? [["sine", 1, 1], ["sine", 4, .2]]
+      : timbre === "bell" ? [["sine", 1, .7], ["sine", 2.76, .3], ["sine", 5.4, .09]]
+      : timbre === "organ" ? [["sine", 1, .65], ["sine", 2, .28], ["sine", 3, .18], ["sine", 4, .08]]
+      : timbre === "clav" ? [["square", 1, .65], ["sawtooth", 2, .2]]
+      : timbre === "pad" ? [["triangle", .997, .4], ["sine", 1.003, .5], ["sine", 2, .12]]
+      : [["sawtooth", .997, .35], ["sawtooth", 1.003, .35], ["triangle", 1, .25]];
+    for (const [wave, ratio, level] of partials) {
+      const oscillator = context.createOscillator(); oscillator.type = wave; oscillator.frequency.value = hz * ratio;
+      const gain = context.createGain(); gain.gain.setValueAtTime(level, at);
+      if (timbre === "marimba" || timbre === "bell") gain.gain.exponentialRampToValueAtTime(.001, at + duration * (ratio > 1 ? .35 : .95));
+      oscillator.connect(gain).connect(filter); v.nodes.push(gain); source(v, oscillator, at, duration);
+    }
+  }
   function bass(midi: number, at: number, duration: number, velocity: number, bright = false) {
     const v = voice(at, duration, 0.23 * velocity, "bass", 0.012);
     const oscillator = context.createOscillator(); oscillator.type = "triangle"; oscillator.frequency.value = frequency(midi);
@@ -150,7 +181,7 @@ function createVoiceBank(context: BaseAudioContext, maxVoices = 80) {
     }
   }
   return {
-    keys, bass, drum,
+    keys, tone, bass, drum,
     setVolume(value: number, audible: boolean) {
       master.gain.cancelScheduledValues(context.currentTime);
       master.gain.setTargetAtTime(audible ? clamp(value, 0, 1) * 0.78 : 0, context.currentTime, 0.012);
@@ -168,81 +199,85 @@ function createVoiceBank(context: BaseAudioContext, maxVoices = 80) {
 type VoiceBank = ReturnType<typeof createVoiceBank>;
 type Arrangement = {
   kick: number[]; snare: number[]; clap: number[]; hats: number[];
-  bass: number[][]; progression: number[]; stabs: number[];
-  duration: number; bright: boolean; melody: number[][]; quiet?: boolean;
+  bass: number[][]; roots: number[]; harmony: number[][]; stabs: number[];
+  duration: number; timbre: Timbre; melody: number[][]; quiet?: boolean;
 };
-// All five arrangements share the pads' C-major / A-minor palette, so live taps stay musical.
-const extraArrangements: Partial<Record<GrooveId, Arrangement>> = {
+// Each track is a separately voiced four-bar composition; motif positions span all 64 steps.
+const arrangements: Record<GrooveId, Arrangement> = {
+  "after-hours": {
+    kick: [0, 6, 10], snare: [4, 12], clap: [12], hats: [0, 2, 4, 6, 8, 10, 12, 14, 15],
+    bass: [[0, 0, 4.2], [7, 7, 1.8], [10, 12, 2.6], [14, 7, 1.2]], roots: [36, 33, 41, 43],
+    harmony: [[48,55,62,64,69], [45,55,60,64,67], [53,57,60,64,67], [43,55,60,62,64]],
+    stabs: [0, 10], duration: 1.85, timbre: "rhodes",
+    melody: [[3,76],[6,79],[14,74],[20,72],[27,76],[35,69],[39,72],[46,76],[52,74],[59,72]],
+  },
+  daylight: {
+    kick: [0, 6, 8, 14], snare: [4, 12], clap: [12], hats: [0, 2, 6, 8, 10, 14],
+    bass: [[0,0,3],[6,7,2],[10,12,2]], roots: [38,43,35,33],
+    harmony: [[62,66,69],[59,62,67],[59,62,66],[57,61,64]],
+    stabs: [0, 8], duration: .6, timbre: "marimba",
+    melody: [[0,78],[2,81],[5,83],[8,81],[12,78],[16,79],[19,78],[22,76],[28,74],[32,78],[35,81],[38,86],[43,83],[48,81],[52,76],[55,73],[60,74]],
+  },
+  "night-drive": {
+    kick: [0,4,8,12], snare: [4,12], clap: [], hats: [2,3,6,7,10,11,14,15],
+    bass: [[0,0,2],[3,12,1],[6,0,1.5],[8,0,2],[11,7,1],[14,12,1]], roots: [33,29,36,31],
+    harmony: [[57,60,64],[53,57,60],[55,60,64],[55,59,62]],
+    stabs: [0, 8], duration: .8, timbre: "analog",
+    melody: [[0,69],[3,76],[6,72],[10,71],[14,69],[16,65],[19,72],[22,69],[26,67],[30,65],[32,67],[35,76],[38,72],[42,79],[46,76],[48,74],[51,71],[54,67],[58,71],[62,68]],
+  },
   rooftop: {
-    kick: [0, 4, 8, 12], snare: [], clap: [4, 12], hats: [2, 6, 10, 14, 15],
-    bass: [[2, 0, 1.5], [6, 0, 1.5], [10, 12, 1.5], [14, 7, 1.2]],
-    progression: [2, 3, 1, 0], stabs: [2, 6, 10, 14], duration: .45, bright: true,
-    melody: [[3, 76], [7, 79], [11, 81], [15, 79]],
+    kick: [0,4,8,12], snare: [], clap: [4,12], hats: [2,6,10,14,15],
+    bass: [[2,0,1.5],[6,0,1.5],[10,12,1.5],[14,7,1.2]], roots: [41,43,40,45],
+    harmony: [[57,60,65],[59,62,67],[55,59,64],[57,60,64,67]],
+    stabs: [2,6,10,14], duration: .65, timbre: "organ",
+    melody: [[0,77],[3,81],[6,84],[12,81],[16,79],[19,83],[22,86],[28,83],[32,76],[35,79],[38,83],[44,79],[48,81],[51,84],[54,88],[58,86],[62,84]],
   },
   "blue-hour": {
-    kick: [0, 7, 10], snare: [4, 12], clap: [], hats: [0, 3, 6, 8, 11, 14],
-    bass: [[0, 0, 5.5], [7, 7, 2.6], [11, 0, 4]],
-    progression: [1, 2, 0, 3], stabs: [0, 11], duration: 2.5, bright: false,
-    melody: [[6, 79], [14, 76]], quiet: true,
+    kick: [0,10], snare: [8], clap: [], hats: [3,6,11,14],
+    bass: [[0,0,7],[10,7,4]], roots: [38,34,41,36],
+    harmony: [[50,57,60,64],[46,53,57,62],[53,60,64,69],[48,55,58,62]],
+    stabs: [0], duration: 2.6, timbre: "bell", quiet: true,
+    melody: [[2,81],[7,77],[13,74],[19,77],[26,74],[30,72],[34,69],[41,72],[45,77],[50,76],[57,74],[62,69]],
   },
   pocket: {
-    kick: [0, 3, 6, 10, 14], snare: [4, 12], clap: [12], hats: [0, 2, 3, 6, 8, 10, 11, 14, 15],
-    bass: [[0, 0, 1.4], [3, 12, .8], [5, 7, 1.2], [7, 12, .8], [10, 0, 1.5], [13, 7, .8], [15, 12, .65]],
-    progression: [1, 1, 2, 3], stabs: [1, 7, 11], duration: .36, bright: true,
-    melody: [[2, 72], [9, 76], [15, 74]],
+    kick: [0,3,6,10,14], snare: [4,12], clap: [12], hats: [0,2,3,6,8,10,11,14,15],
+    bass: [[0,0,1.4],[3,12,.8],[5,7,1.2],[7,10,.8],[10,0,1.5],[13,7,.8],[15,12,.65]], roots: [40,40,45,35],
+    harmony: [[52,55,59,62],[52,57,59,62],[57,61,64,67],[47,54,57,63]],
+    stabs: [1,7,11], duration: .24, timbre: "clav",
+    melody: [[0,64],[2,67],[3,69],[6,67],[9,64],[11,62],[14,64],[18,71],[19,69],[22,67],[25,64],[30,62],[33,69],[35,73],[38,76],[41,73],[46,69],[49,66],[51,69],[54,75],[57,71],[61,66]],
   },
   moonwalk: {
-    kick: [0, 4, 8, 12], snare: [4, 12], clap: [4, 12], hats: [0, 2, 4, 6, 8, 10, 12, 14],
-    bass: [[0, 0, 1.4], [2, 12, 1.2], [4, 7, 1.4], [6, 12, 1.2], [8, 0, 1.4], [10, 12, 1.2], [12, 7, 1.4], [14, 12, 1.2]],
-    progression: [0, 2, 1, 3], stabs: [0, 3, 8, 11], duration: .58, bright: true,
-    melody: [[1, 79], [5, 76], [9, 74], [13, 72]],
+    kick: [0,4,8,12], snare: [4,12], clap: [4,12], hats: [0,2,4,6,8,10,12,14],
+    bass: [[0,0,1.4],[2,12,1.2],[4,7,1.4],[6,12,1.2],[8,0,1.4],[10,12,1.2],[12,7,1.4],[14,12,1.2]], roots: [43,40,45,38],
+    harmony: [[59,62,67],[59,64,67],[60,64,69],[57,62,66]],
+    stabs: [0,8], duration: 1.25, timbre: "strings",
+    melody: [[0,79],[6,83],[10,86],[16,88],[22,86],[26,83],[32,84],[36,88],[42,91],[48,90],[54,86],[58,81],[62,78]],
   },
   "first-light": {
-    kick: [0], snare: [], clap: [], hats: [6, 14],
-    bass: [[0, 0, 10]], progression: [2, 0, 3, 1], stabs: [0], duration: 3.8, bright: false,
-    melody: [[2, 72], [7, 79], [12, 76]], quiet: true,
+    kick: [0], snare: [], clap: [], hats: [14],
+    bass: [[0,0,12]], roots: [36,32,39,34],
+    harmony: [[48,55,62,63],[44,51,58,60],[51,58,65,67],[46,53,60,62]],
+    stabs: [0], duration: 3.8, timbre: "pad", quiet: true,
+    melody: [[4,79],[12,75],[22,72],[30,70],[38,77],[46,79],[54,82],[62,77]],
   },
 };
 function scheduleArrangement(bank: VoiceBank, preset: GrooveId, step: number, bar: number, at: number, beat: number, layers: Record<MusicLayer, boolean>) {
-  const arrangement = extraArrangements[preset];
-  if (arrangement) {
-    const chordIndex = arrangement.progression[bar];
-    if (layers.drums) {
-      if (arrangement.kick.includes(step)) bank.drum(0, at, arrangement.quiet ? .52 : .76);
-      if (arrangement.snare.includes(step)) bank.drum(1, at + .007, arrangement.quiet ? .42 : .62);
-      if (arrangement.clap.includes(step)) bank.drum(3, at + .012, .32);
-      if (arrangement.hats.includes(step)) bank.drum(2, at, (step % 4 === 2 ? .65 : .35) * (arrangement.quiet ? .6 : 1));
-    }
-    if (layers.bass) for (const [position, interval, length] of arrangement.bass) {
-      if (step === position) bank.bass(bassRoots[chordIndex] + interval, at, beat * length, arrangement.quiet ? .52 : .7, arrangement.bright);
-    }
-    if (layers.chords) {
-      if (arrangement.stabs.includes(step)) chords[chordIndex].forEach((midi, i) =>
-        bank.keys(midi, at + i * .012, arrangement.quiet ? .32 : .36, arrangement.duration, "chords", arrangement.bright));
-      for (const [position, midi] of arrangement.melody) if (step === position) {
-        bank.keys(midi + (bar % 2 ? -12 : 0), at, .34, arrangement.quiet ? 2.4 : .7, "chords", arrangement.bright);
-      }
-    }
-    return;
-  }
-  const bright = preset === "daylight"; const driving = preset === "night-drive";
+  const arrangement = arrangements[preset];
   if (layers.drums) {
-    const kicks = driving ? [0, 4, 8, 12] : bright ? [0, 6, 8, 14] : [0, 6, 10];
-    if (kicks.includes(step)) bank.drum(0, at, step === 0 ? 0.83 : 0.63);
-    if (step === 4 || step === 12) bank.drum(1, at + (driving ? 0 : 0.009), 0.7);
-    if (step === 12 || (bright && step === 4)) bank.drum(3, at + 0.012, 0.33);
-    if (step % 2 === 0 || (driving && step % 4 === 3) || step === 15) bank.drum(2, at, step % 4 === 2 ? 0.8 : step === 15 ? 0.27 : 0.43);
-    if (!bright && !driving && step === 11 && bar % 2 === 1) bank.drum(1, at, 0.16);
+    if (arrangement.kick.includes(step)) bank.drum(0, at, arrangement.quiet ? .52 : .76);
+    if (arrangement.snare.includes(step)) bank.drum(1, at + .007, arrangement.quiet ? .42 : .62);
+    if (arrangement.clap.includes(step)) bank.drum(3, at + .012, .32);
+    if (arrangement.hats.includes(step)) bank.drum(2, at, (step % 4 === 2 ? .65 : .35) * (arrangement.quiet ? .6 : 1));
   }
-  if (layers.bass) {
-    const pattern = driving || bright
-      ? [[0, 0, 2.5], [3, 12, 1], [6, 7, 1.3], [8, 0, 2.3], [11, 12, 1], [14, 7, 1.2]]
-      : [[0, 0, 4.2], [7, 7, 1.8], [10, 12, 2.6], [14, 7, 1.2]];
-    for (const [position, interval, length] of pattern) if (step === position) bank.bass(bassRoots[bar] + interval, at, beat * length, interval === 0 ? 0.8 : 0.62, driving);
+  if (layers.bass) for (const [position, interval, length] of arrangement.bass) {
+    if (step === position) bank.bass(arrangement.roots[bar] + interval, at, beat * length, arrangement.quiet ? .52 : .7, !arrangement.quiet);
   }
-  if (layers.chords && (bright ? [0, 6, 10, 14] : driving ? [0, 6, 10] : [0, 10]).includes(step)) {
-    const duration = bright ? 0.68 : driving ? 1.05 : 1.85;
-    (step === 0 ? chords[bar] : chords[bar].slice(1)).forEach((midi, i) => bank.keys(midi, at + i * 0.009, (step === 0 ? 0.48 : 0.32) * (bright ? 0.92 : 1), duration, "chords", bright));
+  if (layers.chords) {
+    if (arrangement.stabs.includes(step)) arrangement.harmony[bar].forEach((midi, i) =>
+      bank.tone(midi, at + i * .009, arrangement.quiet ? .32 : .36, arrangement.duration, "chords", arrangement.timbre));
+    for (const [position, midi] of arrangement.melody) if (position === bar * 16 + step) {
+      bank.tone(midi, at, .64, arrangement.quiet ? 2.8 : Math.max(.45, arrangement.duration), "chords", arrangement.timbre);
+    }
   }
 }
 
@@ -278,7 +313,7 @@ export function createMusicEngine(onEvent: (event: MusicEvent) => void, onRecord
   }
   function hit(index: number, at: number, group: VoiceGroup = "live", velocity = 0.88) {
     if (index < 4) bank.drum(index, at, velocity, group);
-    else bank.keys(padNotes[index - 4], at, velocity, preset === "night-drive" ? 1.05 : 1.6, group, preset === "daylight");
+    else bank.tone(grooveOptions.find((option) => option.id === preset)!.notes[index - 4], at, velocity, Math.max(.6, arrangements[preset].duration), group, arrangements[preset].timbre);
     queueEvent(at, { type: "pad", index });
   }
   function schedule() {

@@ -160,6 +160,7 @@ test('all eight grooves play four bars with distinct arrangements and respect di
   const catalog = fixture();
   const options = catalog.options; catalog.engine.dispose();
   assert.equal(options.length, 8);
+  assert.deepEqual([...new Set(options.map((option) => option.bpm))].sort((a, b) => a - b), [82, 96, 112]);
   assert.equal(new Set(options.map((option) => option.id)).size, 8);
   const fingerprints = new Set();
   for (const option of options) {
@@ -175,4 +176,26 @@ test('all eight grooves play four bars with distinct arrangements and respect di
     f.engine.dispose(); assert.equal(f.tasks.size, 0);
   }
   assert.equal(fingerprints.size, 8, 'Every groove has its own arrangement, not just a tempo change');
+});
+
+
+test('melodic layers remain distinct with drums and bass removed', async () => {
+  const catalog = fixture(); const options = catalog.options; catalog.engine.dispose();
+  const musicalSignatures = new Set();
+  for (const option of options) {
+    const f = fixture(); await f.engine.activate(); f.engine.setPreset(option.id);
+    f.engine.setLayers({ drums: false, bass: false, chords: true }); f.engine.start();
+    f.advance(16 * 60 / option.bpm * 1000);
+    const voices = f.sources();
+    assert(voices.every((node) => node.kind === 'oscillator'));
+    musicalSignatures.add(JSON.stringify(voices.map((node) => [node.type, Math.round(node.frequency.value)])));
+    f.engine.stop();
+    const before = f.sources().length;
+    f.engine.playPad(4);
+    const pad = f.sources().slice(before);
+    const fundamental = 440 * 2 ** ((option.notes[0] - 69) / 12);
+    assert(pad.some((node) => Math.abs(node.frequency.value / fundamental - 1) < .004), `${option.id} live pads follow its key`);
+    f.engine.dispose();
+  }
+  assert.equal(musicalSignatures.size, 8, 'All eight harmonic and instrument arrangements differ without percussion or tempo');
 });
