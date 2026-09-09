@@ -97,10 +97,12 @@ export function SoundRoom({ music, soundError, soundOn, onMute }: {
           <div className="sound-presets" role="group" aria-label="Choose a groove">
             {grooveOptions.map((option) => (
               <button key={option.id} aria-pressed={music.preset === option.id}
-                onClick={() => music.setPreset(option.id)}><span>{option.name}</span><small aria-hidden="true">{option.bpm} BPM</small></button>
+                style={{ "--track-color": option.theme.accent } as CSSProperties}
+                onClick={() => music.setPreset(option.id)}><span><i className="sound-theme-swatch" aria-hidden="true" />{option.name}</span><small aria-hidden="true">{option.bpm} BPM</small></button>
             ))}
           </div>
 
+          <p className="sound-theme-hint">Pick a track. Color the whole site.</p>
           <div className="sound-pad-hint"><span>{touched ? "Nice. Keep going." : "Every tap belongs here."}</span><span>Tap or use keys 1–8</span></div>
           <div className="sound-pads" role="group" aria-label="Drum and melody pads">
             {padsForGroove(music.preset).map((pad, index) => (

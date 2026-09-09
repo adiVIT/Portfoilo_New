@@ -258,6 +258,16 @@ export default function HobbyWorld({ animated, scene, action, progress }: Inputs
       camera.left = -half * aspect; camera.right = half * aspect; camera.top = half; camera.bottom = -half; camera.updateProjectionMatrix();
       renderer.setSize(width, height, false); request();
     };
+    const updateTheme = () => {
+      const accent = new THREE.Color(getComputedStyle(document.documentElement).getPropertyValue("--lime").trim() || "#d0f575");
+      lavender.color.copy(accent).multiplyScalar(.65);
+      blue.color.copy(accent).multiplyScalar(.8);
+      orange.color.copy(accent).multiplyScalar(.7);
+      request();
+    };
+    const themeObserver = new MutationObserver(updateTheme);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-music-theme"] });
+    updateTheme();
     const observer = new ResizeObserver(resize); observer.observe(element); resize();
     const intersection = new IntersectionObserver(([entry]) => {
       visible = entry.isIntersecting; if (visible) request(); else { cancelAnimationFrame(frame); frame = 0; }
@@ -278,7 +288,7 @@ export default function HobbyWorld({ animated, scene, action, progress }: Inputs
     renderer.domElement.addEventListener("webglcontextlost", contextLost); renderer.domElement.addEventListener("webglcontextrestored", contextRestored);
     setReady(true);
     return () => {
-      disposed = true; controls.current = null; cancelAnimationFrame(frame); observer.disconnect(); intersection.disconnect();
+      disposed = true; controls.current = null; cancelAnimationFrame(frame); observer.disconnect(); intersection.disconnect(); themeObserver.disconnect();
       document.removeEventListener("visibilitychange", visibility); element.removeEventListener("pointermove", pointer); element.removeEventListener("pointerleave", leave);
       renderer.domElement.removeEventListener("webglcontextlost", contextLost); renderer.domElement.removeEventListener("webglcontextrestored", contextRestored);
       geometries.forEach((geometry) => geometry.dispose()); materials.forEach((mat) => mat.dispose());

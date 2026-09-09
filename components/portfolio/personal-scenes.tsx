@@ -70,7 +70,7 @@ export function PersonalScenes({ animated, progress, onJump, onAction }: {
         <p>A few things I keep coming back to.</p>
       </div>
       <div ref={stage} className="hobbies-pin hobby-stage" data-scene={scene} data-motion={animated ? "on" : "off"}
-        style={{ "--hobby-color": current.color, "--hobby-ink": current.ink } as CSSProperties}>
+        style={{ "--hobby-color": "var(--theme-light)", "--hobby-ink": "var(--ink)" } as CSSProperties}>
         <div className="hobby-stage-grain" aria-hidden="true" />
         <span className="hobby-giant-word" key={scene} aria-hidden="true">{current.word}</span>
         <span className="hobby-stage-corner" aria-hidden="true"><MoveUpRight size={26} strokeWidth={1.2} /></span>

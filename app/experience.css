@@ -6,9 +6,9 @@
   inset-block-start: 20px;
   height: 62px;
   border-radius: 12px;
-  background: #161813eb;
+  background: hsl(var(--theme-hue) 12% 8.4% / 0.922);
   box-shadow: none;
-  border-color: #f0f1e918;
+  border-color: hsl(var(--theme-hue) 22% 92.9% / 0.094);
 }
 .portfolio-experience .desktop-nav { background: transparent; padding: 0; }
 .portfolio-experience .desktop-nav a { border-radius: 6px; }

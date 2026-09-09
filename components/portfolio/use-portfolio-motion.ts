@@ -179,9 +179,9 @@ export function usePortfolioMotion(
           }
           gsap.fromTo(
             scope(".manifesto-word"),
-            { color: "#62685c" },
+            { opacity: 0.35 },
             {
-              color: "#f0f1e9",
+              opacity: 1,
               stagger: 0.2,
               ease: "none",
               scrollTrigger: {

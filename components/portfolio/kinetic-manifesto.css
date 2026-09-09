@@ -1,7 +1,7 @@
 .manifesto-stage {
   position: relative;
   color: var(--paper);
-  background: #0b0c0a;
+  background: hsl(var(--theme-hue) 9% 4.3%);
   isolation: isolate;
 }
 
@@ -63,7 +63,7 @@
   min-height: 44px;
   margin-top: clamp(38px, 5vw, 74px);
   padding-block: 8px;
-  border-bottom: 1px solid #f0f1e959;
+  border-bottom: 1px solid hsl(var(--theme-hue) 22% 92.9% / 0.349);
   color: var(--paper);
   font-size: 13px;
   line-height: 1.4;
@@ -149,7 +149,7 @@
     position: absolute;
     inset: 0;
     color: transparent;
-    -webkit-text-stroke: 1px #e7eed0;
+    -webkit-text-stroke: 1px hsl(var(--theme-hue) 40% 87.5%);
     opacity: calc(0.25 - var(--echo-depth) * 0.04);
     transform: translate3d(calc(var(--echo-depth) * 72px), calc(var(--echo-depth) * -90px), calc(var(--echo-depth) * -120px));
     pointer-events: none;

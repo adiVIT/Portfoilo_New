@@ -49,7 +49,7 @@ export default function HeroSculpture({
     const sculpture = new THREE.Group();
     scene.add(sculpture);
 
-    // Tall softboxes and a narrow green strip make legible, high-contrast chrome.
+    // Tall softboxes and a theme-colored strip make legible, high-contrast chrome.
     const studio = document.createElement("canvas");
     studio.width = 1024;
     studio.height = 512;
@@ -59,22 +59,26 @@ export default function HeroSculpture({
       renderer.domElement.remove();
       return;
     }
-    paint.fillStyle = "#080a08";
+    const themeAccent = () => getComputedStyle(document.documentElement).getPropertyValue("--lime").trim() || "#d0f575";
+    const paintStudio = () => {
+    paint.fillStyle = "#080808";
     paint.fillRect(0, 0, 1024, 512);
     [
-      { x: 70, w: 120, color: "#f8faf1", top: 55, height: 390 },
+      { x: 70, w: 120, color: "#f8f8f8", top: 55, height: 390 },
       { x: 330, w: 230, color: "#ffffff", top: 15, height: 470 },
-      { x: 620, w: 80, color: "#d9ff78", top: 60, height: 350 },
-      { x: 800, w: 155, color: "#d5decb", top: 110, height: 280 },
+      { x: 620, w: 80, color: themeAccent(), top: 60, height: 350 },
+      { x: 800, w: 155, color: "#d5d5d5", top: 110, height: 280 },
     ].forEach(({ x, w, color, top, height }) => {
       const gradient = paint.createLinearGradient(x, 0, x + w, 0);
-      gradient.addColorStop(0, "#10130f");
+      gradient.addColorStop(0, "#101010");
       gradient.addColorStop(0.15, color);
       gradient.addColorStop(0.85, color);
-      gradient.addColorStop(1, "#10130f");
+      gradient.addColorStop(1, "#101010");
       paint.fillStyle = gradient;
       paint.fillRect(x, top, w, height);
     });
+    };
+    paintStudio();
     const environment = new THREE.CanvasTexture(studio);
     environment.mapping = THREE.EquirectangularReflectionMapping;
     environment.colorSpace = THREE.SRGBColorSpace;
@@ -385,6 +389,27 @@ export default function HeroSculpture({
       setReady(true);
       sync();
     };
+    const updateTheme = () => {
+      const accent = new THREE.Color(themeAccent());
+      material.color.set(0xe5e5e5).lerp(accent, .12);
+      finMaterial.emissive.copy(accent);
+      for (let i = 0; i < finCount; i++) {
+        finColor.copy(accent).multiplyScalar(i % 14 < 4 ? 1 : .38);
+        if (i % 7 === 0) finColor.set(0xffffff);
+        fins.setColorAt(i, finColor);
+      }
+      if (fins.instanceColor) fins.instanceColor.needsUpdate = true;
+      arcMaterial.color.copy(accent); pointMaterial.color.copy(accent); edgeLight.color.copy(accent);
+      keyLight.color.set(0xffffff);
+      paintStudio(); environment.needsUpdate = true;
+      if (!contextLost) {
+        envMap.dispose(); envMap = pmrem.fromEquirectangular(environment); scene.environment = envMap.texture;
+        render();
+      }
+    };
+    const themeObserver = new MutationObserver(updateTheme);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ["data-music-theme"] });
+    updateTheme();
     const observer = new IntersectionObserver(([entry]) => {
       inView = entry.isIntersecting;
       sync();
@@ -409,6 +434,7 @@ export default function HeroSculpture({
     return () => {
       cancelAnimationFrame(frame);
       observer.disconnect();
+      themeObserver.disconnect();
       resizeObserver.disconnect();
       document.removeEventListener("visibilitychange", sync);
       element.removeEventListener("pointerdown", onPointerDown);

@@ -1,12 +1,12 @@
 export const grooveOptions = [
-  { id: "after-hours", name: "After hours", description: "Smoky electric piano. Late-night jazz.", bpm: 82, swing: .13, notes: [72, 74, 76, 79] },
-  { id: "daylight", name: "Daylight", description: "Wooden marimba. A sunlit melody.", bpm: 96, swing: .08, notes: [74, 76, 78, 81] },
-  { id: "night-drive", name: "Night drive", description: "Analog synths. A minor-key chase.", bpm: 112, swing: .025, notes: [69, 72, 74, 76] },
-  { id: "rooftop", name: "Rooftop", description: "House organ. A rising piano-house hook.", bpm: 112, swing: .02, notes: [77, 79, 81, 84] },
-  { id: "blue-hour", name: "Blue hour", description: "Glass bells. A drifting minor melody.", bpm: 82, swing: .16, notes: [74, 77, 79, 81] },
-  { id: "pocket", name: "Pocket", description: "Muted clav. A syncopated funk riff.", bpm: 96, swing: .19, notes: [76, 79, 81, 83] },
-  { id: "moonwalk", name: "Moonwalk", description: "Disco strings. A soaring refrain.", bpm: 112, swing: .04, notes: [79, 81, 83, 86] },
-  { id: "first-light", name: "First light", description: "Floating pads. A slow, open horizon.", bpm: 82, swing: .03, notes: [72, 75, 77, 79] },
+  { id: "after-hours", theme: { accent: "#d0f575", hue: 78 }, name: "After hours", description: "Smoky electric piano. Late-night jazz.", bpm: 82, swing: .13, notes: [72, 74, 76, 79] },
+  { id: "daylight", theme: { accent: "#efd293", hue: 41 }, name: "Daylight", description: "Wooden marimba. A sunlit melody.", bpm: 96, swing: .08, notes: [74, 76, 78, 81] },
+  { id: "night-drive", theme: { accent: "#bdb4ef", hue: 249 }, name: "Night drive", description: "Analog synths. A minor-key chase.", bpm: 112, swing: .025, notes: [69, 72, 74, 76] },
+  { id: "rooftop", theme: { accent: "#f3b28c", hue: 22 }, name: "Rooftop", description: "House organ. A rising piano-house hook.", bpm: 112, swing: .02, notes: [77, 79, 81, 84] },
+  { id: "blue-hour", theme: { accent: "#a8c9ed", hue: 211 }, name: "Blue hour", description: "Glass bells. A drifting minor melody.", bpm: 82, swing: .16, notes: [74, 77, 79, 81] },
+  { id: "pocket", theme: { accent: "#e9a9bf", hue: 339 }, name: "Pocket", description: "Muted clav. A syncopated funk riff.", bpm: 96, swing: .19, notes: [76, 79, 81, 83] },
+  { id: "moonwalk", theme: { accent: "#d5b8f3", hue: 270 }, name: "Moonwalk", description: "Disco strings. A soaring refrain.", bpm: 112, swing: .04, notes: [79, 81, 83, 86] },
+  { id: "first-light", theme: { accent: "#b2dfcd", hue: 156 }, name: "First light", description: "Floating pads. A slow, open horizon.", bpm: 82, swing: .03, notes: [72, 75, 77, 79] },
 ] as const;
 
 export type GrooveId = (typeof grooveOptions)[number]["id"];

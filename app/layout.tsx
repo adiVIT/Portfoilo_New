@@ -4,6 +4,8 @@ import { Space_Grotesk, JetBrains_Mono } from 'next/font/google'
 import Script from 'next/script'
 import './globals.css'
 import './experience.css'
+import './music-theme.css'
+import { musicThemeBootstrap } from '@/components/portfolio/music-theme'
 
 const siteUrl = 'https://adityabajaj.online'
 
@@ -145,7 +147,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${displayFont.variable} ${jetbrainsMono.variable} dark`}>
+    <html lang="en" suppressHydrationWarning className={`${displayFont.variable} ${jetbrainsMono.variable} dark`}>
+      <head><script dangerouslySetInnerHTML={{ __html: musicThemeBootstrap }} /></head>
       <body className="antialiased">
         <Script
           id="person-structured-data"

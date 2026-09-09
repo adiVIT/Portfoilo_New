@@ -4,6 +4,8 @@ import { useCallback, useEffect, useMemo, useRef, useState, type RefObject } fro
 import { createMusicEngine } from "@/lib/portfolio/music-engine";
 import type { GrooveId, MusicController, MusicEvent, MusicLayer } from "./music-types";
 
+import { applyGrooveTheme, savedGroove } from "./music-theme";
+
 type SoundEngine = ReturnType<typeof createMusicEngine>;
 const initialLayers: Record<MusicLayer, boolean> = { drums: true, bass: true, chords: true };
 
@@ -97,6 +99,7 @@ export function usePortfolioSound(root: RefObject<HTMLDivElement>) {
   }, [enable, reportError]);
 
   const setPreset = useCallback((value: GrooveId) => {
+    applyGrooveTheme(value, true);
     settings.current.preset = value; engine.current?.setPreset(value); updatePreset(value);
   }, []);
 
@@ -130,6 +133,11 @@ export function usePortfolioSound(root: RefObject<HTMLDivElement>) {
 
   useEffect(() => {
     alive.current = true;
+    const saved = savedGroove();
+    settings.current.preset = saved;
+    engine.current?.setPreset(saved);
+    updatePreset(saved);
+    applyGrooveTheme(saved);
     const visibility = () => { if (document.hidden) void mute().catch(reportError); };
     document.addEventListener("visibilitychange", visibility);
     return () => {
