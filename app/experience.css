@@ -172,3 +172,32 @@
 }
 .portfolio-experience[data-motion="off"] .hero-portal { display: none; }
 .portfolio-experience[data-motion="off"] .type-interlude { transform: none; }
+
+/* Compact screens get the same scroll chapters, fitted to their stable viewport. */
+.portfolio[data-scroll-mode="compact"] .hero {
+  height: 100svh; min-height: 0; max-height: none;
+}
+.portfolio[data-scroll-mode="compact"] .hero-portal { display: flex; }
+.portfolio[data-scroll-mode="compact"] .hero-portal .portal-story > strong {
+  font-size: clamp(38px, 11vw, 100px);
+}
+.portfolio[data-scroll-mode="compact"] .hero-portal .portal-story > span { font-size: 8px; }
+.portfolio[data-scroll-mode="compact"] .manifesto-stage[data-enhanced="true"] .manifesto-pin {
+  padding: 105px var(--gutter) 30px;
+}
+.portfolio[data-scroll-mode="compact"] .manifesto-intro { font-size: 9px; }
+.portfolio[data-scroll-mode="compact"] .manifesto-stage[data-enhanced="true"] .manifesto-type { font-size: min(20vw, 26svh); }
+.portfolio[data-scroll-mode="compact"] .manifesto-link { margin-top: 28px; font-size: 11px; }
+@media (max-height: 559px) {
+  .portfolio[data-scroll-mode="compact"] .hero { padding-top: 92px; padding-bottom: 18px; }
+  .portfolio[data-scroll-mode="compact"] .hero-name { inset: 30% var(--gutter) 22%; font-size: 15vw; }
+  .portfolio[data-scroll-mode="compact"] .hero-art-scroll { width: 62vw; height: 90svh; min-height: 0; left: 22%; top: 8%; }
+  .portfolio[data-scroll-mode="compact"] .hero-side-note { display: none; }
+  .portfolio[data-scroll-mode="compact"] .hero-bottom p { font-size: 10px; }
+  .portfolio[data-scroll-mode="compact"] .hero-portal .portal-story > strong { font-size: 13svh; }
+  .portfolio[data-scroll-mode="compact"] .hero-portal .portal-story > span { margin-bottom: 10px; }
+  .portfolio[data-scroll-mode="compact"] .manifesto-stage[data-enhanced="true"] .manifesto-pin { padding-top: 90px; padding-bottom: 15px; }
+  .portfolio[data-scroll-mode="compact"] .manifesto-stage[data-enhanced="true"] .manifesto-make { font-size: 23svh; }
+  .portfolio[data-scroll-mode="compact"] .manifesto-stage[data-enhanced="true"] .manifesto-feel { font-size: 14svh; }
+  .portfolio[data-scroll-mode="compact"] .manifesto-link { margin-top: 10px; min-height: 32px; }
+}

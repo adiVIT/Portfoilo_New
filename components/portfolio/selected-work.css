@@ -121,3 +121,18 @@
 .portfolio[data-motion="off"] .work-gallery-card:hover .work-gallery-restaurant { transform: none; }
 .portfolio[data-motion="off"] .work-gallery-card:hover .work-growth-sculpture { transform: translate(-50%, -50%) rotate(-27deg); }
 .portfolio[data-motion="off"] .work-gallery-card:hover .work-court { transform: translate(-50%, -50%) perspective(850px) rotateX(37deg) rotate(-23deg); }
+
+@media (min-height: 560px) {
+  .portfolio[data-scroll-mode="compact"] .work-gallery-pin { padding-top: 10px; padding-bottom: 12px; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-heading { display: flex; margin-bottom: 14px; gap: 15px; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-heading h2 { font-size: clamp(30px, 6vw, 45px); }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-eyebrow { margin-bottom: 8px; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-github { margin-top: 0; font-size: 9px; gap: 6px; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-art { height: clamp(140px, 31svh, 310px); }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-viewport[data-pinned="true"] { scroll-snap-type: none; perspective: 1000px; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-track { padding-top: 16px; padding-bottom: 0; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-caption { padding-top: 14px; gap: 9px; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-name h3 { font-size: 26px; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-caption p { font-size: 11px; line-height: 1.45; }
+  .portfolio[data-scroll-mode="compact"] .work-gallery-controls { padding-top: 8px; }
+}

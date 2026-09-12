@@ -9,21 +9,21 @@ const work = [
   {
     name: "Restro AI",
     category: "Cofounder / AI Product",
-    description: "AI for the people running restaurants.",
+    description: "Orders, stock, and the decisions behind a restaurant.",
     href: "https://www.restro-ai.com/",
     art: "restro",
   },
   {
     name: "Nurture",
     category: "Web / Finance",
-    description: "Financial planning, made easier to explore.",
+    description: "A clearer way to explore financial planning.",
     href: "https://www.nurtureinvestments.in/",
     art: "nurture",
   },
   {
     name: "FitSpot",
     category: "Web / Sports",
-    description: "Find a game. Book a ground. Get playing.",
+    description: "Find a ground. Book a game. Get on the pitch.",
     href: "https://play-spot-zqau.vercel.app/",
     art: "fitspot",
   },
@@ -110,7 +110,7 @@ export function SelectedWork({ onJump }: SelectedWorkProps) {
         <div className="work-gallery-heading">
           <div>
             <span className="work-gallery-eyebrow">Selected work</span>
-            <h2 id="work-gallery-title">A few things<br /><em>out in the world.</em></h2>
+            <h2 id="work-gallery-title">Ideas people<br /><em>can use.</em></h2>
           </div>
           <a className="work-gallery-github" href="https://github.com/adiVIT" target="_blank" rel="noopener noreferrer">
             More on GitHub <ArrowUpRight size={17} strokeWidth={1.5} />

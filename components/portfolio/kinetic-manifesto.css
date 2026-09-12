@@ -86,7 +86,7 @@
 }
 
 /* Only the central motion hook opts into a layered, pinned composition. */
-@media (min-width: 1024px) and (min-height: 700px) and (prefers-reduced-motion: no-preference) {
+@media (prefers-reduced-motion: no-preference) {
   .manifesto-stage[data-enhanced="true"] .manifesto-pin {
     display: flex;
     flex-direction: column;
@@ -151,7 +151,7 @@
     color: transparent;
     -webkit-text-stroke: 1px hsl(var(--theme-hue) 40% 87.5%);
     opacity: calc(0.25 - var(--echo-depth) * 0.04);
-    transform: translate3d(calc(var(--echo-depth) * 72px), calc(var(--echo-depth) * -90px), calc(var(--echo-depth) * -120px));
+    transform: translate3d(calc(var(--echo-depth) * clamp(16px, 5vw, 72px)), calc(var(--echo-depth) * clamp(-90px, -6vw, -20px)), calc(var(--echo-depth) * -120px));
     pointer-events: none;
   }
 

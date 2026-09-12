@@ -86,3 +86,32 @@
   .hobby-stage *, .hobby-stage *::after { animation: none !important; transition: none !important; }
   .hobby-giant-word { transform: none; }
 }
+
+.portfolio[data-scroll-mode="compact"] .hobbies .hobby-stage {
+  height: min(720px, calc(100svh - 108px)); min-height: 0;
+}
+@media (max-width: 640px) and (min-height: 560px) {
+  .portfolio[data-scroll-mode="compact"] .hobby-scene-panel { bottom: 56px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-world-nav { height: 56px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-model-space { height: 48%; top: 30px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-giant-word { top: 20px; font-size: 22vw; }
+  .portfolio[data-scroll-mode="compact"] .hobby-scene-copy { top: 55%; }
+  .portfolio[data-scroll-mode="compact"] .hobby-scene-copy h3 { font-size: clamp(26px, 7vw, 32px); }
+  .portfolio[data-scroll-mode="compact"] .hobby-scene-copy p { margin-top: 9px; font-size: 11px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-play-controls { bottom: 18px; gap: 10px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-play-button { min-height: 44px; }
+}
+@media (max-height: 559px) {
+  .portfolio[data-scroll-mode="compact"] .hobby-stage { height: calc(100svh - 100px); }
+  .portfolio[data-scroll-mode="compact"] .hobby-scene-panel { bottom: 44px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-world-nav { height: 44px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-world-nav button { font-size: 10px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-giant-word { font-size: 18svh; top: 14px; left: 22px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-model-space { width: 60%; height: 100%; right: 0; top: 0; }
+  .portfolio[data-scroll-mode="compact"] .hobby-scene-copy { top: 28%; left: 22px; width: 34%; }
+  .portfolio[data-scroll-mode="compact"] .hobby-scene-copy h3 { font-size: 23px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-scene-copy p { margin-top: 7px; font-size: 10px; line-height: 1.35; }
+  .portfolio[data-scroll-mode="compact"] .hobby-play-controls { left: 22px; bottom: 12px; max-width: 40%; }
+  .portfolio[data-scroll-mode="compact"] .hobby-play-button { min-height: 36px; padding-inline: 13px; font-size: 10px; }
+  .portfolio[data-scroll-mode="compact"] .hobby-action-readout { display: none; }
+}

@@ -29,13 +29,16 @@ export function usePortfolioMotion(
         {
           desktop: "(min-width: 1024px) and (min-height: 700px)",
           mobile: "(max-width: 1023px), (max-height: 699px)",
+          short: "(max-height: 559px)",
           motion: "(prefers-reduced-motion: no-preference)",
         },
         (context) => {
           if (!context.conditions?.motion) return;
+          const compact = !context.conditions.desktop;
+          root.current!.dataset.scrollMode = compact ? "compact" : "full";
           const smooth = new Lenis({
             duration: 1.1,
-            smoothWheel: true,
+            smoothWheel: !compact,
             anchors: true,
             autoRaf: false,
           });
@@ -69,14 +72,14 @@ export function usePortfolioMotion(
           const heroElement = scope(".hero")[0] as HTMLElement;
           const art = scope(".hero-art-scroll")[0] as HTMLElement;
           const cinematicStage = scope(".manifesto-stage")[0] as HTMLElement | undefined;
-          if (context.conditions.desktop) {
+          if (heroElement && art) {
             const opening = gsap.timeline({
               scrollTrigger: {
                 id: "portfolio-opening",
                 refreshPriority: 5,
                 trigger: heroElement,
                 start: "top top",
-                end: () => "+=" + window.innerHeight * 1.35,
+                end: () => "+=" + heroElement.clientHeight * (compact ? 1 : 1.35),
                 pin: true,
                 scrub: 0.7,
                 invalidateOnRefresh: true,
@@ -107,7 +110,7 @@ export function usePortfolioMotion(
               .to(art, {
                 x: () => heroElement.clientWidth / 2 - (art.offsetLeft + art.offsetWidth / 2),
                 y: () => heroElement.clientHeight / 2 - (art.offsetTop + art.offsetHeight / 2),
-                scale: 1.24,
+                scale: compact ? 1.06 : 1.24,
                 rotation: -18,
                 duration: 1.1,
                 ease: "none",
@@ -137,7 +140,7 @@ export function usePortfolioMotion(
                   refreshPriority: 4,
                   trigger: scope(".manifesto-pin"),
                   start: "top top",
-                  end: () => "+=" + innerHeight * 2,
+                  end: () => "+=" + (cinematicStage.querySelector(".manifesto-pin") as HTMLElement).clientHeight * (compact ? 1.4 : 2),
                   pin: true,
                   scrub: 0.65,
                   anticipatePin: 1,
@@ -155,27 +158,6 @@ export function usePortfolioMotion(
                 .from(scope(".manifesto-feel"), { xPercent: -10, duration: 0.7, ease: "power2.out" }, 2.05)
                 .to({}, { duration: 0.25 });
             }
-          } else {
-            const mobileOpening = gsap.timeline({
-              scrollTrigger: {
-                trigger: heroElement,
-                start: "top top",
-                end: "bottom top",
-                scrub: 0.6,
-              },
-            });
-            mobileOpening
-              .to(scope(".name-first"), { xPercent: -15, yPercent: -25, rotation: -4, ease: "none" }, 0)
-              .to(scope(".name-last"), { xPercent: 12, yPercent: 20, rotation: 4, ease: "none" }, 0)
-              .to(art, { yPercent: 15, rotation: 20, scale: 1.1, ease: "none" }, 0)
-              .to(scope(".hero-side-note"), { autoAlpha: 0, ease: "none" }, 0);
-            if (sceneProgress.current) {
-              mobileOpening.fromTo(sceneProgress.current, { value: 0 }, { value: 0.55, ease: "none" }, 0);
-            }
-            gsap.from(scope(".manifesto-statement > span"), {
-              yPercent: 45, rotation: -4, stagger: 0.12, opacity: 0, ease: "none",
-              scrollTrigger: { trigger: cinematicStage, start: "top 85%", end: "center 65%", scrub: 0.5 },
-            });
           }
           gsap.fromTo(
             scope(".manifesto-word"),
@@ -222,7 +204,7 @@ export function usePortfolioMotion(
               scrub: true,
             },
           });
-          if (context.conditions.desktop && hobbyProgress.current) {
+          if (hobbyProgress.current) {
             const driver = hobbyProgress.current;
             gsap.fromTo(driver, { value: 0 }, {
               value: 1,
@@ -232,8 +214,8 @@ export function usePortfolioMotion(
                 id: "portfolio-hobbies",
                 refreshPriority: 3,
                 trigger: scope(".hobbies-pin"),
-                start: "top 100px",
-                end: () => "+=" + innerHeight * 2.4,
+                start: compact ? "top 88px" : "top 100px",
+                end: () => "+=" + Math.max((scope(".hobbies-pin")[0] as HTMLElement).clientHeight, 400) * (compact ? 3 : 2.4),
                 pin: true,
                 scrub: 0.4,
                 invalidateOnRefresh: true,
@@ -244,7 +226,7 @@ export function usePortfolioMotion(
           const workViewport = scope(".work-gallery-viewport")[0] as HTMLElement | undefined;
           const workTrack = scope(".work-gallery-track")[0] as HTMLElement | undefined;
           const workCards = scope(".work-gallery-card") as HTMLElement[];
-          if (context.conditions.desktop && workViewport && workTrack && workCards.length) {
+          if (!context.conditions.short && workViewport && workTrack && workCards.length) {
             workViewport.dataset.pinned = "true";
             workViewport.scrollLeft = 0;
             gsap.set(workViewport, { overflow: "clip" });
@@ -270,8 +252,8 @@ export function usePortfolioMotion(
               workCards.forEach((card, index) => {
                 const offset = (centers[index] - travel - galleryWidth / 2) / galleryWidth;
                 const bend = gsap.utils.clamp(-1, 1, offset);
-                setters[index].rotation(-bend * 24);
-                setters[index].y(Math.abs(bend) * 42);
+                setters[index].rotation(-bend * (compact ? 12 : 24));
+                setters[index].y(Math.abs(bend) * (compact ? 18 : 42));
                 setters[index].scale(1 - Math.abs(bend) * 0.08);
                 if (Math.abs(offset) < minimum) { minimum = Math.abs(offset); nearest = index; }
               });
@@ -561,6 +543,7 @@ export function usePortfolioMotion(
             layoutObserver.observe(element),
           );
           return () => {
+            root.current?.removeAttribute("data-scroll-mode");
             cinematicStage?.removeAttribute("data-enhanced");
             workViewport?.removeAttribute("data-pinned");
             workViewport?.removeAttribute("data-active-index");
@@ -592,6 +575,10 @@ export function usePortfolioMotion(
   );
   return {
     pauseScroll,
+    moveHome() {
+      if (lenis.current) lenis.current.scrollTo(0, { duration: 0.8 });
+      else window.scrollTo({ top: 0, behavior: enabled ? "smooth" : "instant" });
+    },
     moveHobbies(index: number) {
       const trigger = ScrollTrigger.getById("portfolio-hobbies");
       const position = (index + 0.3) / 4;

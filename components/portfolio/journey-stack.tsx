@@ -7,11 +7,11 @@ import {
 } from "@/lib/portfolio/content";
 
 const highlights = [
-  "Learning how startups work.",
-  "Finding clarity in finance.",
-  "Learning to move fast.",
-  "Building with care.",
-  "A new chapter.",
+  "Marketing, marketplaces, and startup operations.",
+  "Android experiences for Wealth Builder.",
+  "A restaurant POS, from idea to live orders.",
+  "DigiGold and DigiSilver on mobile.",
+  "Building at Synthiolabs.",
 ];
 const verbs = ["LEARN", "BUILD", "SHIP", "CARE", "NEXT"];
 
@@ -27,7 +27,7 @@ export function JourneyStack({
       <div className="journey-pin">
         <div className="journey-heading">
           <h2>
-            The path <em>so far.</em>
+            What shaped <em>my work.</em>
           </h2>
           <a
             className="text-link"

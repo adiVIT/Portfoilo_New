@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import {
@@ -60,7 +60,7 @@ const HeroSculpture = dynamic(() => import("./hero-sculpture"), {
     </div>
   ),
 });
-const manifesto = "I follow my curiosity.";
+const manifesto = "I care how it works. And how it feels.";
 
 function SplitName({ text }: { text: string }) {
   return (
@@ -93,7 +93,7 @@ export function PortfolioPage() {
   const sceneProgress = useRef({ value: 0 });
   const hobbyProgress = useRef<{ value: number; draw?: (progress: number) => void }>({ value: 0 });
   const { soundOn, soundError, toggleSound, playInstrument, music } = usePortfolioSound(root);
-  const { moveGallery, moveWork, moveJourney, moveHobbies, pauseScroll } = usePortfolioMotion(
+  const { moveGallery, moveWork, moveJourney, moveHobbies, moveHome, pauseScroll } = usePortfolioMotion(
     root,
     enabled,
     sceneProgress,
@@ -163,6 +163,13 @@ export function PortfolioPage() {
     }
     copyTimer.current = setTimeout(() => setCopyState("idle"), 3500);
   }
+  function returnToStart(event: MouseEvent<HTMLAnchorElement>) {
+    event.preventDefault();
+    // Lenis's window anchor listener would otherwise target the pinned hero's current position.
+    event.stopPropagation();
+    moveHome();
+    history.replaceState(null, "", "#hero");
+  }
   function navigate(href: string) {
     setCommandOpen(false);
     setMenuOpen(false);
@@ -183,7 +190,7 @@ export function PortfolioPage() {
       </a>
       <div className="page-progress" aria-hidden="true" />
       <header className="site-header" data-menu-open={menuOpen}>
-        <a className="brand" href="#hero" aria-label="Aditya Bajaj, home">
+        <a className="brand" href="#hero" onClick={returnToStart} aria-label="Aditya Bajaj, home">
           <strong className="brand-wordmark">ADI<span aria-hidden="true">.</span></strong>
         </a>
         <nav className="desktop-nav" aria-label="Main navigation">
@@ -282,8 +289,8 @@ export function PortfolioPage() {
       <main>
         <section id="hero" className="hero">
           <div className="hero-intro">
-            <span>Creative by instinct.</span>
-            <span className="hero-current">Engineer by trade.</span>
+            <span>Design-minded.</span>
+            <span className="hero-current">Engineer at heart.</span>
           </div>
           <h1 className="hero-name" aria-label="Aditya Bajaj">
             <span className="name-line name-first" aria-hidden="true">
@@ -303,18 +310,18 @@ export function PortfolioPage() {
               />
             </div>
           </div>
-          <p className="hero-side-note">A curious mind.<br />A hands-on maker.<br /><span>A work in progress.</span></p>
+          <p className="hero-side-note">I build the interface.<br />And what makes it work.<br /><span>From first sketch to shipped product.</span></p>
           <div className="hero-portal" aria-hidden="true">
             <div className="portal-story">
-              <span>GOOD THINGS START WITH</span>
-              <strong>A LITTLE<br /><em>CURIOSITY.</em></strong>
+              <span>FROM AN IDEA TO</span>
+              <strong>SOMETHING<br /><em>YOU CAN USE.</em></strong>
             </div>
           </div>
           <div className="hero-bottom">
             <p>
-              Code. Form. Feeling.
+              Built to be used.
               <br />
-              <em>Come for a little wander.</em>
+              <em>Made to be felt.</em>
             </p>
             <div className="hero-interaction">
               <span className="sculpture-instruction">Drag the sculpture to rotate</span>
@@ -342,7 +349,7 @@ export function PortfolioPage() {
 
         <section id="now" className="about section-space">
           <div className="section-kicker">
-            <span>A little about me</span>
+            <span>Behind the interface</span>
             <Asterisk size={22} />
           </div>
           <div className="about-grid">
@@ -362,7 +369,7 @@ export function PortfolioPage() {
                 sizes="(max-width: 640px) 80vw, 440px"
               />
               <span className="portrait-signature" aria-hidden="true">
-                Hey, I’m Aditya.
+                Aditya, away from the keyboard.
               </span>
             </div>
           </div>
@@ -371,7 +378,7 @@ export function PortfolioPage() {
           onAction={(index) => { if (soundOn) void playInstrument([60, 64, 67, 72][index], 0); }} />
         <div className="type-interlude" aria-hidden="true">
           <div className="kinetic-band">
-            STAY CURIOUS <Asterisk /> KEEP EXPLORING <Asterisk /> STAY CURIOUS{" "}
+            MAKE SOMETHING <Asterisk /> MAKE IT YOURS <Asterisk /> MAKE SOMETHING{" "}
             <Asterisk />
           </div>
         </div>
@@ -386,7 +393,7 @@ export function PortfolioPage() {
           <div className="principles-intro reveal">
             <Asterisk size={62} strokeWidth={1} />
             <h2>
-              How I <em>think.</em>
+              How I <em>build.</em>
             </h2>
           </div>
           <div className="principle-list">
@@ -446,7 +453,7 @@ export function PortfolioPage() {
         </div>
 
         <section id="contact" className="contact section-space">
-          <span className="eyebrow">Every good thing starts with a conversation.</span>
+          <span className="eyebrow">Have something worth building?</span>
           <div className="contact-heading">
             <h2 className="contact-title">
               <span>SAY</span>
@@ -481,7 +488,7 @@ export function PortfolioPage() {
                   ? "Email copied. Your move."
                   : copyState === "failed"
                     ? "Please select the email above to copy it."
-                    : "Always up for a good conversation."}
+                    : "Tell me what you’re working on."}
               </p>
             </div>
             <div className="social-links">
@@ -502,7 +509,7 @@ export function PortfolioPage() {
               </a>
             </div>
           </div>
-          <div className="contact-signoff"><span>Made with curiosity, by Aditya.</span><a href="#hero">Back to the beginning <ArrowUpRight size={16} /></a></div>
+          <div className="contact-signoff"><span>Designed, coded, and remixed by Aditya.</span><a href="#hero" onClick={returnToStart}>Back to the beginning <ArrowUpRight size={16} /></a></div>
         </section>
       </main>
       <Dialog

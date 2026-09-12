@@ -35,20 +35,20 @@ export function KineticManifesto() {
       aria-labelledby="kinetic-manifesto-title"
     >
       <h2 id="kinetic-manifesto-title" className="sr-only">
-        Made to feel different.
+        Useful. Unexpected.
       </h2>
       <div className="manifesto-pin">
-        <p className="manifesto-intro">A little curiosity goes a long way.</p>
+        <p className="manifesto-intro">An interface should do more than sit there.</p>
         <div className="manifesto-space">
-          <TypePlane text="WHAT IF?" className="manifesto-question" />
-          <TypePlane text="WHY NOT." className="manifesto-answer" />
+          <TypePlane text="FEEL IT." className="manifesto-question" />
+          <TypePlane text="BUILD IT." className="manifesto-answer" />
           <div className="manifesto-plane manifesto-final">
             <p className="manifesto-statement" aria-hidden="true">
-              <span className="manifesto-make">MADE TO</span>
-              <span className="manifesto-feel">FEEL DIFFERENT.</span>
+              <span className="manifesto-make">USEFUL.</span>
+              <span className="manifesto-feel">UNEXPECTED.</span>
             </p>
             <a className="manifesto-link" href="#playground">
-              Explore the playground
+              Try it for yourself
               <ArrowDownRight size={21} strokeWidth={1.4} aria-hidden="true" />
             </a>
           </div>

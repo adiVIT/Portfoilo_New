@@ -66,8 +66,8 @@ export function PersonalScenes({ animated, progress, onJump, onAction }: {
   return (
     <section id="hobbies" className="hobbies section-space" aria-labelledby="hobbies-title">
       <div className="hobby-section-heading">
-        <h2 id="hobbies-title">The other <em>side.</em></h2>
-        <p>A few things I keep coming back to.</p>
+        <h2 id="hobbies-title">Between <em>builds.</em></h2>
+        <p>The games, experiments, and detours that keep me going.</p>
       </div>
       <div ref={stage} className="hobbies-pin hobby-stage" data-scene={scene} data-motion={animated ? "on" : "off"}
         style={{ "--hobby-color": "var(--theme-light)", "--hobby-ink": "var(--ink)" } as CSSProperties}>

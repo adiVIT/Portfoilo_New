@@ -295,9 +295,9 @@ export const projectCaseStudies: ProjectCaseStudy[] = [
 ]
 
 export const principles: Principle[] = [
-  { title: "Stay curious", description: "Ask questions. Try things. Keep learning." },
-  { title: "Keep it simple", description: "Make the complicated feel easy." },
-  { title: "Care about the details", description: "The small things shape how something feels." },
+  { title: "Start with the person", description: "Before adding a feature, understand what someone is trying to get done. The interface should help them get there." },
+  { title: "Make the next step obvious", description: "Clear words, useful feedback, and fewer decisions. Good software should explain itself as you use it." },
+  { title: "Finish the small things", description: "The loading state. The missed tap. The way a screen responds. Those details are part of the product, too." },
 ]
 
 export const stackNodes: StackNode[] = [

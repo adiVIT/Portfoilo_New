@@ -1,8 +1,8 @@
 export const hobbyScenes = [
-  { name: "Football", word: "PLAY.", line: "For the love of the game.", action: "Take a shot", color: "#d8ed92", ink: "#203018" },
-  { name: "Chess", word: "THINK.", line: "A quiet board. A hundred possibilities.", action: "Move the knight", color: "#d5c9ec", ink: "#322541" },
-  { name: "Coding", word: "MAKE.", line: "The fun part is finding out if it works.", action: "Pull it apart", color: "#bcd9e9", ink: "#173344" },
-  { name: "Hackathon", word: "SHIP.", line: "A team, a ticking clock, and an idea.", action: "Launch the idea", color: "#f0b58d", ink: "#482a1c" },
+  { name: "Football", word: "PLAY.", line: "Football gets me out of my head and into the game.", action: "Take a shot", color: "#d8ed92", ink: "#203018" },
+  { name: "Chess", word: "THINK.", line: "A reminder to think before I move.", action: "Move the knight", color: "#d5c9ec", ink: "#322541" },
+  { name: "Coding", word: "MAKE.", line: "Sometimes I build it just to see if I can.", action: "Pull it apart", color: "#bcd9e9", ink: "#173344" },
+  { name: "Hackathon", word: "SHIP.", line: "Seeing what a team can make before time runs out.", action: "Launch the idea", color: "#f0b58d", ink: "#482a1c" },
 ] as const;
 
 // A closed sequence of legal knight moves; shared by the model and its text readout.
